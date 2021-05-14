@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/tools"
+    tools:context=".ui.adinfo.AdRegisterActivity">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.cashfulus.cashcarplus.ui.adinfo.AdRegisterViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.cashfulus.cashcarplus.view.UpgradedToolbar
+            android:id="@+id/toolbarAdRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftButtonImg="@drawable/ic_btn_back"
+            app:layout_collapseMode="pin"
+            app:title="서포터즈 신청"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvAdRegister1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="신청 서포터즈"
+            style="@style/title_14_M"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarAdRegister"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvAdRegisterTitle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvAdRegister1"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp">
+            <ImageView
+                android:id="@+id/ivAdRegisterTitle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/icon2" />
+        </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:id="@+id/tvAdRegisterAdTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="새학기 갤럭시 S21 할인 행사!"
+            style="@style/display_16_R"
+            app:layout_constraintTop_toTopOf="@+id/cvAdRegisterTitle"
+            app:layout_constraintStart_toEndOf="@+id/cvAdRegisterTitle"
+            android:layout_marginStart="12dp"/>
+        <ImageView
+            android:id="@+id/ivAdRegisterPoint"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_point"
+            app:layout_constraintTop_toTopOf="@+id/tvAdRegisterPoint"
+            app:layout_constraintBottom_toBottomOf="@+id/tvAdRegisterPoint"
+            app:layout_constraintStart_toEndOf="@+id/cvAdRegisterTitle"
+            android:layout_marginStart="12dp"/>
+        <TextView
+            android:id="@+id/tvAdRegisterPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30,000"
+            style="@style/display_16_B"
+            app:layout_constraintStart_toEndOf="@+id/ivAdRegisterPoint"
+            app:layout_constraintTop_toBottomOf="@+id/tvAdRegisterAdTitle"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"/>
+
+        <View
+            android:id="@+id/lineAdRegister"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grayscale_200"
+            app:layout_constraintTop_toBottomOf="@+id/tvAdRegisterPoint"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintTop_toBottomOf="@+id/lineAdRegister"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="10dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/btnAdRegisterCar3"
+                    android:layout_width="24dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/selector_square_button"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:text="3"
+                    android:gravity="center"
+                    style="@style/title_14_M"
+                    android:textColor="@color/grayscale_400"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"/>
+                <TextView
+                    android:id="@+id/btnAdRegisterCar2"
+                    android:layout_width="24dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/selector_square_button"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:text="2"
+                    android:gravity="center"
+                    style="@style/title_14_M"
+                    android:textColor="@color/grayscale_400"
+                    app:layout_constraintTop_toTopOf="@+id/btnAdRegisterCar3"
+                    app:layout_constraintEnd_toStartOf="@+id/btnAdRegisterCar3"
+                    android:padding="0dp"
+                    android:layout_marginEnd="6dp"/>
+                <TextView
+                    android:id="@+id/btnAdRegisterCar1"
+                    android:layout_width="24dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/selector_square_button"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:text="1"
+                    android:gravity="center"
+                    style="@style/title_14_M"
+                    android:textColor="@color/grayscale_400"
+                    app:layout_constraintTop_toTopOf="@+id/btnAdRegisterCar3"
+                    app:layout_constraintEnd_toStartOf="@+id/btnAdRegisterCar2"
+                    android:padding="0dp"
+                    android:layout_marginEnd="6dp"/>
+
+                <TextView
+                    android:id="@+id/tvAdRegister0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="차량 선택"
+                    style="@style/title_14_M"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="16dp"/>
+                <ViewStub
+                    android:id="@+id/cardAdRegister"
+                    android:inflatedId="@+id/cardAdRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout="@layout/card_none_mission"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAdRegister0"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginHorizontal="16dp"/>
+
+                <TextView
+                    android:id="@+id/tvAdRegister2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="배송지"
+                    style="@style/title_14_M"
+                    app:layout_constraintTop_toBottomOf="@+id/cardAdRegister"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="16dp"/>
+
+                <TextView
+                    android:id="@+id/tvAdRegister3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수령인"
+                    style="@style/title_12_R"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAdRegister2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="32dp"/>
+                <com.cashfulus.cashcarplus.view.UpgradedEdittext
+                    android:id="@+id/etAdRegisterName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hint="캐시카"
+                    app:text="@={viewModel.name}"
+                    app:inputType="textShortMessage"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAdRegister3"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginHorizontal="16dp"/>
+
+                <TextView
+                    android:id="@+id/tvAdRegister4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="연락처"
+                    style="@style/title_12_R"
+                    app:layout_constraintTop_toBottomOf="@+id/etAdRegisterName"
+                    app:layout_constraintStart_toStartOf="@+id/tvAdRegister3"
+                    android:layout_marginTop="20dp"/>
+                <com.cashfulus.cashcarplus.view.UpgradedEdittext
+                    android:id="@+id/etAdRegisterPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hint="010-1234-5678"
+                    app:text="@={viewModel.callNumber}"
+                    app:inputType="phone"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAdRegister4"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginHorizontal="16dp"/>
+
+                <TextView
+                    android:id="@+id/tvAdRegister5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="배송지 주소"
+                    style="@style/title_12_R"
+                    app:layout_constraintTop_toBottomOf="@+id/etAdRegisterPhone"
+                    app:layout_constraintStart_toStartOf="@+id/tvAdRegister3"
+                    android:layout_marginTop="20dp"/>
+                <LinearLayout
+                    android:id="@+id/etAdRegisterAddress1"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_form_selector"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAdRegister5"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginHorizontal="16dp">
+                    <TextView
+                        android:id="@+id/tvAdRegisterAddress1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="예) 영동대로 517, 삼성동 159"
+                        android:text="@={viewModel.mainAddress}"
+                        style="@style/title_14_R"
+                        android:textColor="@color/grayscale_400" />
+                    <View
+                        android:id="@+id/btnAdRegisterAddress1"
+                        android:layout_width="0dp"
+                        android:layout_height="7dp"
+                        android:layout_weight="1"/>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_search"/>
+                </LinearLayout>
+                <com.cashfulus.cashcarplus.view.UpgradedEdittext
+                    android:id="@+id/etAdRegisterAddress2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hint="상세주소를 입력해주세요"
+                    app:text="@={viewModel.detailAddress}"
+                    app:enabled="false"
+                    app:inputType="textShortMessage"
+                    app:layout_constraintTop_toBottomOf="@+id/etAdRegisterAddress1"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginHorizontal="16dp"/>
+
+                <TextView
+                    android:id="@+id/tvAdRegister6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="+ 배송지를 확인해 주세요\n+ 스티커 배송기간은 평균 3~5일입니다(주말, 공휴일 제외)\n+ 스티커 수령 후 기한 내에 차량 부착 인증을 해주세요"
+                    style="@style/caption_12_R"
+                    android:textColor="@color/grayscale_600"
+                    app:layout_constraintTop_toBottomOf="@+id/etAdRegisterAddress2"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginHorizontal="20dp"/>
+
+                <Button
+                    android:id="@+id/btnAdRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/selector_button"
+                    android:text="신청하기"
+                    style="@style/display_16_M"
+                    android:textColor="@color/grayscale_400"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAdRegister6"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginVertical="20dp"
+                    android:layout_marginHorizontal="16dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

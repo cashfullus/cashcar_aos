@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "624703717555",
+    "project_id": "cashcarplus-a1b2f",
+    "storage_bucket": "cashcarplus-a1b2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624703717555:android:fbd527c713f25749bcf0c6",
+        "android_client_info": {
+          "package_name": "com.cashfulus.cashcarplus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "624703717555-jhjar4meq2cqrn4hhefj22totlecjnvf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cashfulus.cashcarplus",
+            "certificate_hash": "002dac94c9dbf8ea5eb206eeee8748d83f54e270"
+          }
+        },
+        {
+          "client_id": "624703717555-5h5qoksjnefbnk0nb82vf3531s45ima4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmk0RyKnp00J3PFVkmyrPlzkduHTvI-M8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "624703717555-5h5qoksjnefbnk0nb82vf3531s45ima4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "624703717555-oca6pe218dir8qjfqkna4skgg5b876f0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cashfulus.cashcarplus"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

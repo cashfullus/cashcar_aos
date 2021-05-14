@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background_dialog_mission"
+    android:layout_margin="10dp">
+    
+    <ImageView
+        android:id="@+id/btnDialogWelcomeX"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_btn_x"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <TextView
+        android:id="@+id/tvDialogWelcomeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="환영합니다"
+        style="@style/display_16_M"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDialogWelcomeX"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_welcome_hi_icon"
+        app:layout_constraintStart_toEndOf="@+id/tvDialogWelcomeTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDialogWelcomeTitle"
+        android:layout_marginStart="8dp"/>
+
+    <TextView
+        android:id="@+id/tvDialogWelcomeContents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="스티커를 붙이고 평소처럼 주행하면 리워드가 쌓이는 캐시카플러스입니다.\n\n차량 정보를 등록하고 서포터즈 활동을 시작해보세요!"
+        style="@style/body_14_R_lh24"
+        app:layout_constraintTop_toBottomOf="@+id/tvDialogWelcomeTitle"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"/>
+    
+    <Button
+        android:id="@+id/btnDialogWelcome"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/button_form_active"
+        android:text="차량 등록하기"
+        style="@style/display_16_B"
+        android:textColor="@color/grayscale_wt"
+        android:stateListAnimator="@null"
+        app:layout_constraintTop_toBottomOf="@+id/tvDialogWelcomeContents"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="20dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

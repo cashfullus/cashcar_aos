@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/rowMore"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:id="@+id/ivRowMore"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_baseline_home_24"/>
+    <TextView
+        android:id="@+id/tvRowMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="약관 및 정책"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:layout_marginStart="10dp"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"/>
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_baseline_keyboard_arrow_right_24"/>
+</LinearLayout>

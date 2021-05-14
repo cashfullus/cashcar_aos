@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cashfulus.cashcarplus.ui.clause.ClauseListActivity">
+
+    <com.cashfulus.cashcarplus.view.UpgradedToolbar
+        android:id="@+id/toolbarClauseList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="약관 및 정책"
+        app:leftButtonImg="@drawable/ic_btn_back"/>
+
+    <LinearLayout
+        android:id="@+id/llClauseList1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarClauseList"
+        android:paddingVertical="14dp"
+        android:paddingHorizontal="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이용 약관"
+            style="@style/title_14_R"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_right_18dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llClauseList2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/llClauseList1"
+        android:paddingVertical="14dp"
+        android:paddingHorizontal="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="개인정보 처리 방침"
+            style="@style/title_14_R"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_right_18dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llClauseList3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/llClauseList2"
+        android:paddingVertical="14dp"
+        android:paddingHorizontal="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="위치기반서비스 이용약관"
+            style="@style/title_14_R"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_right_18dp"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

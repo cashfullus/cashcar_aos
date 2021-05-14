@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.cashfulus.cashcarplus.ui.howtouse.HowToUseFragment">
+
+    <ImageView
+        android:id="@+id/ivHowToUse"
+        android:layout_width="234dp"
+        android:layout_height="156dp"
+        android:src="@drawable/howtouse_01"
+        android:layout_marginHorizontal="50dp"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tvHowToUseTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvHowToUseTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tv_background_howtouse"
+        android:text="STEP 01"
+        style="@style/title_14_M"
+        android:textColor="@color/grayscale_wt"
+        app:layout_constraintTop_toBottomOf="@+id/ivHowToUse"
+        app:layout_constraintBottom_toTopOf="@+id/tvHowToUseContents"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="67dp"/>
+
+    <TextView
+        android:id="@+id/tvHowToUseContents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="차량 등록 후 원하는\n광고 서포터즈를 신청해주세요"
+        style="@style/body_howtouse"
+        app:layout_constraintTop_toBottomOf="@+id/tvHowToUseTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

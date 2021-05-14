@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.cashfulus.cashcarplus.ui.SplashActivity">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.cashfulus.cashcarplus.ui.SplashViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/brand_orange1">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glSplashV1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.133"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glSplashV2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.644"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glSplashH1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.347"/>
+
+        <ImageView
+            android:id="@+id/ivSplash"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="h, 3039:512"
+            android:src="@drawable/textlogo"
+            app:layout_constraintStart_toStartOf="@+id/glSplashV1"
+            app:layout_constraintEnd_toEndOf="@+id/glSplashV2"
+            app:layout_constraintTop_toTopOf="@+id/glSplashH1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="꽉 막힌 출퇴근길,\n내 차로 쉽게 용돈 벌자!"
+            android:fontFamily="notosanskr_400"
+            android:textSize="18dp"
+            android:lineSpacingExtra="2.5dp"
+            android:letterSpacing="-0.06"
+            android:textColor="@color/grayscale_wt"
+            app:layout_constraintStart_toStartOf="@+id/glSplashV1"
+            app:layout_constraintTop_toBottomOf="@+id/ivSplash"
+            android:layout_marginTop="18dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.cashfulus.cashcarplus.ui.faq.FaqActivity">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.cashfulus.cashcarplus.ui.faq.FaqViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.cashfulus.cashcarplus.view.UpgradedToolbar
+            android:id="@+id/toolbarFaq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftButtonImg="@drawable/ic_btn_back"
+            app:layout_collapseMode="pin"
+            app:title="FAQ / 1:1 문의"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ExpandableListView
+            android:id="@+id/elvFaq"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:groupIndicator="@null"
+            android:divider="@null"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarFaq"
+            app:layout_constraintBottom_toTopOf="@+id/btnFaqGotoKakao"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/btnFaqGotoKakao"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="카톡 1:1 문의하기"
+            android:background="@drawable/button_form_active"
+            style="@style/display_16_B"
+            android:textColor="@color/grayscale_wt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="20dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

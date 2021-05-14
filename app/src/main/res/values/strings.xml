@@ -1,0 +1,93 @@
+<resources>
+    <string name="app_name">캐시카플러스</string>
+
+    <!-- API 호출 오류 메세지 모음 -->
+    <string name="err_msg_204">해당 정보는 존재하지 않습니다.</string>
+    <string name="err_msg_400">잘못된 요청입니다.</string>
+    <string name="err_msg_401">인증 정보가 잘못되었습니다.</string>
+    <string name="err_msg_403">잘못된 요청입니다.</string>
+    <string name="err_msg_404">해당 주소를 찾을 수 없습니다.</string>
+    <string name="err_msg_406">잘못된 요청입니다.</string>
+    <string name="err_msg_408">요청 시간이 초과되었습니다.</string>
+    <string name="err_msg_409">이미 등록된 유저입니다. 비밀번호 등록으로 넘어갑니다.</string>
+    <string name="err_msg_410">요청하신 API는 삭제되어 사용이 불가능합니다.</string>
+    <string name="err_msg_500">서버에서 오류가 발생했습니다.</string>
+    <string name="err_msg_502">게이트웨이에 연결된 서버로부터 잘못된 응답을 받았습니다.</string>
+    <string name="err_msg_503">현재 서비스는 일시적으로 사용이 불가능한 상태입니다. 잠시 후에 다시 시도해 주세요.</string>
+    <string name="err_msg_504">게이트웨이에 연결된 서버로부터 응답을 받을 수 없습니다.</string>
+    <string name="err_msg_NO_INTERNET_ERROR_CODE">인터넷 연결이 불안정합니다. 다시 시도해 주세요.</string>
+    <string name="err_msg_API_CONNECT_ERROR_CODE">서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.</string>
+    <string name="err_msg_else">알 수 없는 오류가 발생했습니다.</string>
+
+    <!-- 카카오 플러스친구 URL -->
+    <string name="cashcar_kakao_channel">http://pf.kakao.com/_ikhYK</string>
+    <string name="cashcar_kakao_url">http://pf.kakao.com/_ikhYK/chat</string>
+
+    <!-- FCM을 위한 기본 Channel ID -->
+    <string name="default_notification_channel_id">CashcarplusNotification</string>
+
+    <!-- 약관 주소 -->
+    <string name="url_privacy_policy">https://app.api.service.cashcarplus.com:50193/agree/privacy_policy</string>
+    <string name="url_location_based_service">https://app.api.service.cashcarplus.com:50193/agree/location-based-service</string>
+    <string name="url_clause_service">https://app.api.service.cashcarplus.com:50193/agree/clause-service</string>
+    <string name="url_marketing_information">https://app.api.service.cashcarplus.com:50193/agree/marketing-information</string>
+
+    <!-- String Format -->
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <!-- 1:1문의  -->
+
+    <string-array name="korean_company">
+        <item>현대</item>
+        <item>제네시스</item>
+        <item>기아</item>
+        <item>한국GM</item>
+        <item>르노삼성</item>
+        <item>쌍용</item>
+        <item>기타(직접입력)</item>
+    </string-array>
+
+    <string-array name="foreign_company">
+        <item>벤츠</item>
+        <item>BMW</item>
+        <item>아우디</item>
+        <item>폭스바겐</item>
+        <item>볼보</item>
+        <item>쉐보레</item>
+        <item>테슬라</item>
+        <item>미니</item>
+        <item>렉서스</item>
+        <item>닛산</item>
+        <item>도요타</item>
+        <item>혼다</item>
+        <item>인피니티</item>
+        <item>마세라티</item>
+        <item>람보르기니</item>
+        <item>포드</item>
+        <item>랜드로버</item>
+        <item>링컨</item>
+        <item>재규어</item>
+        <item>지프</item>
+        <item>페라리</item>
+        <item>포르쉐</item>
+        <item>푸조</item>
+        <item>기타(직접 입력)</item>
+    </string-array>
+
+    <string-array name="car_owner">
+        <item>본인</item>
+        <item>배우자</item>
+        <item>부모</item>
+        <item>형제/자매</item>
+        <item>기타(직접입력)</item>
+    </string-array>
+
+    <!-- 유저 정보 -->
+    <string-array name="gender">
+        <item>남자</item>
+        <item>여자</item>
+        <item>성별을 선택해주세요</item>
+    </string-array>
+
+</resources>

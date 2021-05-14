@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="16dp"
+    android:background="@drawable/background_current_mission">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clCurrentMissionNotReady"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:elevation="3dp"
+        android:background="@drawable/background_current_mission_not_ready"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/tvCurrentMissionTmp4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="검토 후 스티커 배송 예정입니다 :)"
+            style="@style/display_16_M"
+            android:textColor="@color/brand_orange1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnCurrentMissionCancel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"/>
+
+        <Button
+            android:id="@+id/btnCurrentMissionCancel"
+            android:layout_width="103dp"
+            android:layout_height="33dp"
+            android:background="@drawable/button_mission_cancel"
+            android:text="신청 취소"
+            style="@style/button_14_M"
+            android:textColor="@color/brand_orange1"
+            app:layout_constraintTop_toBottomOf="@+id/tvCurrentMissionTmp4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="18dp"
+            android:padding="0dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp"
+        android:paddingTop="20dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvCurrentMission"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <ImageView
+                android:id="@+id/ivCurrentMission"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/icon2" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tvCurrentMissionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이니스프리 촉촉하게 스며든다!"
+            style="@style/display_16_M"
+            app:layout_constraintStart_toEndOf="@+id/cvCurrentMission"
+            app:layout_constraintTop_toTopOf="@+id/cvCurrentMission"
+            android:layout_marginStart="12dp"/>
+
+        <TextView
+            android:id="@+id/tvCurrentMissionTmp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="활동기간"
+            style="@style/title_12_R"
+            android:textColor="@color/grayscale_500"
+            app:layout_constraintStart_toStartOf="@+id/tvCurrentMissionTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvCurrentMissionTitle"
+            android:layout_marginTop="11dp"/>
+        <TextView
+            android:id="@+id/tvCurrentMissionTmp2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="미션성공"
+            style="@style/title_12_R"
+            android:textColor="@color/grayscale_500"
+            app:layout_constraintStart_toEndOf="@+id/tvCurrentMissionTmp1"
+            app:layout_constraintEnd_toStartOf="@+id/tvCurrentMissionTmp3"
+            app:layout_constraintTop_toTopOf="@+id/tvCurrentMissionTmp1"/>
+        <TextView
+            android:id="@+id/tvCurrentMissionTmp3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가미션"
+            style="@style/title_12_R"
+            android:textColor="@color/grayscale_500"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvCurrentMissionTmp1"
+            android:layout_marginEnd="21dp"/>
+
+        <TextView
+            android:id="@+id/tvCurrentMissionDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0일"
+            style="@style/title_14_R"
+            app:layout_constraintTop_toBottomOf="@+id/tvCurrentMissionTmp1"
+            app:layout_constraintStart_toStartOf="@+id/tvCurrentMissionTmp1"
+            app:layout_constraintEnd_toEndOf="@+id/tvCurrentMissionTmp1"
+            android:layout_marginTop="4dp"/>
+        <TextView
+            android:id="@+id/tvCurrentMissionSuccess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0회"
+            style="@style/title_14_R"
+            app:layout_constraintTop_toBottomOf="@+id/tvCurrentMissionTmp2"
+            app:layout_constraintStart_toStartOf="@+id/tvCurrentMissionTmp2"
+            app:layout_constraintEnd_toEndOf="@+id/tvCurrentMissionTmp2"
+            android:layout_marginTop="4dp"/>
+        <TextView
+            android:id="@+id/tvCurrentMissionAdditional"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0회"
+            style="@style/title_14_R"
+            app:layout_constraintTop_toBottomOf="@+id/tvCurrentMissionTmp3"
+            app:layout_constraintStart_toStartOf="@+id/tvCurrentMissionTmp3"
+            app:layout_constraintEnd_toEndOf="@+id/tvCurrentMissionTmp3"
+            android:layout_marginTop="4dp"/>
+
+        <ProgressBar
+            android:id="@+id/pbRowMission"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:max="100"
+            android:progress="30"
+            android:progressDrawable="@drawable/progressbar_background_v2"
+            app:layout_constraintTop_toTopOf="@+id/ivCurrentMissionPoint"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCurrentMissionPoint"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivCurrentMissionPoint"
+            android:layout_marginEnd="12dp"/>
+
+        <TextView
+            android:id="@+id/tvCurrentMissionPoint"
+            style="@style/display_16_B"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:text="0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCurrentMissionAdditional"
+            android:layout_marginTop="14dp"/>
+        <ImageView
+            android:id="@+id/ivCurrentMissionPoint"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_point"
+            app:layout_constraintEnd_toStartOf="@+id/tvCurrentMissionPoint"
+            app:layout_constraintTop_toTopOf="@+id/tvCurrentMissionPoint"
+            app:layout_constraintBottom_toBottomOf="@+id/tvCurrentMissionPoint"
+            android:layout_marginEnd="4dp"/>
+
+        <com.cashfulus.cashcarplus.view.CurrentMissionButton
+            android:id="@+id/btnCurrentMission"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:curState="4"
+            app:layout_constraintTop_toBottomOf="@+id/ivCurrentMissionPoint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="20dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.HomeFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.cashfulus.cashcarplus.ui.HomeViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ivHomeLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_textlogo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"/>
+        <ImageButton
+            android:id="@+id/btnHomeAlarm"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_alarm_none"
+            android:background="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivHomeLogo"
+            app:layout_constraintBottom_toBottomOf="@+id/ivHomeLogo"
+            android:layout_marginEnd="4dp"/>
+
+        <!--<include
+            android:id="@+id/cardCurrentMission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/card_none_mission"
+            app:layout_constraintTop_toBottomOf="@+id/ivHomeLogo"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"/>-->
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srlHome"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnHomeAlarm"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp">
+            <com.amar.library.ui.StickyScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:stickyHeader="@+id/tlHomeAd">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/srlCurrentMission"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <include
+                            android:visibility="gone"
+                            android:id="@+id/cardNoneMission"
+                            layout="@layout/card_none_mission"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <include
+                            android:visibility="gone"
+                            android:id="@+id/cardCurrentMission"
+                            layout="@layout/card_current_mission"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!--<ViewStub
+                        android:id="@+id/cardCurrentMission"
+                        android:inflatedId="@+id/cardCurrentMission"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout="@layout/card_current_mission"
+                        app:layout_constraintTop_toBottomOf="@+id/ivHomeLogo"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="20dp"/>-->
+
+                    <!--<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                        android:id="@+id/srlHome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/ivHomeLogo"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="20dp">
+                        <ViewStub
+                            android:id="@+id/cardCurrentMission"
+                            android:inflatedId="@+id/cardCurrentMission"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout="@layout/card_current_mission" />
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tlHomeAd"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        app:layout_constraintTop_toBottomOf="@+id/srlCurrentMission"
+                        app:tabIndicatorColor="@null">
+                        <!--app:tabIndicatorColor="@color/orange"
+                        app:tabTextColor="@color/selector_tab_text_color"
+                        app:tabTextAppearance="@style/TabWithOnlyTextStyle"-->
+                        <com.google.android.material.tabs.TabItem
+                            android:id="@+id/tlHomeAdTab1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout="@layout/tab_home" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:id="@+id/tlHomeAdTab2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout="@layout/tab_home" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:id="@+id/tlHomeAdTab3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout="@layout/tab_home" />
+                    </com.google.android.material.tabs.TabLayout>
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/vpHomeAd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/tlHomeAd" />
+                </LinearLayout>
+            </com.amar.library.ui.StickyScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+<!-- <LinearLayout
+                        android:id="@+id/srlCurrentMission"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <include
+                            android:id="@+id/cardNoneMission"
+                            layout="@layout/card_none_mission"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <include
+                            android:id="@+id/cardCurrentMission"
+                            layout="@layout/card_current_mission"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+<com.google.android.material.tabs.TabLayout
+android:id="@+id/tlHomeAd"
+android:layout_width="match_parent"
+android:layout_height="48dp"
+app:layout_constraintTop_toBottomOf="@+id/srlCurrentMission"
+app:tabIndicatorColor="@null">
+<com.google.android.material.tabs.TabItem
+    android:id="@+id/tlHomeAdTab1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout="@layout/tab_home" />
+
+<com.google.android.material.tabs.TabItem
+    android:id="@+id/tlHomeAdTab2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout="@layout/tab_home" />
+
+<com.google.android.material.tabs.TabItem
+    android:id="@+id/tlHomeAdTab3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout="@layout/tab_home" />
+</com.google.android.material.tabs.TabLayout>
+
+<androidx.viewpager2.widget.ViewPager2
+android:id="@+id/vpHomeAd"
+android:layout_width="match_parent"
+android:layout_height="900dp"
+app:layout_constraintTop_toBottomOf="@+id/tlHomeAd" /> -->

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.user.UserAddressActivity">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.cashfulus.cashcarplus.ui.user.UserAddressViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.cashfulus.cashcarplus.view.UpgradedToolbar
+            android:id="@+id/toolbarAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftButtonImg="@drawable/ic_btn_back"
+            app:layout_collapseMode="pin"
+            app:title="배송지 설정"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvAddressTitle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수령인"
+            style="@style/title_12_R"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarAddress"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="32dp"/>
+        <com.cashfulus.cashcarplus.view.UpgradedEdittext
+            android:id="@+id/etAddressName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="캐시카"
+            app:text="@={viewModel.name}"
+            app:inputType="textPersonName"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddressTitle1"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
+            android:id="@+id/tvAddressTitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="연락처"
+            style="@style/title_12_R"
+            app:layout_constraintTop_toBottomOf="@+id/etAddressName"
+            app:layout_constraintStart_toStartOf="@+id/tvAddressTitle1"
+            android:layout_marginTop="20dp"/>
+        <com.cashfulus.cashcarplus.view.UpgradedEdittext
+            android:id="@+id/etAddressPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="010-1234-5678"
+            app:text="@={viewModel.phone}"
+            app:inputType="phone"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddressTitle2"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
+            android:id="@+id/tvAddressTitle3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="배송지 주소"
+            style="@style/title_12_R"
+            app:layout_constraintTop_toBottomOf="@+id/etAddressPhone"
+            app:layout_constraintStart_toStartOf="@+id/tvAddressTitle1"
+            android:layout_marginTop="20dp"/>
+        <LinearLayout
+            android:id="@+id/etAddressAddress1"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/input_form_selector"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddressTitle3"
+            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="16dp">
+            <TextView
+                android:id="@+id/tvAddressAddress1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.mainAddress}"
+                android:hint="예) 영동대로 517, 삼성동 159"
+                style="@style/title_14_R"
+                android:textColorHint="@color/grayscale_400"
+                android:textColor="@color/grayscale_bk"/>
+            <View
+                android:id="@+id/btnAdRegisterAddress1"
+                android:layout_width="0dp"
+                android:layout_height="7dp"
+                android:layout_weight="1"/>
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_search"/>
+        </LinearLayout>
+        <com.cashfulus.cashcarplus.view.UpgradedEdittext
+            android:id="@+id/etAddressAddress2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="상세주소를 입력해주세요"
+            app:text="@={viewModel.detailAddress}"
+            app:inputType="textShortMessage"
+            app:layout_constraintTop_toBottomOf="@+id/etAddressAddress1"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"/>
+
+        <Button
+            android:id="@+id/btnAddress"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/selector_button"
+            android:text="등록하기"
+            style="@style/display_16_M"
+            android:textColor="@color/grayscale_400"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="16dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

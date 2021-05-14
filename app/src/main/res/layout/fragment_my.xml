@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.MyFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.cashfulus.cashcarplus.ui.MyViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvMyTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="마이 캐시카"
+            style="@style/display_16_B"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMyUserInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tvMyTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvMyProfile"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="17dp">
+                <ImageView
+                    android:id="@+id/ivMyProfile"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_person_icon" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvMyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                style="@style/title_14_M"
+                app:layout_constraintTop_toTopOf="@+id/cvMyProfile"
+                app:layout_constraintStart_toEndOf="@+id/cvMyProfile"
+                android:layout_marginStart="9dp"/>
+            <TextView
+                android:id="@+id/tvMyEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                style="@style/title_14_DL"
+                app:layout_constraintTop_toBottomOf="@+id/tvMyName"
+                app:layout_constraintStart_toStartOf="@+id/tvMyName"
+                android:layout_marginTop="4dp"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_list_small_arrow_right"
+                app:layout_constraintTop_toTopOf="@+id/tvMyName"
+                app:layout_constraintStart_toEndOf="@+id/tvMyName"
+                app:layout_constraintBottom_toBottomOf="@+id/tvMyName"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMyPoint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_my_tab_point"
+            app:layout_constraintTop_toBottomOf="@+id/clMyUserInfo"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="포인트"
+                style="@style/title_14_M"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="21dp"
+                android:layout_marginBottom="22dp"
+                android:layout_marginStart="16dp"/>
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_point"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvMyPoint"
+                android:layout_marginEnd="5dp"/>
+            <TextView
+                android:id="@+id/tvMyPoint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                style="@style/display_16_B"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="20dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/clMyActivities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_my_tab_activities"
+            app:layout_constraintTop_toBottomOf="@+id/clMyPoint"
+            android:layout_marginTop="13dp"
+            android:layout_marginHorizontal="16dp">
+
+            <TextView
+                android:id="@+id/tvMyTitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="활동 내역"
+                style="@style/title_14_M"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="16dp"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_list_small_arrow_right"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp"/>
+
+            <ImageView
+                android:id="@+id/ivMySticker1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_logo_sticker"
+                app:layout_constraintTop_toBottomOf="@+id/tvMyTitle2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ivMySticker2"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="24dp"/>
+            <ImageView
+                android:id="@+id/ivMySticker2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_logo_sticker"
+                app:layout_constraintTop_toTopOf="@+id/ivMySticker1"
+                app:layout_constraintStart_toEndOf="@+id/ivMySticker1"
+                app:layout_constraintEnd_toStartOf="@+id/ivMySticker3"/>
+            <ImageView
+                android:id="@+id/ivMySticker3"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_logo_sticker"
+                app:layout_constraintTop_toTopOf="@+id/ivMySticker1"
+                app:layout_constraintStart_toEndOf="@+id/ivMySticker2"
+                app:layout_constraintEnd_toStartOf="@+id/ivMySticker4"/>
+            <ImageView
+                android:id="@+id/ivMySticker4"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_logo_sticker"
+                app:layout_constraintTop_toTopOf="@+id/ivMySticker1"
+                app:layout_constraintStart_toEndOf="@+id/ivMySticker3"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="15dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--<TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_deactive_components"
+            android:text="추후 업데이트 예정"
+            android:gravity="center"
+            style="@style/button_16_B"
+            android:textColor="@color/grayscale_wt"
+            app:layout_constraintTop_toTopOf="@+id/clMyPoint"
+            app:layout_constraintBottom_toBottomOf="@+id/clMyActivities"
+            app:layout_constraintStart_toStartOf="@+id/clMyPoint"
+            app:layout_constraintEnd_toEndOf="@+id/clMyPoint"/>-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMyMenu"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            app:layout_constraintTop_toBottomOf="@+id/clMyActivities"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="7dp"
+            android:layout_marginHorizontal="20dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

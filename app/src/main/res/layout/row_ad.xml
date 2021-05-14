@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="10dp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glRowAd"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clRowAdStart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/glRowAd">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvRowAd1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="h, 1:1"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp">
+            <ImageView
+                android:id="@+id/ivRowAd1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon2"
+                android:scaleType="centerCrop"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvRowAdTitle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="맛있는 오예스 논산 딸기..."
+            android:maxLines="1"
+            android:ellipsize="end"
+            style="@style/title_14_DL"
+            app:layout_constraintTop_toBottomOf="@+id/cvRowAd1"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="6dp"/>
+
+        <ImageView
+            android:id="@+id/ivRowAd1Point"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_point"
+            app:layout_constraintTop_toBottomOf="@+id/tvRowAdTitle1"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="3.5dp"/>
+        <TextView
+            android:id="@+id/tvRowAdPoint1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30,000"
+            style="@style/title_14_M"
+            app:layout_constraintTop_toTopOf="@+id/ivRowAd1Point"
+            app:layout_constraintBottom_toBottomOf="@+id/ivRowAd1Point"
+            app:layout_constraintStart_toEndOf="@+id/ivRowAd1Point"
+            android:layout_marginStart="4dp"/>
+
+        <TextView
+            android:id="@+id/tvRowAdRegion1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="서울·경기"
+            style="@style/button_12_R"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPoint1"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"/>
+
+        <ImageView
+            android:id="@+id/ivRowAd1Person"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/ic_person_icon_hometab"
+            app:layout_constraintTop_toTopOf="@+id/tvRowAdPerson1"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson1"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+            android:id="@+id/tvRowAdPerson1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="24/50"
+            android:fontFamily="@font/notosanskr_light"
+            android:textSize="10dp"
+            android:textColor="@color/grayscale_600"
+            app:layout_constraintStart_toEndOf="@+id/ivRowAd1Person"
+            app:layout_constraintTop_toBottomOf="@+id/tvRowAdPoint1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="3dp"/>
+
+        <TextView
+            android:id="@+id/tvRowAdEndDate1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="04.17 마감"
+            android:fontFamily="@font/notosanskr_light"
+            android:textSize="10dp"
+            android:textColor="@color/grayscale_bk"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson1"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tvRowAdDDay1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="D-10"
+            style="@style/title_14_M"
+            android:textColor="@color/brand_orange1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson1"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tvRowAdEnd1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/background_ad_end"
+            android:text="종료"
+            android:fontFamily="@font/notosanskr_bold"
+            android:textSize="24dp"
+            android:textColor="@color/brand_orange1"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@+id/clRowAdStart"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson1"
+            android:layout_marginEnd="8dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clRowAdEnd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/glRowAd"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvRowAd2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="h, 1:1"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp">
+            <ImageView
+                android:id="@+id/ivRowAd2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon2"
+                android:scaleType="centerCrop"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvRowAdTitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="맛있는 오예스 논산 딸기..."
+            android:maxLines="1"
+            android:ellipsize="end"
+            style="@style/title_14_DL"
+            app:layout_constraintTop_toBottomOf="@+id/cvRowAd2"
+            app:layout_constraintStart_toStartOf="@+id/cvRowAd2"
+            android:layout_marginTop="6dp"/>
+
+        <ImageView
+            android:id="@+id/ivRowAd2Point"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_point"
+            app:layout_constraintTop_toBottomOf="@+id/tvRowAdTitle2"
+            app:layout_constraintStart_toStartOf="@+id/cvRowAd2"
+            android:layout_marginTop="3.5dp"/>
+        <TextView
+            android:id="@+id/tvRowAdPoint2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30,000"
+            style="@style/title_14_M"
+            app:layout_constraintTop_toTopOf="@+id/ivRowAd2Point"
+            app:layout_constraintBottom_toBottomOf="@+id/ivRowAd2Point"
+            app:layout_constraintStart_toEndOf="@+id/ivRowAd2Point"
+            android:layout_marginStart="4dp"/>
+
+        <TextView
+            android:id="@+id/tvRowAdRegion2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="서울·경기"
+            style="@style/button_12_R"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPoint2"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/ivRowAd2Person"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/ic_person_icon_hometab"
+            app:layout_constraintTop_toTopOf="@+id/tvRowAdPerson2"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson2"
+            app:layout_constraintStart_toStartOf="@+id/cvRowAd2"/>
+        <TextView
+            android:id="@+id/tvRowAdPerson2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="24/50"
+            android:fontFamily="@font/notosanskr_light"
+            android:textSize="10dp"
+            android:textColor="@color/grayscale_600"
+            app:layout_constraintStart_toEndOf="@+id/ivRowAd2Person"
+            app:layout_constraintTop_toBottomOf="@+id/tvRowAdPoint2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="3dp"/>
+
+        <TextView
+            android:id="@+id/tvRowAdEndDate2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="04.17 마감"
+            android:fontFamily="@font/notosanskr_light"
+            android:textSize="10dp"
+            android:textColor="@color/grayscale_bk"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson2"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tvRowAdDDay2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="D-10"
+            style="@style/title_14_M"
+            android:textColor="@color/brand_orange1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson2"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tvRowAdEnd2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/background_ad_end"
+            android:text="종료"
+            android:fontFamily="@font/notosanskr_bold"
+            android:textSize="24dp"
+            android:textColor="@color/brand_orange1"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@+id/clRowAdEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson2"
+            android:layout_marginStart="8dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

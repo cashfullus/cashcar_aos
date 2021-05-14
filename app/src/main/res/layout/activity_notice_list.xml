@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.notice.NoticeListActivity">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.cashfulus.cashcarplus.ui.notice.NoticeListViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.cashfulus.cashcarplus.view.UpgradedToolbar
+            android:id="@+id/toolbarNoticeList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftButtonImg="@drawable/ic_btn_back"
+            app:layout_collapseMode="pin"
+            app:title="공지 사항"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ExpandableListView
+            android:id="@+id/elvNoticeList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:groupIndicator="@null"
+            android:divider="@null"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarNoticeList"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

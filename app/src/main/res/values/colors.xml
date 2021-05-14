@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Color -->
+    <color name="brand_orange1">#FFFE7B12</color>
+    <color name="brand_orange3">#FFFFE5D0</color>
+    <color name="brand_green">#FF4AA568</color>
+    <color name="brand_green3">#FFCEECD8</color>
+    <color name="purple">#FF8C78EF</color>
+    <color name="purple3">#FFD7D1F9</color>
+
+    <!-- Grayscale -->
+    <color name="grayscale_wt">#FFFFFFFF</color>
+    <color name="grayscale_bk">#FF333333</color>
+    <color name="grayscale_600">#FF838383</color>
+    <color name="grayscale_500">#FFA0A0A0</color>
+    <color name="grayscale_400">#FFAFACAC</color>
+    <color name="grayscale_300">#FFD8D8D8</color>
+    <color name="grayscale_200">#FFEFEFEF</color>
+    <color name="grayscale_100">#FFFAFAFA</color>
+
+    <!-- System color -->
+    <color name="system_success">#FF429EF3</color>
+    <color name="system_no">#FFF03F3F</color>
+
+    <!-- Below will be deleted -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="font_black">#FF33364B</color>
+    <color name="orange">#FFFE7B12</color>
+    <color name="gray">#FFAFACAC</color>
+    <color name="linegray">#FFD8D8D8</color>
+
+</resources>

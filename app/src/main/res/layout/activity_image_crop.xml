@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cashfulus.cashcarplus.ui.image.ImageCropActivity">
+
+    <com.cashfulus.cashcarplus.view.UpgradedToolbar
+        android:id="@+id/toolbarImageCrop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftButtonImg="@drawable/ic_btn_x"
+        app:rightButtonImg="@drawable/ic_camera"
+        app:layout_collapseMode="pin"
+        app:title="이미지 자르기"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Image Cropper fill the remaining available height -->
+    <com.theartofdev.edmodo.cropper.CropImageView
+        android:id="@+id/cropImageView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:cropGuidelines="on"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarImageCrop"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

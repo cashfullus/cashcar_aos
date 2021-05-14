@@ -1,0 +1,178 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Cashcarplus" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/brand_orange1</item>
+        <item name="colorPrimaryDark">@color/grayscale_wt</item>
+        <item name="android:colorPrimaryDark">@color/grayscale_wt</item>
+        <item name="colorPrimaryVariant">@color/brand_orange3</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorAccent">@color/brand_orange1</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/grayscale_wt</item>
+
+        <!-- Customize your theme here. -->
+        <item name="materialButtonStyle">@style/Widget.App.Button</item>
+        <item name="textInputStyle">@style/textinputlayout_form</item>
+        <item name="android:editTextStyle">@style/NotoSansEditTextStyle</item>
+        <item name="android:radioButtonStyle">@style/NotoSansRadioButtonStyle</item>
+        <item name="android:checkboxStyle">@style/NotoSansCheckboxStyle</item>
+        <item name="android:textViewStyle">@style/NotoSansTextViewStyle</item>
+    </style>
+
+    <!-- For New Font Design -->
+    <style name="display_16_B">
+        <item name="android:fontFamily">@font/notosanskr_bold</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="display_16_M">
+        <item name="android:fontFamily">@font/notosanskr_medium</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="display_16_R">
+        <item name="android:fontFamily">@font/notosanskr_regular</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+    </style>
+
+    <style name="title_14_M">
+        <item name="android:fontFamily">@font/notosanskr_medium</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+    </style>
+    <style name="title_14_R">
+        <item name="android:fontFamily">@font/notosanskr_regular</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+    </style>
+    <style name="title_14_DL">
+        <item name="android:fontFamily">@font/notosanskr_demilight</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+    </style>
+    <style name="title_12_R">
+        <item name="android:fontFamily">@font/notosanskr_regular</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+    </style>
+
+    <style name="body_16_R_lh26">
+        <item name="android:fontFamily">@font/notosanskr_regular</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+        <item name="android:lineSpacingExtra">2dp</item>
+    </style>
+
+    <style name="body_14_R_lh24">
+        <item name="android:fontFamily">@font/notosanskr_regular</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+        <item name="android:lineSpacingExtra">24px</item>
+    </style>
+    <style name="body_12_R_lh20">
+        <item name="android:fontFamily">@font/notosanskr_regular</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+        <item name="android:lineSpacingExtra">20px</item>
+    </style>
+
+    <style name="button_16_B">
+        <item name="android:fontFamily">@font/notosanskr_bold</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+    </style>
+    <style name="button_14_M">
+        <item name="android:fontFamily">@font/notosanskr_medium</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+    </style>
+    <style name="button_12_R">
+        <item name="android:fontFamily">@font/notosanskr_regular</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+    </style>
+
+    <style name="caption_12_R">
+        <item name="android:fontFamily">@font/notosanskr_regular</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+        <item name="android:lineSpacingExtra">18px</item>
+    </style>
+
+    <style name="overline_10_L">
+        <item name="android:fontFamily">@font/notosanskr_light</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+        <item name="android:lineSpacingExtra">16dp</item>
+    </style>
+
+    <style name="body_howtouse">
+        <item name="android:fontFamily">@font/notosanskr_regular</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/grayscale_bk</item>
+        <item name="android:lineSpacingExtra">32px</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <!-- Form Theme -->
+    <style name="input_form" parent="Widget.AppCompat.EditText">
+        <item name="android:textCursorDrawable">@color/grayscale_bk</item>
+        <item name="android:background">@drawable/input_form_selector</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:fontFamily">@font/notosanskr_regular</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/input_text_color</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="textinputlayout_form" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:background">@drawable/input_form_selector</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:fontFamily">@font/notosanskr_regular</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/input_text_color</item>
+
+        <item name="android:textCursorDrawable">@color/grayscale_bk</item>
+        <item name="android:textColorHint">@color/grayscale_400</item>
+        <item name="hintTextColor">@color/grayscale_400</item>
+
+        <item name="errorTextColor">@color/system_no</item>
+    </style>
+
+    <!-- Old Version -->
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@null</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="NotoSansTextViewStyle" parent="@android:style/Widget.DeviceDefault.TextView">
+        <item name="android:fontFamily">@font/notosanskr</item>
+    </style>
+    <style name="NotoSansEditTextStyle" parent="@android:style/Widget.DeviceDefault.EditText">
+        <item name="android:fontFamily">@font/notosanskr</item>
+    </style>
+    <style name="NotoSansRadioButtonStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton">
+        <item name="android:fontFamily">@font/notosanskr</item>
+    </style>
+    <style name="NotoSansCheckboxStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
+        <item name="android:fontFamily">@font/notosanskr</item>
+    </style>
+
+    <style name="TabWithOnlyTextStyle">
+        <item name="android:textSize">12dp</item>
+        <item name="android:fontFamily">@font/notosanskr</item>
+    </style>
+
+    <style name="TabMainStyle">
+        <item name="android:textSize">10dp</item>
+        <item name="android:fontFamily">@font/notosanskr</item>
+    </style>
+</resources>

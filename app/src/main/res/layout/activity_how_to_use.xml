@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cashfulus.cashcarplus.ui.howtouse.HowToUseActivity">
+
+    <com.cashfulus.cashcarplus.view.UpgradedToolbar
+        android:id="@+id/toolbarHowToUse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="이용 방법" />
+    
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpHowToUse"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarHowToUse"
+        app:layout_constraintBottom_toTopOf="@+id/indicatorHowToUse"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/indicatorHowToUse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabBackground="@drawable/tab_pager_selector"
+        app:tabGravity="center"
+        app:tabIndicator="@null"
+        app:tabPaddingStart="16dp"
+        app:tabPaddingEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomLine"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/btnHowToUseSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="건너뛰기"
+        style="@style/title_14_M"
+        android:textColor="@color/brand_orange1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="10dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginStart="40dp" />
+
+    <TextView
+        android:id="@+id/bottomLine"
+        android:layout_width="10dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="50dp" />
+
+    <TextView
+        android:id="@+id/btnHowToUseNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="다음"
+        style="@style/title_14_M"
+        android:textColor="@color/brand_orange1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="10dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="40dp" />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/btnHowToUseStart"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/button_form_active"
+        style="@style/display_16_B"
+        android:stateListAnimator="@null"
+        android:textColor="@color/grayscale_wt"
+        android:text="시작하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="20dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
