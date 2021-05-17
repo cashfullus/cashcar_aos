@@ -4,21 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_popup"
-    android:layout_marginHorizontal="16dp">
+    android:background="@drawable/background_popup">
 
     <TextView
         android:id="@+id/tvPopup"
         android:text="차량은 최대 3대까지만 등록 가능합니다."
-        android:textSize="16dp"
-        android:textColor="#FF020202"
+        style="@style/body_16_R_lh26"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"/>
 
-    <Button
+    <TextView
         android:id="@+id/btnPopupOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,9 +29,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="12dp" />
 
-    <Button
+    <TextView
         android:id="@+id/btnPopupCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,6 +41,8 @@
         android:background="@android:color/transparent"
         style="@style/display_16_M"
         app:layout_constraintBottom_toBottomOf="@+id/btnPopupOk"
-        app:layout_constraintEnd_toStartOf="@+id/btnPopupOk"/>
+        app:layout_constraintEnd_toStartOf="@+id/btnPopupOk"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="12dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,9 +12,10 @@
         <import type="android.view.View"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvTitleCashcartip"
@@ -22,35 +23,19 @@
             android:layout_height="wrap_content"
             android:text="캐시카팁"
             style="@style/display_16_B"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"/>
 
-        <ImageView
-            android:id="@+id/ivTabCashcartip"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srlCashcartip"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="95dp"
-            android:src="@drawable/tab_prepare"
-            app:layout_constraintBottom_toTopOf="@+id/tvTabCashcartip"
-            app:layout_constraintDimensionRatio="h, 171:233"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitleCashcartip"
-            app:layout_constraintVertical_bias="0.35"
-            app:layout_constraintVertical_chainStyle="packed" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCashcartipList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <TextView
-            android:id="@+id/tvTabCashcartip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="서비스를 준비 중입니다\n조금만 기다려주세요 :)"
-            style="@style/body_16_R_lh26"
-            android:textColor="@color/grayscale_500"
-            app:layout_constraintTop_toBottomOf="@+id/ivTabCashcartip"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="36dp"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

@@ -2,21 +2,26 @@ package com.cashfulus.cashcarplus.ui
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.*
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -28,15 +33,15 @@ import com.cashfulus.cashcarplus.base.BaseFragment
 import com.cashfulus.cashcarplus.databinding.FragmentHomeBinding
 import com.cashfulus.cashcarplus.ui.alarm.AlarmActivity
 import com.cashfulus.cashcarplus.ui.car.AddCarActivity
-import com.cashfulus.cashcarplus.ui.dialog.MissionDialog
-import com.cashfulus.cashcarplus.ui.dialog.MissionDialogClickListener
-import com.cashfulus.cashcarplus.ui.dialog.WelcomeDialog
+import com.cashfulus.cashcarplus.ui.dialog.*
 import com.cashfulus.cashcarplus.ui.mission.MissionActivity
 import com.cashfulus.cashcarplus.util.UserManager
 import com.cashfulus.cashcarplus.view.*
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.dialog_popup.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.lang.ClassCastException
 import java.text.DecimalFormat
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
@@ -71,6 +76,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.VISIBLE
                     binding.cardCurrentMission.visibility = View.GONE
                     val card = binding.cardNoneMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56f, resources.displayMetrics).toInt()
 
                     card.background = requireActivity().getDrawable(R.drawable.button_mission_no_car)
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "내 차량 정보 등록하기"
@@ -94,6 +100,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.VISIBLE
                     binding.cardCurrentMission.visibility = View.GONE
                     val card = binding.cardNoneMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56f, resources.displayMetrics).toInt()
 
                     card.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_mission_no_mission)
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "현재 진행 중인 서포터즈 활동이 없습니다"
@@ -108,6 +115,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.VISIBLE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -124,11 +132,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     pbMission.progress = it.data.data.adInformation!!.ongoingDayPercent
 
                     card.findViewById<Button>(R.id.btnCurrentMissionCancel).setOnClickListener {
-                        val builder = AlertDialog.Builder(requireActivity())
-                        builder.setMessage("서포터즈 신청을 취소할 시 추후 패널티를 받을 수 있습니다. 정말 신청을 취소하시겠습니까?")
-                        builder.setPositiveButton("확인") { _: DialogInterface, _: Int -> viewModel.deleteMyMission() }
-                        builder.setNegativeButton("취소", null)
-                        builder.create().show()
+                        val popupDialog = CancelMissionPopupDialog("서포터즈 신청을 취소할 시 추후 패널티를 받을 수 있습니다.\n정말 신청을 취소하시겠습니까?", "확인", "취소", {viewModel.deleteMyMission()})
+                        popupDialog.show(parentFragmentManager, "CancelSupporters")
                     }
                 }
                 // 신청한 미션 검토중, 1시간 지나서 삭제 불가능
@@ -137,6 +142,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.VISIBLE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -160,6 +166,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.VISIBLE
                     binding.cardCurrentMission.visibility = View.GONE
                     val card = binding.cardNoneMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56f, resources.displayMetrics).toInt()
 
                     card.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_mission_no_mission)
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "현재 진행 중인 서포터즈 활동이 없습니다"
@@ -191,6 +198,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -222,6 +230,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -250,6 +259,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -278,6 +288,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -326,6 +337,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -374,6 +386,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -402,6 +415,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -442,6 +456,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -674,6 +689,61 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                 2       -> AdListFragment.newInstance("done")
                 else -> AdListFragment.newInstance("ongoing")
             }
+        }
+    }
+
+    /** 서포터즈 신청 취소 Dialog
+        (PopupDialog가 Fragment에선 정상적으로 작동하지 않는 관계로 여기에 작성.)*/
+    class CancelMissionPopupDialog(private val msg: String, private val okMsg: String, private val cancelMsg: String, private val positiveFun: (() -> Unit)) : DialogFragment() {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            return inflater.inflate(R.layout.dialog_popup, container, false)
+        }
+
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+
+            dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            tvPopup.text = msg
+            btnPopupOk.text = okMsg
+            btnPopupCancel.text = cancelMsg
+
+            btnPopupOk.setOnClickListener {
+                positiveFun()
+                dismiss()
+            }
+
+            btnPopupCancel.setOnClickListener {
+                dismiss()
+            }
+        }
+
+        override fun onResume() {
+            super.onResume()
+
+            // 꼭 DialogFragment 클래스에서 선언하지 않아도 된다.
+            val windowManager = App().context().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val size = Point()
+
+            @Suppress("DEPRECATION")
+            val display = windowManager.defaultDisplay
+            @Suppress("DEPRECATION")
+            display.getSize(size)
+
+            /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                val display = requireActivity().display
+                display?.getRealSize(size)
+            } else {
+                @Suppress("DEPRECATION")
+                val display = windowManager.defaultDisplay
+                @Suppress("DEPRECATION")
+                display.getSize(size)
+            }*/
+
+            val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+            val deviceWidth = size.x
+            params?.width = (deviceWidth * 0.9).toInt()
+            dialog?.window?.attributes = params as WindowManager.LayoutParams
         }
     }
 }

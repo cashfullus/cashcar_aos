@@ -12,6 +12,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
+import com.cashfulus.cashcarplus.base.BaseActivity
 import kotlinx.android.synthetic.main.dialog_popup.*
 import java.lang.ClassCastException
 

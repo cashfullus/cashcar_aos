@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/rowCashcartip"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="17dp">
+    
+    <ImageView
+        android:id="@+id/ivRowCashcartip"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_cashcartip_example"
+        app:layout_constraintDimensionRatio="h, 16:10"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginHorizontal="16dp"/>
+    
+    <TextView
+        android:id="@+id/tvRowCashcartipTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="스티커 끈적이가 걱정되는 여러분들께!"
+        style="@style/display_16_B"
+        app:layout_constraintTop_toBottomOf="@+id/ivRowCashcartip"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="6dp"/>
+
+    <TextView
+        android:id="@+id/tvRowCashcartipContents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="걱정하지 마세요, 내용 보여주기 내용 내용을 보여줍니다. 걱정하지 마세요, 내용 보여주기"
+        style="@style/body_14_R_lh24"
+        app:layout_constraintTop_toBottomOf="@+id/tvRowCashcartipTitle"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

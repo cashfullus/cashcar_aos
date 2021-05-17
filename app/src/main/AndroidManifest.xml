@@ -26,24 +26,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cashcarplus"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.cashcartip.CashcartipActivity"
+        <activity android:name=".ui.point.PointActivity"></activity>
+        <activity android:name=".ui.myactivities.MyActivitiesActivity" />
+        <activity
+            android:name=".ui.cashcartip.CashcartipActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.login.RegisterBasicActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.login.RegisterBasicActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.login.EmailLoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.login.EmailLoginActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.clause.ClauseListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.clause.ClauseListActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.user.UserAddressActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.UserAddressActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.image.ImageCropActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.image.ImageCropActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mission.MissionCertActivity"
             android:launchMode="singleTop"
@@ -64,7 +72,7 @@
             android:name=".ui.SplashActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:statusBarColor="@color/brand_orange1">
+            android:theme="@style/Theme.Cashcarplus.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

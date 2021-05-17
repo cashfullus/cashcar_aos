@@ -17,7 +17,9 @@ import com.cashfulus.cashcarplus.ui.login.LoginViewModel
 import com.cashfulus.cashcarplus.ui.login.RegisterBasicViewModel
 import com.cashfulus.cashcarplus.ui.login.RegisterViewModel
 import com.cashfulus.cashcarplus.ui.mission.MissionCertViewModel
+import com.cashfulus.cashcarplus.ui.myactivities.MyActivitiesViewModel
 import com.cashfulus.cashcarplus.ui.notice.NoticeListViewModel
+import com.cashfulus.cashcarplus.ui.point.PointViewModel
 import com.cashfulus.cashcarplus.ui.user.UserAddressViewModel
 import com.cashfulus.cashcarplus.ui.user.UserInfoViewModel
 
@@ -43,8 +45,11 @@ val viewModelModule = module {
     viewModel { RegisterBasicViewModel(repository = get()) }
     viewModel { RegisterViewModel(repository = get()) }
     viewModel { FaqViewModel(repository = get()) }
-    viewModel { CashcartipViewModel() }
+    viewModel { CashcartipViewModel(repository = get()) }
+    viewModel { com.cashfulus.cashcarplus.ui.cashcartip.CashcartipViewModel(repository = get()) }
     viewModel { DrivingViewModel() }
+    viewModel { PointViewModel() }
+    viewModel { MyActivitiesViewModel() }
     // viewModel { (activity: Activity) -> SignupViewModel(repository = get(), activity = activity) }
     //viewModel { ChannelInfoViewModel(channelId = "dfd", repository = get()) }
     //viewModel { SocketViewModel() }

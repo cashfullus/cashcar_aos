@@ -90,4 +90,9 @@
         <item>성별을 선택해주세요</item>
     </string-array>
 
+    <!-- 포인트 내역 -->
+    <string-array name="point_history">
+        <item>최근 이용 내역</item>
+    </string-array>
+
 </resources>

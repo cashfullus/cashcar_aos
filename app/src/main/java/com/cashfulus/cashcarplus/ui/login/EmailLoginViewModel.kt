@@ -63,6 +63,16 @@ class EmailLoginViewModel(private val repository: UserRepository): ViewModel() {
                         UserManager.nickName = loginResponse.contents!!.data.nick_name
                         UserManager.name = loginResponse.contents!!.data.name
                         UserManager.profileImage = loginResponse.contents!!.data.profileImage
+                    } else {
+                        /** name이 비어 있는 경우 : 모든 데이터를 비운다. */
+                        UserManager.alarm = 0
+                        UserManager.callNumber = ""
+                        UserManager.dateBirth = ""
+                        UserManager.gender = ""
+                        UserManager.marketing = 0
+                        UserManager.nickName = null
+                        UserManager.name = null
+                        UserManager.profileImage = null
                     }
                     updateToken()
                 } else {

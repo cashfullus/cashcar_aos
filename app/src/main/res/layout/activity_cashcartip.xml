@@ -7,20 +7,68 @@
     tools:context=".ui.cashcartip.CashcartipActivity">
 
     <data>
+        <variable
+            name="viewModel"
+            type="com.cashfulus.cashcarplus.ui.cashcartip.CashcartipViewModel" />
         <import type="android.view.View"/>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.cashfulus.cashcarplus.view.UpgradedToolbar
             android:id="@+id/toolbarCashcartip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title=""
-            app:leftButtonImg="@drawable/ic_btn_back"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:leftButtonImg="@drawable/ic_btn_back"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarCashcartip">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/ivCashcartip"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_cashcartip_example"
+                    app:layout_constraintDimensionRatio="h, 16:10"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvCashcartipTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="스티커 끈적이가 걱정되는 여러분들께!"
+                    style="@style/display_16_B"
+                    app:layout_constraintTop_toBottomOf="@+id/ivCashcartip"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="12dp"/>
+
+                <TextView
+                    android:id="@+id/tvCashcartipContents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="걱정하지 마세요, 내용 보여주기 내용 내용을 보여줍니다. 걱정하지 마세요, 내용 보여주기"
+                    style="@style/body_14_R_lh24"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCashcartipTitle"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="12dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCashcartipContents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCashcartipContents"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="20dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 </layout>

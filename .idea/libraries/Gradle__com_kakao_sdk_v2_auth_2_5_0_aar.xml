@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.kakao.sdk:v2-auth:2.5.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5d19746ab2f62bbbee17f6ccd7ce3070/jetified-v2-auth-2.5.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5d19746ab2f62bbbee17f6ccd7ce3070/jetified-v2-auth-2.5.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5d19746ab2f62bbbee17f6ccd7ce3070/jetified-v2-auth-2.5.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kakao.sdk/v2-auth/2.5.0/5f4280da9b824e5d7545658a0e6c0d2d05a9bc95/v2-auth-2.5.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

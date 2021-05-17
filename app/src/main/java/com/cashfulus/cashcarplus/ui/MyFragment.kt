@@ -18,7 +18,9 @@ import com.cashfulus.cashcarplus.ui.car.MyCarActivity
 import com.cashfulus.cashcarplus.ui.clause.ClauseListActivity
 import com.cashfulus.cashcarplus.ui.faq.FaqActivity
 import com.cashfulus.cashcarplus.ui.inquiry.InquiryActivity
+import com.cashfulus.cashcarplus.ui.myactivities.MyActivitiesActivity
 import com.cashfulus.cashcarplus.ui.notice.NoticeListActivity
+import com.cashfulus.cashcarplus.ui.point.PointActivity
 import com.cashfulus.cashcarplus.ui.user.UserAddressActivity
 import com.cashfulus.cashcarplus.ui.user.UserInfoActivity
 import com.cashfulus.cashcarplus.util.UserManager
@@ -41,10 +43,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyViewModel>(R.layout.fragmen
 
         /** 포인트, 활동 내역 onClickEvent 처리 */
         binding.clMyPoint.setOnClickListener {
-            showToast("추후 업데이트 예정")
-        }
-        binding.clMyActivities.setOnClickListener {
-            showToast("추후 업데이트 예정")
+            startActivity(Intent(requireActivity(), PointActivity::class.java))
         }
     }
 
@@ -79,7 +78,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyViewModel>(R.layout.fragmen
             menuList.add("광고 문의")
             menuList.add("약관 및 정책")
 
-            intentList.add(null)
+            intentList.add(Intent(requireActivity(), MyActivitiesActivity::class.java))
             intentList.add(Intent(requireActivity(), MyCarActivity::class.java))
             intentList.add(Intent(requireActivity(), UserAddressActivity::class.java))
             intentList.add(Intent(requireActivity(), NoticeListActivity::class.java))

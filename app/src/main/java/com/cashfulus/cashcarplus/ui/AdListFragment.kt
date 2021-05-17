@@ -31,14 +31,7 @@ class AdListFragment : BaseFragment<FragmentAdListBinding, AdListViewModel>(R.la
 
         viewModel.loadAdList(tabState!!)
         viewModel.adList.observe(binding.lifecycleOwner!!, {
-            if(it.size == 0) {
-                binding.ivAdListEmpty.visibility = View.VISIBLE
-                binding.rvAdList.visibility = View.GONE
-            } else {
-                binding.ivAdListEmpty.visibility = View.GONE
-                binding.rvAdList.visibility = View.VISIBLE
-                adapter.refresh(it, tabState!!)
-            }
+            adapter.refresh(it, tabState!!)
         })
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
