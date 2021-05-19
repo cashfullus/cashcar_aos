@@ -17,6 +17,7 @@ import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityCarInfoBinding
 import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialog
+import com.cashfulus.cashcarplus.ui.dialog.PopupDialogClickListener
 import com.cashfulus.cashcarplus.util.*
 import com.cashfulus.cashcarplus.view.ONLY_ONE_CAR
 import com.cashfulus.cashcarplus.view.ONLY_ONE_CAR_NOT_CHECKED
@@ -26,13 +27,10 @@ import org.koin.core.parameter.parametersOf
 
 /** 2021.05.04 : 수정 가능/불가능 상태가 하나로 합쳐짐. */
 
-class CarInfoActivity : BaseActivity() {
+class CarInfoActivity : BaseActivity(), PopupDialogClickListener {
     val loadingDialog: LoadingDialog by inject { parametersOf(this@CarInfoActivity) }
     private val binding by binding<ActivityCarInfoBinding>(R.layout.activity_car_info)
     private val viewModel: CarInfoViewModel by viewModel { parametersOf() }
-
-    // PopupDialog
-    lateinit var cannotDeletePopup: PopupDialog
 
     // 각 UpgradedEditText가 Focus된 적이 있는지 체크.
     var isModelFocused = false
@@ -54,21 +52,10 @@ class CarInfoActivity : BaseActivity() {
         }
 
         /** Popup 설정 */
-        val deleteDialog = AlertDialog.Builder(this@CarInfoActivity)
-        deleteDialog.setTitle("정말 삭제하시겠습니까?")
-        deleteDialog.setPositiveButton("확인") { thisDialog, _ ->
-            viewModel.deleteCarInfo(intent.getIntExtra("vehicle_id", 0))
-            thisDialog.dismiss()
-        }
-        deleteDialog.setNegativeButton("취소") { thisDialog, _ ->
-            thisDialog.dismiss()
-        }
-
-        val cannotDeleteDialog = AlertDialog.Builder(this@CarInfoActivity)
-        cannotDeleteDialog.setTitle("서포터즈 진행 차량은 수정 또는 삭제 할 수 없습니다.")
-        cannotDeleteDialog.setNegativeButton("확인") { thisDialog, _ ->
-            thisDialog.dismiss()
-        }
+        // PopupDialogClickListener의 경우, deleteDialog만 onPositive를 호출하고, 둘 다 dialog를 종료시키기만 하는 onNegative를 호출하므로
+        // PopupDialogClickListener에 대해 dialog별로 따로 처리를 가할 필요는 없다.
+        val deleteDialog = PopupDialog("정말 삭제하시겠습니까?", "확인", "취소")
+        val cannotDeleteDialog = PopupDialog("서포터즈 진행 차량은 수정 또는 삭제 할 수 없습니다.", null, "확인")
 
         /** 상태 설정 + 초기값 받아오기 */
         if (intent.getIntExtra("vehicle_id", 0) == 0) {
@@ -85,9 +72,9 @@ class CarInfoActivity : BaseActivity() {
         }
         binding.toolbarAddInfo.setRightOnClick {
             if(viewModel.isDeletable!!) {
-                deleteDialog.show()
+                deleteDialog.show(supportFragmentManager, "deleteCar")
             } else {
-                cannotDeleteDialog.show()
+                cannotDeleteDialog.show(supportFragmentManager, "cannotDeleteCar")
             }
         }
 
@@ -342,4 +329,10 @@ class CarInfoActivity : BaseActivity() {
                 binding.cbCarSupporters.setCurrentState(ONLY_ONE_CAR_NOT_CHECKED)
         })
     }
+
+    /** 로그아웃 PopupDialog의 interface의 콜백 함수 부분 */
+    override fun onPositive() {
+        viewModel.deleteCarInfo(intent.getIntExtra("vehicle_id", 0))
+    }
+    override fun onNegative() {}
 }

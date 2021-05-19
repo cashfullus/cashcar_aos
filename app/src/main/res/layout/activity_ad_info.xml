@@ -41,20 +41,20 @@
                     android:id="@+id/svAdInfo"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="h, 36:28"
+                    app:layout_constraintDimensionRatio="h, 36:27"
                     app:sliderAnimationDuration="3000"
-                    app:sliderAutoCycleDirection="right"
+                    app:sliderAutoCycleDirection="back_and_forth"
                     app:sliderAutoCycleEnabled="true"
+                    app:sliderScrollTimeInSec="1"
+                    app:sliderStartAutoCycle="true"
                     app:sliderIndicatorAnimationDuration="3000"
                     app:sliderIndicatorGravity="center_horizontal|bottom"
-                    app:sliderIndicatorMarginBottom="40dp"
+                    app:sliderIndicatorMarginBottom="30dp"
                     app:sliderIndicatorOrientation="horizontal"
                     app:sliderIndicatorPadding="3dp"
                     app:sliderIndicatorRadius="1dp"
                     app:sliderIndicatorSelectedColor="@color/brand_orange1"
                     app:sliderIndicatorUnselectedColor="@color/grayscale_wt"
-                    app:sliderScrollTimeInSec="1"
-                    app:sliderStartAutoCycle="true"
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,8 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="252dp"
                     android:background="@drawable/background_ad_info"
-                    app:layout_constraintTop_toTopOf="@+id/svAdInfo"
-                    tools:layout_editor_absoluteX="0dp">
+                    app:layout_constraintTop_toTopOf="@+id/svAdInfo">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/glAdInfo"
@@ -75,9 +74,9 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cvAdInfoTitle"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="20dp"
                         app:cardCornerRadius="30dp"
                         app:cardElevation="0dp"
@@ -86,8 +85,8 @@
 
                         <ImageView
                             android:id="@+id/ivAdInfoTitle"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
                             android:src="@drawable/icon2" />
                     </com.google.android.material.card.MaterialCardView>
 
@@ -127,7 +126,7 @@
                         style="@style/title_14_R"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
+                        android:layout_marginEnd="16dp"
                         android:text="24명 신청"
                         android:textColor="@color/brand_orange1"
                         app:layout_constraintBottom_toBottomOf="@+id/tvAdInfoPoint"
@@ -138,23 +137,34 @@
                         android:id="@+id/lineAdInfo1"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginBottom="8dp"
                         android:background="@color/grayscale_200"
-                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoPoint" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoPoint"/>
 
+
+                    <TextView
+                        android:id="@+id/tvAdInfoTitle0"
+                        style="@style/title_14_M"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:text="모집 조건"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lineAdInfo1" />
 
                     <TextView
                         android:id="@+id/tvAdInfoTitle1"
                         style="@style/title_12_R"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="23dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="19dp"
                         android:text="모집 기간"
+                        android:textColor="@color/grayscale_500"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lineAdInfo1" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle0" />
 
                     <TextView
                         android:id="@+id/tvAdInfoDate"
@@ -172,8 +182,9 @@
                         style="@style/title_12_R"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="14dp"
                         android:text="활동 기간"
+                        android:textColor="@color/grayscale_500"
                         app:layout_constraintStart_toStartOf="@+id/tvAdInfoTitle1"
                         app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle1" />
 
@@ -193,8 +204,9 @@
                         style="@style/title_12_R"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="14dp"
                         android:text="모집 인원"
+                        android:textColor="@color/grayscale_500"
                         app:layout_constraintStart_toStartOf="@+id/tvAdInfoTitle1"
                         app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle2" />
 
@@ -214,8 +226,9 @@
                         style="@style/title_12_R"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="14dp"
                         android:text="광고 지역"
+                        android:textColor="@color/grayscale_500"
                         app:layout_constraintStart_toStartOf="@+id/tvAdInfoTitle1"
                         app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle3" />
 
@@ -234,36 +247,47 @@
                         android:id="@+id/lineAdInfo2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="23dp"
                         android:background="@color/grayscale_200"
                         app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle4" />
+
+                    <TextView
+                        android:id="@+id/tvAdInfoTitle11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="브랜드 소개"
+                        style="@style/title_14_M"
+                        app:layout_constraintTop_toBottomOf="@+id/lineAdInfo2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="16dp"/>
 
                     <TextView
                         android:id="@+id/tvAdInfoContents"
                         style="@style/body_14_R_lh24"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
                         android:text="광고 내용이 들어갑니다 광고 내용이 들어갑니다.광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다"
-                        app:layout_constraintTop_toBottomOf="@+id/lineAdInfo2" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle11" />
 
                     <View
                         android:id="@+id/lineAdInfo3"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="20dp"
                         android:background="@color/grayscale_200"
                         app:layout_constraintTop_toBottomOf="@+id/tvAdInfoContents" />
 
                     <TextView
                         android:id="@+id/tvAdInfoTitle5"
-                        style="@style/display_16_B"
+                        style="@style/title_14_M"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="21dp"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="20dp"
                         android:text="스티커 디자인"
                         app:layout_constraintStart_toStartOf="parent"
@@ -274,8 +298,9 @@
                         style="@style/title_14_R"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="차량 측면"
+                        android:layout_marginTop="16dp"
+                        android:text="옆면"
+                        android:textColor="@color/grayscale_500"
                         app:layout_constraintEnd_toEndOf="@+id/ivAdInfoDesign1"
                         app:layout_constraintStart_toStartOf="@+id/ivAdInfoDesign1"
                         app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle5" />
@@ -285,7 +310,8 @@
                         style="@style/title_14_R"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="차량 후면"
+                        android:text="뒷면"
+                        android:textColor="@color/grayscale_500"
                         app:layout_constraintEnd_toEndOf="@+id/ivAdInfoDesign2"
                         app:layout_constraintStart_toStartOf="@+id/ivAdInfoDesign2"
                         app:layout_constraintTop_toTopOf="@+id/tvAdInfoTitle6" />
@@ -294,11 +320,12 @@
                         android:id="@+id/ivAdInfoDesign1"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="6dp"
                         android:src="@drawable/reference_image_car3"
-                        app:layout_constraintDimensionRatio="h, 154:140"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintDimensionRatio="h, 158:112"
                         app:layout_constraintEnd_toStartOf="@+id/glAdInfo"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle6" />
@@ -308,9 +335,10 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginStart="6dp"
-                        android:layout_marginEnd="20dp"
+                        android:layout_marginEnd="16dp"
                         android:src="@drawable/reference_image_car3"
-                        app:layout_constraintDimensionRatio="h, 154:140"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintDimensionRatio="h, 158:112"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/glAdInfo"
                         app:layout_constraintTop_toTopOf="@+id/ivAdInfoDesign1" />
@@ -321,7 +349,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="120 x 80"
+                        android:text="120 x 80 cm"
                         app:layout_constraintEnd_toEndOf="@+id/ivAdInfoDesign1"
                         app:layout_constraintStart_toStartOf="@+id/ivAdInfoDesign1"
                         app:layout_constraintTop_toBottomOf="@+id/ivAdInfoDesign1" />
@@ -331,30 +359,40 @@
                         style="@style/title_14_R"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="100 x 100"
+                        android:text="100 x 100 cm"
                         app:layout_constraintEnd_toEndOf="@+id/ivAdInfoDesign2"
                         app:layout_constraintStart_toStartOf="@+id/ivAdInfoDesign2"
                         app:layout_constraintTop_toTopOf="@+id/tvAdInfoSize1" />
 
+                    <View
+                        android:id="@+id/lineAdInfo4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/grayscale_200"
+                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoSize1"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginHorizontal="16dp"/>
+
                     <TextView
                         android:id="@+id/tvAdInfoTitle8"
-                        style="@style/display_16_B"
+                        style="@style/title_14_M"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="20dp"
                         android:text="스티커 부착위치"
                         app:layout_constraintStart_toStartOf="@+id/tvAdInfoTitle5"
-                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoSize1" />
+                        app:layout_constraintTop_toBottomOf="@+id/lineAdInfo4" />
 
                     <TextView
                         android:id="@+id/tvAdInfoTitle9"
                         style="@style/title_14_R"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="38dp"
-                        android:layout_marginTop="24dp"
-                        android:text="차량측면"
+                        android:layout_marginTop="12dp"
+                        android:text="옆면"
+                        android:textColor="@color/grayscale_500"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle8" />
 
                     <ImageView
@@ -373,8 +411,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="47dp"
-                        android:text="차량후면"
-                        app:layout_constraintStart_toStartOf="@+id/tvAdInfoTitle9"
+                        android:text="뒷면"
+                        android:textColor="@color/grayscale_500"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/ivAdInfoLocation1" />
 
                     <ImageView
@@ -383,7 +423,7 @@
                         android:layout_height="0dp"
                         android:layout_marginHorizontal="100dp"
                         android:layout_marginTop="24dp"
-                        android:layout_marginBottom="107dp"
+                        android:layout_marginBottom="32dp"
                         android:src="@drawable/reference_image_car2"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintDimensionRatio="h, 161:146"

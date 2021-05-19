@@ -2,6 +2,7 @@ package com.cashfulus.cashcarplus.ui.car
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -23,8 +24,9 @@ class MyCarActivity : BaseActivity() {
     val requestActivity: ActivityResultLauncher<Intent> = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
     ) { activityResult ->
-        if(activityResult.resultCode == RESULT_OK)
+        if(activityResult.resultCode == RESULT_OK) {
             viewModel.refresh()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +72,7 @@ class MyCarActivity : BaseActivity() {
         })
 
         viewModel.empty.observe(binding.lifecycleOwner!!, {
+            adapter.setData(null)
             showToast("등록된 차량이 없습니다.")
 
             // 새로 추가하는 차량은 광고 서포터즈 차량이어야 함.

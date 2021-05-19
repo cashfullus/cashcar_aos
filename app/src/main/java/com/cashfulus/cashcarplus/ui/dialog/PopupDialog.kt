@@ -21,7 +21,7 @@ interface PopupDialogClickListener {
     fun onNegative()
 }
 
-class PopupDialog(private val msg: String, private val okMsg: String, private val cancelMsg: String) : DialogFragment() {
+class PopupDialog(private val msg: String, private val okMsg: String?, private val cancelMsg: String) : DialogFragment() {
     lateinit var clickListener: PopupDialogClickListener
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,12 +44,16 @@ class PopupDialog(private val msg: String, private val okMsg: String, private va
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         tvPopup.text = msg
-        btnPopupOk.text = okMsg
         btnPopupCancel.text = cancelMsg
 
-        btnPopupOk.setOnClickListener {
-            clickListener.onPositive()
-            dismiss()
+        if(okMsg != null) {
+            btnPopupOk.text = okMsg
+            btnPopupOk.setOnClickListener {
+                clickListener.onPositive()
+                dismiss()
+            }
+        } else {
+            btnPopupOk.visibility = View.GONE
         }
 
         btnPopupCancel.setOnClickListener {

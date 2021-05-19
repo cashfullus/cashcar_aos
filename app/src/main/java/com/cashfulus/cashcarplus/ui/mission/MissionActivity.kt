@@ -57,14 +57,7 @@ class MissionActivity : BaseActivity() {
             Glide.with(this@MissionActivity).load(it.adUserInformation.thumbnailImage).into(binding.ivMissionTitle)
 
             if(it.isMissionStart) {
-                binding.tvMissionTitle1.visibility = View.VISIBLE
-                binding.tvMissionTitle11.visibility = View.VISIBLE
-                binding.tvMissionTitle12.visibility = View.VISIBLE
-                binding.tvMissionDateStart.visibility = View.VISIBLE
-                binding.tvMissionDateEnd.visibility = View.VISIBLE
-                binding.pbMissionDate.visibility = View.VISIBLE
                 binding.tvMissionDateCurrent.visibility = View.VISIBLE
-                binding.lineMission2.visibility = View.VISIBLE
 
                 binding.tvMissionDateStart.text = it.adUserInformation.activityStartDate.substring(0,10).replace("-",".") //2021.03.28
                 binding.tvMissionDateEnd.text = it.adUserInformation.activityEndDate.substring(0,10).replace("-",".")
@@ -74,14 +67,12 @@ class MissionActivity : BaseActivity() {
 
                 binding.tvMissionDateCurrent.setStartMargins(20+(binding.pbMissionDate.width / it.missionLength!! * it.missionCurrentDate!!))
             } else {
-                binding.tvMissionTitle1.visibility = View.GONE
-                binding.tvMissionTitle11.visibility = View.GONE
-                binding.tvMissionTitle12.visibility = View.GONE
-                binding.tvMissionDateStart.visibility = View.GONE
-                binding.tvMissionDateEnd.visibility = View.GONE
-                binding.pbMissionDate.visibility = View.GONE
                 binding.tvMissionDateCurrent.visibility = View.GONE
-                binding.lineMission2.visibility = View.GONE
+
+                binding.tvMissionDateStart.text = "-"
+                binding.tvMissionDateEnd.text = "-"
+                binding.pbMissionDate.max = 100
+                binding.pbMissionDate.progress = 0
             }
 
             if(it.importantMissions.size > 0) {

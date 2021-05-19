@@ -79,18 +79,18 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/cvMissionTitle"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
                             app:cardCornerRadius="30dp"
                             app:cardElevation="0dp"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="21dp">
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp">
                             <ImageView
                                 android:id="@+id/ivMissionTitle"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
+                                android:layout_width="52dp"
+                                android:layout_height="52dp"
                                 android:src="@drawable/icon2" />
                         </com.google.android.material.card.MaterialCardView>
                         <TextView
@@ -126,7 +126,7 @@
                             android:id="@+id/lineMission1"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginHorizontal="20dp"
+                            android:layout_marginHorizontal="16dp"
                             android:background="@color/grayscale_200"
                             app:layout_constraintTop_toBottomOf="@+id/tvMissionPoint"
                             android:layout_marginTop="20dp"/>
@@ -141,7 +141,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/lineMission1"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginTop="20dp"
-                            android:layout_marginStart="20dp"/>
+                            android:layout_marginStart="16dp"/>
                         <TextView
                             android:id="@+id/tvMissionTitle1_1"
                             android:layout_width="wrap_content"
@@ -152,7 +152,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/tvMissionTitle1"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="@+id/glMission"
-                            android:layout_marginTop="12dp"/>
+                            android:layout_marginTop="13dp"/>
                         <TextView
                             android:id="@+id/tvMissionTitle1_2"
                             android:layout_width="wrap_content"
@@ -191,7 +191,7 @@
                             android:progressDrawable="@drawable/progressbar_background_v2"
                             app:layout_constraintTop_toBottomOf="@+id/tvMissionDateStart"
                             android:layout_marginTop="12dp"
-                            android:layout_marginHorizontal="33dp"
+                            android:layout_marginHorizontal="32dp"
                             android:max="31"
                             android:progress="21"/>
                         <TextView
@@ -208,10 +208,10 @@
                             android:id="@+id/lineMission2"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginHorizontal="20dp"
+                            android:layout_marginHorizontal="16dp"
                             android:background="@color/grayscale_200"
                             app:layout_constraintTop_toBottomOf="@+id/tvMissionDateCurrent"
-                            android:layout_marginTop="9dp"/>
+                            android:layout_marginTop="55dp"/>
 
 
                         <TextView
@@ -223,7 +223,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/lineMission2"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginTop="20dp"
-                            android:layout_marginStart="20dp"/>
+                            android:layout_marginStart="16dp"/>
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvMissionImportant"
                             android:layout_width="match_parent"
@@ -235,7 +235,7 @@
                             android:id="@+id/lineMission3"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginHorizontal="20dp"
+                            android:layout_marginHorizontal="16dp"
                             android:background="@color/grayscale_200"
                             app:layout_constraintTop_toBottomOf="@+id/rvMissionImportant"
                             android:layout_marginTop="10dp"/>
@@ -250,7 +250,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/lineMission3"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginTop="20dp"
-                            android:layout_marginStart="20dp"/>
+                            android:layout_marginStart="16dp"/>
                         <TextView
                             android:id="@+id/tvMissionSubtitle3"
                             android:layout_width="match_parent"
@@ -261,8 +261,8 @@
                             app:layout_constraintTop_toBottomOf="@+id/tvMissionTitle3"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginTop="8dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginEnd="20dp"/>
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"/>
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvMissionAdditional"
                             android:layout_width="match_parent"
@@ -274,7 +274,7 @@
                             android:id="@+id/lineMission4"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginHorizontal="20dp"
+                            android:layout_marginHorizontal="16dp"
                             android:background="@color/grayscale_200"
                             app:layout_constraintTop_toBottomOf="@+id/rvMissionAdditional"
                             android:layout_marginTop="12dp"/>
@@ -289,7 +289,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/lineMission4"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginTop="20dp"
-                            android:layout_marginStart="20dp"/>
+                            android:layout_marginStart="16dp"/>
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvMissionDriving"
                             android:layout_width="match_parent"
@@ -301,7 +301,7 @@
                             android:id="@+id/lineMission5"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginHorizontal="20dp"
+                            android:layout_marginHorizontal="16dp"
                             android:background="@color/grayscale_200"
                             app:layout_constraintTop_toBottomOf="@+id/rvMissionDriving"
                             android:layout_marginTop="12dp"/>
@@ -316,7 +316,7 @@
                             app:layout_constraintTop_toTopOf="@+id/lineMission5"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginTop="20dp"
-                            android:layout_marginStart="20dp"/>
+                            android:layout_marginStart="16dp"/>
                         <ImageView
                             android:id="@+id/ivMissionPoint2"
                             android:layout_width="20dp"
@@ -335,13 +335,13 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/lineMission5"
                             android:layout_marginTop="20dp"
-                            android:layout_marginEnd="20dp"/>
+                            android:layout_marginEnd="24dp"/>
 
                         <View
                             android:id="@+id/lineMission6"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginHorizontal="20dp"
+                            android:layout_marginHorizontal="16dp"
                             android:background="@color/grayscale_200"
                             app:layout_constraintTop_toBottomOf="@+id/tvMissionTitle5"
                             android:layout_marginTop="20dp"/>

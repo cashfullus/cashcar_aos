@@ -452,7 +452,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     }
                 }
                 HOME_STATE_FAIL -> {
-                    UserManager.hasMission = true
+                    /*UserManager.hasMission = true
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
@@ -472,7 +472,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
                     val pbMission = card.findViewById<ProgressBar>(R.id.pbRowMission)
                     pbMission.max = 100
-                    pbMission.progress = it.data.data.adInformation!!.ongoingDayPercent
+                    pbMission.progress = it.data.data.adInformation!!.ongoingDayPercent*/
+
+                    UserManager.hasMission = false
+                    binding.cardNoneMission.visibility = View.VISIBLE
+                    binding.cardCurrentMission.visibility = View.GONE
+                    val card = binding.cardNoneMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56f, resources.displayMetrics).toInt()
+
+                    card.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_mission_no_mission)
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "현재 진행 중인 서포터즈 활동이 없습니다"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface = ResourcesCompat.getFont(requireActivity(), R.font.notosanskr_regular)
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(getColor(requireActivity(), R.color.grayscale_500))
 
                     // 팝업을 아직 보지 않은 상태라면 띄움.
                     if(it.data.data.message.isRead == 0) {

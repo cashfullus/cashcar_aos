@@ -1,5 +1,7 @@
 package com.cashfulus.cashcarplus.ui.car
 
+import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,9 +10,15 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 import com.cashfulus.cashcarplus.R
+import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityAddCarBinding
 import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
@@ -20,11 +28,14 @@ import com.cashfulus.cashcarplus.view.ONLY_ONE_CAR
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.lang.reflect.Field
 
 class AddCarActivity : BaseActivity() {
     val loadingDialog: LoadingDialog by inject { parametersOf(this@AddCarActivity) }
     private val binding by binding<ActivityAddCarBinding>(R.layout.activity_add_car)
     private val viewModel: AddCarViewModel by viewModel { parametersOf() }
+
+    private val CURRENT_YEAR = 2021
 
     // 각 UpgradedEditText가 Focus된 적이 있는지 체크.
     var isModelFocused = false
@@ -132,8 +143,8 @@ class AddCarActivity : BaseActivity() {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                     override fun afterTextChanged(s: Editable?) {
-                        if(!s.toString().isValidYear() || s.toString().toInt() > 2021 || s.toString().toInt() < 1955) {
-                            binding.etCarYearA.setError("4자리의 연도로 입력해주세요.")
+                        if(!s.toString().isValidYear() || s.toString().toInt() > CURRENT_YEAR || s.toString().toInt() < 1970) { // 1970~2021
+                            binding.etCarYearA.setError("연도를 4자리로 입력해주세요.(1970년 이후부터 등록 가능)")
                             isAllValid.postValue(false)
                         } else {
                             binding.etCarYearA.setSuccess("연식 입력 완료")
@@ -239,6 +250,15 @@ class AddCarActivity : BaseActivity() {
             binding.btnCarForeignA.isSelected = true
 
             binding.spCarCompanyA.adapter = foreignAdapter
+
+            try {
+                val popup = Spinner::class.java.getDeclaredField("mPopup")
+                popup.isAccessible = true
+                val popupWindow = popup.get(binding.spCarCompanyA) as android.widget.ListPopupWindow
+                popupWindow.height = 200
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
         binding.spCarCompanyA.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -289,6 +309,31 @@ class AddCarActivity : BaseActivity() {
                 }
             }
         }
+        /** '브랜드' Spinner 사이즈 제한 */
+        /*try {
+            val popup = Spinner::class.java.getDeclaredField("mPopup")
+            popup.isAccessible = true
+            val popupWindow = popup.get(binding.spCarCompanyA) as android.widget.ListPopupWindow
+            popupWindow.height = 500
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        try {
+            val popup = getPopupField()
+
+            // Get private mPopup member variable and try cast to ListPopupWindow
+            val popupWindow = popup.get(binding.spCarCompanyA) as android.widget.ListPopupWindow
+
+            // Set popupWindow height to max - 40dp
+            binding.spCarCompanyA.post {
+                val r = Rect()
+                binding.spCarCompanyA.getGlobalVisibleRect(r)
+                popupWindow.height = 500
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }*/
 
         /** '차량소유주와의 관계' Spinner */
         binding.spCarOwnerA.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
@@ -362,4 +407,20 @@ class AddCarActivity : BaseActivity() {
             showToast(it.message)
         })
     }
+
+    /*fun getPopupField(): Field {
+        var sPopupField: Field? = null
+
+        if (sPopupField == null) {
+            try {
+                val popup = Spinner::class.java.getDeclaredField("mPopup")
+                popup.isAccessible = true
+
+                sPopupField = popup
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        return sPopupField!!
+    }*/
 }

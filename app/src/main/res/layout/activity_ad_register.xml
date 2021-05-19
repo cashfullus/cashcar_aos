@@ -26,81 +26,81 @@
             app:title="서포터즈 신청"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/tvAdRegister1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="신청 서포터즈"
-            style="@style/title_14_M"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarAdRegister"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"/>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cvAdRegisterTitle"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:cardCornerRadius="30dp"
-            app:cardElevation="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/tvAdRegister1"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp">
-            <ImageView
-                android:id="@+id/ivAdRegisterTitle"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/icon2" />
-        </com.google.android.material.card.MaterialCardView>
-        <TextView
-            android:id="@+id/tvAdRegisterAdTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="새학기 갤럭시 S21 할인 행사!"
-            style="@style/display_16_R"
-            app:layout_constraintTop_toTopOf="@+id/cvAdRegisterTitle"
-            app:layout_constraintStart_toEndOf="@+id/cvAdRegisterTitle"
-            android:layout_marginStart="12dp"/>
-        <ImageView
-            android:id="@+id/ivAdRegisterPoint"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_point"
-            app:layout_constraintTop_toTopOf="@+id/tvAdRegisterPoint"
-            app:layout_constraintBottom_toBottomOf="@+id/tvAdRegisterPoint"
-            app:layout_constraintStart_toEndOf="@+id/cvAdRegisterTitle"
-            android:layout_marginStart="12dp"/>
-        <TextView
-            android:id="@+id/tvAdRegisterPoint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="30,000"
-            style="@style/display_16_B"
-            app:layout_constraintStart_toEndOf="@+id/ivAdRegisterPoint"
-            app:layout_constraintTop_toBottomOf="@+id/tvAdRegisterAdTitle"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"/>
-
-        <View
-            android:id="@+id/lineAdRegister"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/grayscale_200"
-            app:layout_constraintTop_toBottomOf="@+id/tvAdRegisterPoint"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="20dp"/>
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clipToPadding="false"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintTop_toBottomOf="@+id/lineAdRegister"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarAdRegister"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="10dp">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvAdRegister1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="신청 서포터즈"
+                    style="@style/title_14_M"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="16dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvAdRegisterTitle"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:cardCornerRadius="30dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAdRegister1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp">
+                    <ImageView
+                        android:id="@+id/ivAdRegisterTitle"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/icon2" />
+                </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/tvAdRegisterAdTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="새학기 갤럭시 S21 할인 행사!"
+                    style="@style/display_16_R"
+                    app:layout_constraintTop_toTopOf="@+id/cvAdRegisterTitle"
+                    app:layout_constraintStart_toEndOf="@+id/cvAdRegisterTitle"
+                    android:layout_marginStart="12dp"/>
+                <ImageView
+                    android:id="@+id/ivAdRegisterPoint"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_point"
+                    app:layout_constraintTop_toTopOf="@+id/tvAdRegisterPoint"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvAdRegisterPoint"
+                    app:layout_constraintStart_toEndOf="@+id/cvAdRegisterTitle"
+                    android:layout_marginStart="12dp"/>
+                <TextView
+                    android:id="@+id/tvAdRegisterPoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30,000"
+                    style="@style/display_16_B"
+                    app:layout_constraintStart_toEndOf="@+id/ivAdRegisterPoint"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAdRegisterAdTitle"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"/>
+
+                <View
+                    android:id="@+id/lineAdRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grayscale_200"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAdRegisterPoint"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginHorizontal="20dp"/>
+
 
                 <TextView
                     android:id="@+id/btnAdRegisterCar3"
@@ -113,10 +113,10 @@
                     android:gravity="center"
                     style="@style/title_14_M"
                     android:textColor="@color/grayscale_400"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lineAdRegister"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:padding="0dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="16dp"/>
                 <TextView
                     android:id="@+id/btnAdRegisterCar2"
@@ -155,19 +155,31 @@
                     android:layout_height="wrap_content"
                     android:text="차량 선택"
                     style="@style/title_14_M"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lineAdRegister"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="22dp"
                     android:layout_marginStart="16dp"/>
-                <ViewStub
-                    android:id="@+id/cardAdRegister"
-                    android:inflatedId="@+id/cardAdRegister"
+                <LinearLayout
+                    android:id="@+id/llAdRegister"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout="@layout/card_none_mission"
+                    android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@+id/tvAdRegister0"
                     android:layout_marginTop="12dp"
-                    android:layout_marginHorizontal="16dp"/>
+                    android:layout_marginHorizontal="16dp">
+                    <include
+                        android:visibility="gone"
+                        android:id="@+id/cardAdRegisterNone"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        layout="@layout/card_none_mission"/>
+                    <include
+                        android:visibility="gone"
+                        android:id="@+id/cardAdRegisterCar"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        layout="@layout/card_car_info"/>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvAdRegister2"
@@ -175,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:text="배송지"
                     style="@style/title_14_M"
-                    app:layout_constraintTop_toBottomOf="@+id/cardAdRegister"
+                    app:layout_constraintTop_toBottomOf="@+id/llAdRegister"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="20dp"
                     android:layout_marginStart="16dp"/>
@@ -276,10 +288,10 @@
                     android:layout_height="wrap_content"
                     android:text="+ 배송지를 확인해 주세요\n+ 스티커 배송기간은 평균 3~5일입니다(주말, 공휴일 제외)\n+ 스티커 수령 후 기한 내에 차량 부착 인증을 해주세요"
                     style="@style/caption_12_R"
-                    android:textColor="@color/grayscale_600"
+                    android:textColor="@color/brand_orange1"
                     app:layout_constraintTop_toBottomOf="@+id/etAdRegisterAddress2"
                     android:layout_marginTop="20dp"
-                    android:layout_marginHorizontal="20dp"/>
+                    android:layout_marginHorizontal="16dp"/>
 
                 <Button
                     android:id="@+id/btnAdRegister"
@@ -291,7 +303,8 @@
                     android:textColor="@color/grayscale_400"
                     app:layout_constraintTop_toBottomOf="@+id/tvAdRegister6"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginVertical="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="16dp"
                     android:layout_marginHorizontal="16dp"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

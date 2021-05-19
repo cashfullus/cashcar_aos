@@ -50,8 +50,13 @@ class MyCarRecyclerAdapter(private val context: Context, private val requestActi
         return dataList.size
     }
 
-    fun setData(newList: ArrayList<MyCarResponse>) {
-        this.dataList = newList
+    fun setData(newList: ArrayList<MyCarResponse>?) {
+        if(newList == null) {
+            this.dataList = ArrayList()
+        } else {
+            this.dataList = newList!!
+        }
+
         notifyDataSetChanged()
     }
 

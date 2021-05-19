@@ -1,20 +1,16 @@
 package com.cashfulus.cashcarplus.ui.adinfo
 
-import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Typeface
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
@@ -23,8 +19,10 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityAdRegisterBinding
 import com.cashfulus.cashcarplus.ui.MainActivity
-import com.cashfulus.cashcarplus.ui.car.MyCarActivity
+import com.cashfulus.cashcarplus.ui.car.AddCarActivity
 import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
+import com.cashfulus.cashcarplus.ui.dialog.PopupDialog
+import com.cashfulus.cashcarplus.ui.dialog.PopupDialogClickListener
 import com.cashfulus.cashcarplus.util.*
 import kotlinx.android.synthetic.main.widget_upgraded_edittext.view.*
 import org.koin.android.ext.android.inject
@@ -32,7 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.DecimalFormat
 
-class AdRegisterActivity : BaseActivity() {
+class AdRegisterActivity : BaseActivity(), PopupDialogClickListener {
     val numFormat = DecimalFormat("###,###")
 
     // Loading Dialog 및 MVVM 관련 객체들
@@ -55,6 +53,15 @@ class AdRegisterActivity : BaseActivity() {
     var isAddress2Valid = false
     // '신청하기' 버튼 활성화 여부
     val isAllValid = MutableLiveData<Boolean>(false)
+
+    /** 차량 추가 후 할 작업. */
+    val addcarActivity: ActivityResultLauncher<Intent> = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+    ) { activityResult ->
+        if(activityResult.resultCode == RESULT_OK) {
+            viewModel.getCarInfo(intent.getIntExtra("adId", -1))
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,11 +99,13 @@ class AdRegisterActivity : BaseActivity() {
                     binding.btnAdRegisterCar2.visibility = View.GONE
                     binding.btnAdRegisterCar3.visibility = View.GONE
 
-                    binding.cardAdRegister.viewStub!!.layoutResource = R.layout.card_none_mission
-                    val card = binding.cardAdRegister.viewStub!!.inflate()
-                    card.setOnClickListener {
-                        val intent = Intent(this@AdRegisterActivity, MyCarActivity::class.java)
-                        startActivity(intent)
+                    binding.cardAdRegisterNone.visibility = View.VISIBLE
+                    binding.cardAdRegisterCar.visibility = View.GONE
+
+                    binding.cardAdRegisterNone.setOnClickListener {
+                        val intent = Intent(this@AdRegisterActivity, AddCarActivity::class.java)
+                        intent.putExtra("isNewCar", true)
+                        addcarActivity.launch(intent)
                     }
                 }
                 1 -> {
@@ -106,11 +115,12 @@ class AdRegisterActivity : BaseActivity() {
                     binding.btnAdRegisterCar2.visibility = View.GONE
                     binding.btnAdRegisterCar3.visibility = View.GONE
 
-                    binding.cardAdRegister.viewStub!!.layoutResource = R.layout.card_car_info
-                    val card = binding.cardAdRegister.viewStub!!.inflate()
-                    card.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = it[0].carNumber
-                    card.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = it[0].brand + " " + it[0].vehicleModelName
-                    card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
+                    binding.cardAdRegisterNone.visibility = View.GONE
+                    binding.cardAdRegisterCar.visibility = View.VISIBLE
+
+                    binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = it[0].carNumber
+                    binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = it[0].brand + " " + it[0].vehicleModelName
+                    binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
 
                     vehicleId = it[0].vehicleId
                 }
@@ -129,24 +139,25 @@ class AdRegisterActivity : BaseActivity() {
                     binding.btnAdRegisterCar3.isSelected = false
                     binding.btnAdRegisterCar3.setTextColor(getColor(R.color.grayscale_400))
 
-                    binding.cardAdRegister.viewStub!!.layoutResource = R.layout.card_car_info
-                    val card = binding.cardAdRegister.viewStub!!.inflate()
-                    card.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[0].carNumber
-                    card.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[0].brand + " " + result[0].vehicleModelName
+                    binding.cardAdRegisterNone.visibility = View.GONE
+                    binding.cardAdRegisterCar.visibility = View.VISIBLE
+
+                    binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[0].carNumber
+                    binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[0].brand + " " + result[0].vehicleModelName
                     vehicleId = result[0].vehicleId
                     if(result[0].supporters == 1)
-                        card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
+                        binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
                     else
-                        card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
+                        binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
 
                     binding.btnAdRegisterCar2.setOnClickListener {
-                        card.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[0].carNumber
-                        card.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[0].brand + " " + result[0].vehicleModelName
+                        binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[0].carNumber
+                        binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[0].brand + " " + result[0].vehicleModelName
                         vehicleId = result[0].vehicleId
                         if(result[0].supporters == 1)
-                            card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
+                            binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
                         else
-                            card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
+                            binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
 
                         binding.btnAdRegisterCar2.isSelected = true
                         binding.btnAdRegisterCar2.setTextColor(getColor(R.color.grayscale_wt))
@@ -154,13 +165,13 @@ class AdRegisterActivity : BaseActivity() {
                         binding.btnAdRegisterCar3.setTextColor(getColor(R.color.grayscale_400))
                     }
                     binding.btnAdRegisterCar3.setOnClickListener {
-                        card.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[1].carNumber
-                        card.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[1].brand + " " + result[1].vehicleModelName
+                        binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[1].carNumber
+                        binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[1].brand + " " + result[1].vehicleModelName
                         vehicleId = result[1].vehicleId
                         if(result[1].supporters == 1)
-                            card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
+                            binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
                         else
-                            card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
+                            binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
 
                         binding.btnAdRegisterCar2.isSelected = false
                         binding.btnAdRegisterCar2.setTextColor(getColor(R.color.grayscale_400))
@@ -183,24 +194,25 @@ class AdRegisterActivity : BaseActivity() {
                     binding.btnAdRegisterCar3.isSelected = false
                     binding.btnAdRegisterCar3.setTextColor(getColor(R.color.grayscale_400))
 
-                    binding.cardAdRegister.viewStub!!.layoutResource = R.layout.card_car_info
-                    val card = binding.cardAdRegister.viewStub!!.inflate()
-                    card.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[0].carNumber
-                    card.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[0].brand + " " + result[0].vehicleModelName
+                    binding.cardAdRegisterNone.visibility = View.GONE
+                    binding.cardAdRegisterCar.visibility = View.VISIBLE
+
+                    binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[0].carNumber
+                    binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[0].brand + " " + result[0].vehicleModelName
                     vehicleId = result[0].vehicleId
                     if(result[0].supporters == 1)
-                        card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
+                        binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
                     else
-                        card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
+                        binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
 
                     binding.btnAdRegisterCar1.setOnClickListener {
-                        card.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[0].carNumber
-                        card.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[0].brand + " " + result[0].vehicleModelName
+                        binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[0].carNumber
+                        binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[0].brand + " " + result[0].vehicleModelName
                         vehicleId = result[0].vehicleId
                         if(result[0].supporters == 1)
-                            card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
+                            binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
                         else
-                            card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
+                            binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
 
                         binding.btnAdRegisterCar1.isSelected = true
                         binding.btnAdRegisterCar1.setTextColor(getColor(R.color.grayscale_wt))
@@ -210,13 +222,13 @@ class AdRegisterActivity : BaseActivity() {
                         binding.btnAdRegisterCar3.setTextColor(getColor(R.color.grayscale_400))
                     }
                     binding.btnAdRegisterCar2.setOnClickListener {
-                        card.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[1].carNumber
-                        card.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[1].brand + " " + result[1].vehicleModelName
+                        binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[1].carNumber
+                        binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[1].brand + " " + result[1].vehicleModelName
                         vehicleId = result[1].vehicleId
                         if(result[1].supporters == 1)
-                            card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
+                            binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
                         else
-                            card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
+                            binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
 
                         binding.btnAdRegisterCar1.isSelected = false
                         binding.btnAdRegisterCar1.setTextColor(getColor(R.color.grayscale_400))
@@ -226,13 +238,13 @@ class AdRegisterActivity : BaseActivity() {
                         binding.btnAdRegisterCar3.setTextColor(getColor(R.color.grayscale_400))
                     }
                     binding.btnAdRegisterCar3.setOnClickListener {
-                        card.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[2].carNumber
-                        card.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[2].brand + " " + result[2].vehicleModelName
+                        binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarNumber).text = result[2].carNumber
+                        binding.cardAdRegisterCar.findViewById<TextView>(R.id.tvAdRegisterCarBrandModel).text = result[2].brand + " " + result[2].vehicleModelName
                         vehicleId = result[2].vehicleId
                         if(result[2].supporters == 1)
-                            card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
+                            binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_supporters)
                         else
-                            card.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
+                            binding.cardAdRegisterCar.background = ContextCompat.getDrawable(this@AdRegisterActivity, R.drawable.row_mycar_not_supporters)
 
                         binding.btnAdRegisterCar1.isSelected = false
                         binding.btnAdRegisterCar1.setTextColor(getColor(R.color.grayscale_400))
@@ -380,11 +392,12 @@ class AdRegisterActivity : BaseActivity() {
             }
         })
         binding.btnAdRegister.setOnClickListener {
-            val builder = AlertDialog.Builder(this@AdRegisterActivity)
-            builder.setMessage("정말 신청하시겠습니까?")
-            builder.setPositiveButton("확인") { _: DialogInterface, _: Int -> viewModel.registerAd(intent.getIntExtra("adId", -1), vehicleId!!) }
-            builder.setNegativeButton("취소", null)
-            builder.create().show()
+            val dialog = PopupDialog("정말 신청하시겠습니까?", "확인", "취소")
+            dialog.show(supportFragmentManager, "AdRegister")
         }
     }
+
+    /** 신청 Dialog의 Callback */
+    override fun onPositive() = viewModel.registerAd(intent.getIntExtra("adId", -1), vehicleId!!)
+    override fun onNegative() {}
 }

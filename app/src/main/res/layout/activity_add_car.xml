@@ -62,31 +62,34 @@
                     app:layout_constraintTop_toBottomOf="@+id/etCarNumberA"
                     app:layout_constraintStart_toStartOf="@+id/tvCarTitle5A"
                     android:layout_marginTop="16dp"/>
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCarKoreanA"
+                    style="@style/title_14_M"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/selector_button"
-                    android:text="국산"
-                    style="@style/title_14_M"
-                    android:textColor="@color/selector_button_text_color"
-                    app:layout_constraintTop_toBottomOf="@+id/tvCarTitle1A"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/btnCarForeignA"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
-                    android:layout_marginStart="16dp"/>
+                    android:background="@drawable/selector_button"
+                    android:letterSpacing="0"
+                    android:text="국산"
+                    android:textColor="@color/selector_button_text_color"
+                    app:layout_constraintEnd_toStartOf="@+id/btnCarForeignA"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCarTitle1A" />
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCarForeignA"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:background="@drawable/selector_button"
                     android:text="수입"
+                    android:letterSpacing="0"
                     style="@style/title_14_M"
                     android:textColor="@color/selector_button_text_color"
                     app:layout_constraintTop_toTopOf="@+id/btnCarKoreanA"
                     app:layout_constraintStart_toEndOf="@+id/btnCarKoreanA"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"/>
 
                 <TextView
@@ -235,13 +238,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="※차량은 중복 등록이 불가능합니다"
-                    style="@style/title_12_R"
+                    style="@style/title_14_R"
                     android:textColor="@color/brand_orange1"
-                    app:layout_constraintBottom_toTopOf="@+id/btnCarAddA"
                     app:layout_constraintTop_toBottomOf="@+id/cbCarSupportersA"
+                    app:layout_constraintBottom_toTopOf="@+id/btnCarAddA"
                     app:layout_constraintStart_toStartOf="@+id/btnCarAddA"
-                    android:layout_marginTop="7dp"
-                    android:layout_marginBottom="15dp"/>
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="16dp"/>
+                <!-- android:layout_marginTop="7dp" -->
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCarAddA"
@@ -265,7 +269,6 @@
                     app:layout_constraintBottom_toTopOf="@+id/tvCarTitle7A"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="40dp"
                     android:layout_marginStart="16dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

@@ -1,5 +1,6 @@
 package com.cashfulus.cashcarplus.ui.car
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cashfulus.cashcarplus.data.repository.CarRepository
@@ -50,8 +51,9 @@ class MyCarViewModel(private val repository: CarRepository): ViewModel() {
                     response.postValue(carListResponse.contents!!.data)
                 } else {
                     // 소유한 차량이 존재하지 않을때
-                    if(carListResponse.error!!.status == 201)
+                    if(carListResponse.error!!.status == 201) {
                         empty.postValue(true)
+                    }
                     // 진짜로 오류가 발생한 경우
                     else
                         error.postValue(carListResponse.error!!)
