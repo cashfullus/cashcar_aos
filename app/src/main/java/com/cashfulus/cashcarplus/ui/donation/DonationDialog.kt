@@ -32,6 +32,7 @@ class DonationDialog(private val data: DonationListResponse): DialogFragment() {
 
         context?.let { Glide.with(it).load(data.logo).into(ivDonationDialogLogo) }
         tvDonationDialogName.text = data.name
+        tvDonationDialogContents.text = Html.fromHtml(data.imageInformation[0].description)
 
         val adapter = DonationSliderAdapter()
         vpDonationDialog.adapter = adapter
@@ -43,9 +44,9 @@ class DonationDialog(private val data: DonationListResponse): DialogFragment() {
 
             override fun onPageSelected(position: Int) {
                 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
-                    tvDonationDialogContents.text = Html.fromHtml(data.imageInformation[position].description)
+                    tvDonationDialogContents.text = Html.fromHtml(data.imageInformation[position].description.replace("<p>", "").replace("</p>", ""))
                 } else {
-                    tvDonationDialogContents.text = Html.fromHtml(data.imageInformation[position].description, Html.FROM_HTML_MODE_LEGACY)
+                    tvDonationDialogContents.text = Html.fromHtml(data.imageInformation[position].description.replace("<p>", "").replace("</p>", ""), Html.FROM_HTML_MODE_LEGACY)
                 }
             }
 

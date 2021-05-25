@@ -63,8 +63,8 @@
         android:layout_marginTop="16dp"
         android:paddingHorizontal="16dp"
         style="@style/body_14_R_lh24"
-        android:textAlignment="inherit"
-        android:text="기독교 정신을 바탕으로 1993년 설립되어 장애인의 완전한 사회통합을 목표로 사회적 약자들의 권리와 인간다운 삶을 지원하고 있습니다.인간다운 삶을 지원하고 있습니다.인간다운 삶을 지원하고 있습다."/>
+        android:lines="4"
+        android:text="기"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tlDonationDialog"
