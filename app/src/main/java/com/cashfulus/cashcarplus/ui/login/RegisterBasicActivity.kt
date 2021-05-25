@@ -146,6 +146,14 @@ class RegisterBasicActivity : BaseActivity() {
             }
         })
 
+        /** LoadingDialog 추가 시 오류 나는 것 같아서 일단 비활성화. */
+        /*viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it)
+                loadingDialog.show()
+            else
+                loadingDialog.dismiss()
+        })*/
+
         /** '시작하기' 버튼 활성화/비활성화 */
         isAllValid.observe(binding.lifecycleOwner!!, {
             binding.btnRegisterBasic.isEnabled = it

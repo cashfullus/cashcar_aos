@@ -14,4 +14,5 @@ val remoteSourceModule = module {
     single<RemoteAlarmSource> { RemoteAlarmSourceImpl(service = get()) }
     single<RemoteVersionSource> { RemoteVersionSourceImpl(service = get()) }
     single<RemoteCashcarTipSource> { RemoteCashcarTipSourceImpl(service = get()) }
+    single<RemoteDonationSource> { RemoteDonationSourceImpl(service = get()) }
 }

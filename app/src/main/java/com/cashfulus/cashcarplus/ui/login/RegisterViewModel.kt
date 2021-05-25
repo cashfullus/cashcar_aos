@@ -28,6 +28,7 @@ class RegisterViewModel(private val repository: UserRepository): ViewModel() {
 
     val response = SingleLiveEvent<Boolean>()
     val error = MutableLiveData<ErrorResponse>()
+    val loading = SingleLiveEvent<Boolean>()
 
     fun registerKakao(alarm: Boolean, marketing: Boolean) {
         if(NetworkManager().checkNetworkState()) {
@@ -43,13 +44,16 @@ class RegisterViewModel(private val repository: UserRepository): ViewModel() {
                 if(token != null) {
                     CoroutineScope(Dispatchers.IO).launch {
                         val registerResponse = repository.register(token, email.value!!, alarm, marketing, "kakao")
+                        loading.postValue(true)
 
                         if (registerResponse.isSucceed && registerResponse.contents!!.status) {
                             UserManager.jwtToken = registerResponse.contents!!.data.jwt_token
                             UserManager.userId = registerResponse.contents!!.data.user_id
                             UserManager.email = email.value!!
+                            loading.postValue(false)
                             updateUserInfo(alarm, marketing)
                         } else {
+                            loading.postValue(false)
                             error.postValue(registerResponse.error!!)
                         }
                     }
@@ -72,6 +76,7 @@ class RegisterViewModel(private val repository: UserRepository): ViewModel() {
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
                             name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, if (receiveAlarm) 1 else 0,
                             if (receiveMarketing) 1 else 0, profileImg.value!!)
+                        loading.postValue(true)
 
                         if (updateResponse.isSucceed && updateResponse.contents!!.status) {
                             UserManager.alarm = if(receiveAlarm) 1 else 0
@@ -88,18 +93,23 @@ class RegisterViewModel(private val repository: UserRepository): ViewModel() {
                             userData.edit().putInt("userId", UserManager.userId!!)
                             userData.edit().commit()
 
+                            loading.postValue(false)
                             response.postValue(true)
                         } else {
                             // 404 : 해당 계정이 없음 -> 로그아웃 처리
-                            if(updateResponse.error!!.status == 404)
+                            if(updateResponse.error!!.status == 404) {
+                                loading.postValue(false)
                                 response.postValue(false)
-                            else
+                            } else {
+                                loading.postValue(false)
                                 error.postValue(updateResponse.error!!)
+                            }
                         }
                     } else {
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
                             name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!,
                             if (receiveAlarm) 1 else 0, if (receiveMarketing) 1 else 0)
+                        loading.postValue(true)
 
                         if (updateResponse.isSucceed && updateResponse.contents!!.status) {
                             UserManager.alarm = if(receiveAlarm) 1 else 0
@@ -117,13 +127,17 @@ class RegisterViewModel(private val repository: UserRepository): ViewModel() {
                             userDataEditer.putInt("userId", UserManager.userId!!)
                             userDataEditer.apply()
 
+                            loading.postValue(false)
                             response.postValue(true)
                         } else {
                             // 404 : 해당 계정이 없음 -> 로그아웃 처리
-                            if(updateResponse.error!!.status == 404)
+                            if(updateResponse.error!!.status == 404) {
+                                loading.postValue(false)
                                 response.postValue(false)
-                            else
+                            } else {
+                                loading.postValue(false)
                                 error.postValue(updateResponse.error!!)
+                            }
                         }
                     }
                 }

@@ -61,5 +61,13 @@ class EmailLoginActivity : BaseActivity() {
         viewModel.error.observe(binding.lifecycleOwner!!, {
             binding.tvLoginError.visibility = View.VISIBLE
         })
+
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it) {
+                loadingDialog.show()
+            } else {
+                loadingDialog.dismiss()
+            }
+        })
     }
 }

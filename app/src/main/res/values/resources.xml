@@ -60,4 +60,8 @@
     <declare-styleable name="CurrentMissionButton">
         <attr name="curState" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="UpgradedImageSlider">
+
+    </declare-styleable>
 </resources>

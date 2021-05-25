@@ -31,7 +31,7 @@ class EmailLoginViewModel(private val repository: UserRepository): ViewModel() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val loginResponse = repository.loginPW(email.value!!, password.value!!, "normal")
-                Log.d("Cashcar", loginResponse.toString())
+                loading.postValue(true)
 
                 if (loginResponse.isSucceed) {
                     UserManager.isLogined = true
@@ -40,6 +40,7 @@ class EmailLoginViewModel(private val repository: UserRepository): ViewModel() {
                     UserManager.userId = loginResponse.contents!!.data!!.user_id
                     getUserInfo(loginResponse.contents!!.data!!.user_id, loginResponse.contents!!.data!!.jwt_token)
                 } else {
+                    loading.postValue(false)
                     error.postValue(loginResponse.error!!)
                 }
             }
@@ -76,10 +77,12 @@ class EmailLoginViewModel(private val repository: UserRepository): ViewModel() {
                     }
                     updateToken()
                 } else {
+                    loading.postValue(false)
                     error.postValue(loginResponse.error!!)
                 }
             }
         } else {
+            loading.postValue(false)
             error.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, ""))
         }
     }
@@ -88,6 +91,7 @@ class EmailLoginViewModel(private val repository: UserRepository): ViewModel() {
         if(NetworkManager().checkNetworkState()) {
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
+                    loading.postValue(false)
                     error.postValue(makeErrorResponseFromMessage("FCM 토큰이 존재하지 않습니다. 다시 시도해 주세요.", "/user/fcm"))
                     return@OnCompleteListener
                 }
@@ -106,16 +110,20 @@ class EmailLoginViewModel(private val repository: UserRepository): ViewModel() {
                             userDataEditer.putInt("userId", UserManager.userId!!)
                             userDataEditer.apply()
 
+                            loading.postValue(false)
                             response.postValue(true)
                         } else {
+                            loading.postValue(false)
                             error.postValue(loginResponse.error!!)
                         }
                     }
                 } else {
+                    loading.postValue(false)
                     error.postValue(makeErrorResponseFromMessage("FCM 토큰이 존재하지 않습니다. 다시 시도해 주세요.", "/user/fcm"))
                 }
             })
         } else {
+            loading.postValue(false)
             error.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, ""))
         }
     }

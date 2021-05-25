@@ -222,6 +222,13 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
             showToast(it.message)
         })
 
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it)
+                loadingDialog.show()
+            else
+                loadingDialog.dismiss()
+        })
+
         /** 비밀번호 변경 */
         binding.tvUserInfoChangePW.setOnClickListener {
             showToast("추후 업데이트될 예정입니다.")

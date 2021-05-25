@@ -87,5 +87,12 @@ class MyCarActivity : BaseActivity() {
             showToast(it.message)
             finish()
         })
+
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it)
+                loadingDialog.show()
+            else
+                loadingDialog.dismiss()
+        })
     }
 }

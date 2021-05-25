@@ -2,25 +2,33 @@ package com.cashfulus.cashcarplus.ui.adinfo
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityAdInfoBinding
-import com.cashfulus.cashcarplus.ui.adapter.AdInfoSliderAdapter
+import com.cashfulus.cashcarplus.ui.adapter.ImageSliderAdapter
 import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.util.UserManager
 import com.kakao.sdk.link.LinkClient
-import com.kakao.sdk.talk.TalkApiClient
 import com.kakao.sdk.template.model.*
-import com.smarteist.autoimageslider.SliderView
+import kotlinx.android.synthetic.main.widget_upgraded_image_slider.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.DecimalFormat
+import java.util.*
+import kotlin.properties.Delegates
 
 class AdInfoActivity : BaseActivity() {
+    private val DELAY_MS: Long = 500 //delay in milliseconds before task is to be executed
+    private val PERIOD_MS: Long = 3000 // time in milliseconds between successive task executions.
+    var pageNum by Delegates.notNull<Int>()
+    var currentPage = 0
+
     val numFormat = DecimalFormat("###,###")
 
     // Loading Dialog 및 MVVM 관련 객체들
@@ -69,7 +77,36 @@ class AdInfoActivity : BaseActivity() {
             val adId = it.ad_id; val image = it.thumbnail_image; val title = it.title; val point = it.total_point
 
             // 최상단 슬라이드 이미지 설정
-            binding.svAdInfo.setSliderAdapter(AdInfoSliderAdapter(it.images))
+            val adapter = ImageSliderAdapter(this@AdInfoActivity, it.images)
+            pageNum = it.images.size
+            binding.vpAdInfo.adapter = adapter
+            binding.tlAdInfo.setupWithViewPager(binding.vpAdInfo, true)
+            // 최상단 슬라이드 자동 재생
+            val handler = Handler()
+            val Update = Runnable {
+                if (currentPage == pageNum) {
+                    currentPage = 0
+                }
+                binding.vpAdInfo.setCurrentItem(currentPage++, true)
+            }
+            // This will create a new Thread
+            val timer = Timer()
+            timer.schedule(object : TimerTask() {
+                override fun run() {
+                    handler.post(Update)
+                }
+            }, DELAY_MS, PERIOD_MS)
+            // 최상단 슬라이드 자체 슬라이딩 시 포지션 초기화 작업
+            binding.vpAdInfo.setOnPageChangeListener(object: ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+                override fun onPageSelected(position: Int) {
+                    currentPage = position
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {}
+            })
+
             Glide.with(this@AdInfoActivity).load(it.thumbnail_image).into(binding.ivAdInfoTitle)
             binding.tvAdInfoAdTitle.text = it.title
             binding.tvAdInfoPoint.text = numFormat.format(it.total_point)
@@ -151,6 +188,13 @@ class AdInfoActivity : BaseActivity() {
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
+        })
+
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it)
+                loadingDialog.show()
+            else
+                loadingDialog.dismiss()
         })
 
         /** 툴바 설정 */

@@ -1,5 +1,6 @@
 package com.cashfulus.cashcarplus.ui.point
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.cashfulus.cashcarplus.R
@@ -7,6 +8,7 @@ import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityMyActivitiesBinding
 import com.cashfulus.cashcarplus.databinding.ActivityPointBinding
 import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
+import com.cashfulus.cashcarplus.ui.donation.DonationListActivity
 import com.cashfulus.cashcarplus.ui.myactivities.MyActivitiesViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,6 +29,16 @@ class PointActivity : BaseActivity() {
         binding.apply {
             lifecycleOwner = this@PointActivity
             viewModel = this@PointActivity.viewModel
+        }
+
+        /** Toolbar 셋팅 */
+        binding.toolbarPoint.setLeftOnClick {
+            finish()
+        }
+
+        /** View 셋팅 */
+        binding.btnPointDonation.setOnClickListener {
+            startActivity(Intent(this@PointActivity, DonationListActivity::class.java))
         }
     }
 }

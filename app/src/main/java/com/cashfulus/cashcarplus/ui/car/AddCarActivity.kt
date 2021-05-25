@@ -310,7 +310,7 @@ class AddCarActivity : BaseActivity() {
             }
         }
         /** '브랜드' Spinner 사이즈 제한 */
-        /*try {
+        try {
             val popup = Spinner::class.java.getDeclaredField("mPopup")
             popup.isAccessible = true
             val popupWindow = popup.get(binding.spCarCompanyA) as android.widget.ListPopupWindow
@@ -318,8 +318,7 @@ class AddCarActivity : BaseActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-        try {
+        /*try {
             val popup = getPopupField()
 
             // Get private mPopup member variable and try cast to ListPopupWindow
@@ -405,6 +404,14 @@ class AddCarActivity : BaseActivity() {
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
+        })
+
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it) {
+                loadingDialog.show()
+            } else {
+                loadingDialog.dismiss()
+            }
         })
     }
 

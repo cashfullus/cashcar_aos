@@ -231,6 +231,14 @@ class RegisterActivity : BaseActivity(), ProfileImageDialogClickListener {
             showToast(it.message)
         })
 
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it) {
+                loadingDialog.show()
+            } else {
+                loadingDialog.dismiss()
+            }
+        })
+
         /** '시작하기' 버튼 활성화/비활성화 */
         isAllValid.observe(binding.lifecycleOwner!!, {
             binding.btnRegister.isEnabled = it

@@ -2,6 +2,7 @@ package com.cashfulus.cashcarplus.ui.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +25,12 @@ class CashcartipRecyclerAdapter(private val context: Context, private val dataLi
     override fun onBindViewHolder(holder: Holder, position: Int) {
         Glide.with(context).load(dataList[position].image).into(holder.ivRow)
         holder.tvTitle.text = dataList[position].title
-        holder.tvContents.text = dataList[position].description
+
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
+            holder.tvContents.text = Html.fromHtml(dataList[position].description)
+        } else {
+            holder.tvContents.text = Html.fromHtml(dataList[position].description, Html.FROM_HTML_MODE_LEGACY)
+        }
 
         holder.row.setOnClickListener {
             val intent = Intent(context, CashcartipActivity::class.java)

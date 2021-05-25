@@ -1,29 +1,32 @@
 package com.cashfulus.cashcarplus.ui.mission
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.TypedValue
 import android.view.View
-import androidx.core.view.marginStart
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityMissionBinding
 import com.cashfulus.cashcarplus.extension.setStartMargins
-import com.cashfulus.cashcarplus.ui.adapter.AdInfoSliderAdapter
-import com.cashfulus.cashcarplus.ui.adapter.DrivingRecyclerAdapter
-import com.cashfulus.cashcarplus.ui.adapter.MissionAdditionalRecyclerAdapter
-import com.cashfulus.cashcarplus.ui.adapter.MissionImportantRecyclerAdapter
+import com.cashfulus.cashcarplus.ui.adapter.*
 import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.DecimalFormat
+import java.util.*
+import kotlin.properties.Delegates
 
 class MissionActivity : BaseActivity() {
+    private val DELAY_MS: Long = 500 //delay in milliseconds before task is to be executed
+    private val PERIOD_MS: Long = 3000 // time in milliseconds between successive task executions.
+    var pageNum by Delegates.notNull<Int>()
+    var currentPage = 0
     val numFormat = DecimalFormat("###,###")
 
     val loadingDialog: LoadingDialog by inject { parametersOf(this@MissionActivity) }
@@ -50,7 +53,35 @@ class MissionActivity : BaseActivity() {
         /** LiveData 셋팅 */
         viewModel.response.observe(binding.lifecycleOwner!!, {
             // 최상단 슬라이드 이미지 설정
-            binding.svMission.setSliderAdapter(AdInfoSliderAdapter(it.images))
+            val adapter = ImageSliderAdapter(this@MissionActivity, it.images)
+            pageNum = it.images.size
+            binding.vpMission.adapter = adapter
+            binding.tlMission.setupWithViewPager(binding.vpMission, true)
+            // 최상단 슬라이드 자동 재생
+            val handler = Handler()
+            val Update = Runnable {
+                if (currentPage == pageNum) {
+                    currentPage = 0
+                }
+                binding.vpMission.setCurrentItem(currentPage++, true)
+            }
+            // This will create a new Thread
+            val timer = Timer()
+            timer.schedule(object : TimerTask() {
+                override fun run() {
+                    handler.post(Update)
+                }
+            }, DELAY_MS, PERIOD_MS)
+            // 최상단 슬라이드 자체 슬라이딩 시 포지션 초기화 작업
+            binding.vpMission.setOnPageChangeListener(object: ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+                override fun onPageSelected(position: Int) {
+                    currentPage = position
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {}
+            })
 
             binding.tvMissionTitle.text = it.adUserInformation.title
             binding.tvMissionPoint.text = numFormat.format(it.adUserInformation.totalPoint)
@@ -121,6 +152,13 @@ class MissionActivity : BaseActivity() {
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
+        })
+
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it)
+                loadingDialog.show()
+            else
+                loadingDialog.dismiss()
         })
 
         /** 최하단 주의사항 텍스트 일부 색상 설정 */

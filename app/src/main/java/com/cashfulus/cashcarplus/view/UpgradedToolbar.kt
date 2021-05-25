@@ -1,20 +1,16 @@
 package com.cashfulus.cashcarplus.view
 
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
+import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
-import androidx.annotation.LayoutRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.cashfulus.cashcarplus.R
 import kotlinx.android.synthetic.main.widget_upgraded_toolbar.view.*
-import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
 
 class UpgradedToolbar: ConstraintLayout {
     constructor(context: Context) : super(context) {
@@ -92,8 +88,8 @@ class UpgradedToolbar: ConstraintLayout {
         typedArray.recycle()
     }
 
-    fun getRightButtonRes(): ImageButton {
-        return btnIvAppbarFunction
+    fun getRightButtonRes(): FrameLayout {
+        return btnAppbarFunction
     }
 
     fun setLeftButton(@DrawableRes img: Int) {

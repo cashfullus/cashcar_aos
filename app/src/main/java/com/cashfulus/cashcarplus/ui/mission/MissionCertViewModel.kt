@@ -21,6 +21,7 @@ class MissionCertViewModel(private val repository: MissionRepository): ViewModel
 
     val response = MutableLiveData<AdMissionPost>()
     val error = SingleLiveEvent<ErrorResponse>()
+    val loading = SingleLiveEvent<Boolean>()
 
     fun uploadMission(missionId: Int, isAdditional: Boolean) {
         // 모든 값이 정상적으로 들어와있는지 검사
@@ -36,11 +37,14 @@ class MissionCertViewModel(private val repository: MissionRepository): ViewModel
             else {
                 if(NetworkManager().checkNetworkState()) {
                     CoroutineScope(Dispatchers.IO).launch {
+                        loading.postValue(true)
                         val apiRespose = repository.postMission(sideImg.value!!, rearImg.value!!, gaugeImg.value!!, gaugeKm.value!!, missionId, UserManager.userId!!, UserManager.jwtToken!!)
 
                         if (apiRespose.isSucceed) {
+                            loading.postValue(false)
                             response.postValue(apiRespose.contents!!)
                         } else {
+                            loading.postValue(false)
                             error.postValue(apiRespose.error!!)
                         }
                     }
@@ -56,11 +60,14 @@ class MissionCertViewModel(private val repository: MissionRepository): ViewModel
             else {
                 if(NetworkManager().checkNetworkState()) {
                     CoroutineScope(Dispatchers.IO).launch {
+                        loading.postValue(true)
                         val apiRespose = repository.postMission(sideImg.value!!, rearImg.value!!, missionId, UserManager.userId!!, UserManager.jwtToken!!)
 
                         if (apiRespose.isSucceed) {
+                            loading.postValue(false)
                             response.postValue(apiRespose.contents!!)
                         } else {
+                            loading.postValue(false)
                             error.postValue(apiRespose.error!!)
                         }
                     }

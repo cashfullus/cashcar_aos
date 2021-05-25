@@ -95,6 +95,11 @@ interface Api {
     suspend fun getCashcarTipList(@Query("page") page: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
     @GET("user/cash-car-tip")
     suspend fun getCashcarTipPost(@Query("tip_id") tip_id: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+
+    @GET("/user/donate/list")
+    suspend fun getDonationList(@Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+    @GET("/user/donate/list")
+    suspend fun getDonationList(@Query("count") count: Int, @Query("page") page: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
 }
 
 // API 접속 과정에서 오류가 발생한 경우 Status Code. (즉 인터넷 연결이 끊기거나, 서버가 죽은 경우 등의 이유로 인해, 서버로부터 응답도 받지 못한 상태로 발생한 오류.)

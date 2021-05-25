@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-        <ImageButton
+        <ImageView
             android:id="@+id/btnIvAppbarBack"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,7 +40,7 @@
         android:paddingEnd="16dp"
         app:layout_constraintTop_toTopOf="@+id/btnAppbarBack"
         app:layout_constraintEnd_toEndOf="parent">
-        <ImageButton
+        <ImageView
             android:id="@+id/btnIvAppbarFunction"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

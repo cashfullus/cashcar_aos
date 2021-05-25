@@ -1,6 +1,8 @@
 package com.cashfulus.cashcarplus.ui.adapter
 
 import android.content.Context
+import android.text.Html
+import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +19,12 @@ class ExpandableNoticeListAdapter(private val context: Context, private val data
 
     override fun getGroup(parent: Int) = dataList
 
-    override fun getChild(parent: Int, child: Int): String = dataList[parent].description
+    override fun getChild(parent: Int, child: Int): Spanned {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
+            return Html.fromHtml(dataList[parent].description)
+        }
+        return Html.fromHtml(dataList[parent].description, Html.FROM_HTML_MODE_LEGACY)
+    }
 
     override fun getGroupId(parent: Int) = parent.toLong()
 

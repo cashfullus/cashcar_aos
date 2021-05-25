@@ -3,7 +3,9 @@ package com.cashfulus.cashcarplus.ui.dialog
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
@@ -32,6 +34,8 @@ class MissionDialog(private val title: String, private val message: String, priv
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         tvDialogMissionTitle.text = title
         tvDialogMissionContents.text = message

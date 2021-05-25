@@ -43,8 +43,8 @@ class CarInfoViewModel(private val repository: CarRepository): ViewModel() {
     fun getCarInfo(vehicleId: Int) {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                loading.postValue(true)
                 val carResponse = repository.carInfo(UserManager.userId!!, vehicleId, UserManager.jwtToken!!)
-                Log.d("Cashcar", carResponse.toString())
 
                 if (carResponse.isSucceed) {
                     isKorean.postValue(carResponse.contents!!.data.isForeignCar == 0)
@@ -90,13 +90,18 @@ class CarInfoViewModel(private val repository: CarRepository): ViewModel() {
                         
                         else  -> { companyIndex.postValue(-1) }
                     }
+
+                    loading.postValue(false)
                 } else {
                     // 소유한 차량이 존재하지 않을때
-                    if(carResponse.error!!.status == 404)
+                    if(carResponse.error!!.status == 404) {
+                        loading.postValue(false)
                         error.postValue(makeCustomErrorResponse(404, "해당 차량정보가 존재하지 않습니다.", "/vehicle/information"))
                     // 진짜로 오류가 발생한 경우
-                    else
+                    } else {
+                        loading.postValue(false)
                         error.postValue(carResponse.error!!)
+                    }
                 }
             }
         } else {
@@ -108,17 +113,22 @@ class CarInfoViewModel(private val repository: CarRepository): ViewModel() {
     fun deleteCarInfo(vehicleId: Int) {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                loading.postValue(true)
                 val carResponse = repository.deleteCarInfo(UserManager.userId!!, vehicleId, UserManager.jwtToken!!)
 
                 if (carResponse.isSucceed) {
                     response.postValue(DELETE_SUCCESS)
+                    loading.postValue(false)
                 } else {
                     // 소유한 차량이 존재하지 않을때
-                    if(carResponse.error!!.status == 404)
+                    if(carResponse.error!!.status == 404) {
+                        loading.postValue(false)
                         error.postValue(makeCustomErrorResponse(404, "해당 차량정보가 존재하지 않습니다.", "/vehicle/information"))
                     // 진짜로 오류가 발생한 경우
-                    else
+                    } else {
+                        loading.postValue(false)
                         error.postValue(carResponse.error!!)
+                    }
                 }
             }
         } else {
@@ -130,21 +140,27 @@ class CarInfoViewModel(private val repository: CarRepository): ViewModel() {
     fun modifyCarInfo(vehicleId: Int) {
         if(NetworkManager().checkNetworkState() && ownerRelationship != null) {
             CoroutineScope(Dispatchers.IO).launch {
+                loading.postValue(true)
                 val carResponse = repository.modifyCarInfo(if(isSupporters.value!!) 1 else 0, if(isKorean.value!!) 0 else 1,
                         company.value!!, modelName.value!!, year.value!!.toInt(), carNumber.value!!, ownerRelationship!!, UserManager.userId!!, vehicleId, UserManager.jwtToken!!)
 
                 if (carResponse.isSucceed) {
                     response.postValue(MODIFY_SUCCESS)
+                    loading.postValue(false)
                 } else {
                     // 소유한 차량이 존재하지 않을때
-                    if(carResponse.error!!.status == 404)
+                    if(carResponse.error!!.status == 404) {
+                        loading.postValue(false)
                         error.postValue(makeCustomErrorResponse(404, "해당 차량정보가 존재하지 않습니다.", "/vehicle/information"))
                     // 차량 번호가 이미 등록된 번호일 경우(현재 업데이트할 차량 제외)
-                    else if(carResponse.error!!.status == 409)
+                    } else if(carResponse.error!!.status == 409) {
+                        loading.postValue(false)
                         error.postValue(makeCustomErrorResponse(409, "이미 등록된 번호입니다.", "/vehicle/information"))
                     // 진짜로 오류가 발생한 경우
-                    else
+                    } else {
+                        loading.postValue(false)
                         error.postValue(carResponse.error!!)
+                    }
                 }
             }
         } else {

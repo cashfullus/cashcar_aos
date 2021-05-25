@@ -30,11 +30,14 @@ class AdRegisterViewModel(private val missionRepository: MissionRepository): Vie
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val registerResponse = missionRepository.applyAdGet(UserManager.userId!!, adId, UserManager.jwtToken!!)
+                loading.postValue(true)
 
                 if (registerResponse.isSucceed) {
                     cars.postValue(registerResponse.contents!!.data.vehicle_information)
                     userInfo.postValue(registerResponse.contents!!.data.user_information)
+                    loading.postValue(false)
                 } else {
+                    loading.postValue(false)
                     error.postValue(registerResponse.error!!)
                 }
             }
@@ -49,10 +52,13 @@ class AdRegisterViewModel(private val missionRepository: MissionRepository): Vie
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val registerResponse = missionRepository.applyAd(mainAddress.value!!, detailAddress.value!!, callNumber.value!!.replace("-", ""), name.value!!, UserManager.userId!!, adId, vehicleId, UserManager.jwtToken!!)
+                loading.postValue(true)
 
                 if (registerResponse.isSucceed) {
                     response.postValue(registerResponse.contents!!)
+                    loading.postValue(false)
                 } else {
+                    loading.postValue(false)
                     error.postValue(registerResponse.error!!)
                 }
             }

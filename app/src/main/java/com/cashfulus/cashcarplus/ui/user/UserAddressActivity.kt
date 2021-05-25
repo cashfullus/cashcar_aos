@@ -133,21 +133,40 @@ class UserAddressActivity : BaseActivity() {
 
         /** LiveData 처리 */
         viewModel.data.observe(binding.lifecycleOwner!!, {
-            binding.etAddressName.getEditText().setText(it.name)
-            binding.etAddressPhone.getEditText().setText(it.callNumber)
-            binding.tvAddressAddress1.text = it.mainAddress
+            if(it.name.isNotBlank())
+                binding.etAddressName.getEditText().setText(it.name)
+            else
+                binding.etAddressName.hasError = true
+
+            if(it.callNumber.isNotBlank())
+                binding.etAddressPhone.getEditText().setText(it.callNumber)
+            else
+                binding.etAddressPhone.hasError = true
 
             if(it.mainAddress.isNotBlank()) {
+                binding.tvAddressAddress1.text = it.mainAddress
                 binding.etAddressAddress2.isEnabled = true
                 binding.etAddressAddress2.getEditText().setText(it.detailAddress)
+
                 isAddress1Valid = true
                 isAllValid.postValue(true)
                 binding.btnAddress.text = "수정하기"
+            } else {
+                isAddress1Valid = false
+                binding.etAddressAddress2.hasError = true
             }
         })
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
+        })
+
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it && !this@UserAddressActivity.isFinishing) {
+                loadingDialog.show()
+            } else if(!it) {
+                loadingDialog.dismiss()
+            }
         })
 
         viewModel.response.observe(binding.lifecycleOwner!!, {

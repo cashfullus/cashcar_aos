@@ -291,6 +291,12 @@ class AdRegisterActivity : BaseActivity(), PopupDialogClickListener {
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
         })
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it)
+                loadingDialog.show()
+            else
+                loadingDialog.dismiss()
+        })
 
         /** Validation 관련 설정 */
         binding.etAdRegisterName.getEditText().onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginVertical="12dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rowDonationLeft"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_donation_list"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rowDonationRight"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="4dp">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvDonationTitle1"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <ImageView
+                android:id="@+id/ivDonationTitle1"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/icon2" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tvDonationOrganization1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="밀알복지재단"
+            style="@style/title_14_M"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toTopOf="@+id/cvDonationTitle1"
+            app:layout_constraintBottom_toBottomOf="@+id/cvDonationTitle1"
+            app:layout_constraintStart_toEndOf="@+id/cvDonationTitle1"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvDonationBig1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="h, 1:1"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/cvDonationTitle1"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="8dp">
+            <ImageView
+                android:id="@+id/ivDonationBig1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/appcion_background" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tvDonationContents1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="가장 소외된 이웃들의 아픔을 위로하며 도움을 주는 자와 받는 자가 구별되지 않는 세상..."
+            style="@style/body_12_R_lh20"
+            android:maxLines="3"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@+id/cvDonationBig1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="10dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/rbDonation1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/selector_radiobutton"
+        app:layout_constraintTop_toBottomOf="@+id/rowDonationLeft"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/rowDonationLeft"
+        app:layout_constraintEnd_toEndOf="@+id/rowDonationLeft"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="14dp"/>
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rowDonationRight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_donation_list"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rowDonationLeft"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvDonationTitle2"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:id="@+id/ivDonationTitle2"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/icon2" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tvDonationOrganization2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="밀알복지재단"
+            style="@style/title_14_M"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toTopOf="@+id/cvDonationTitle2"
+            app:layout_constraintBottom_toBottomOf="@+id/cvDonationTitle2"
+            app:layout_constraintStart_toEndOf="@+id/cvDonationTitle2"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvDonationBig2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="h, 1:1"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/cvDonationTitle2"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="8dp">
+            <ImageView
+                android:id="@+id/ivDonationBig2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/appcion_background" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tvDonationContents2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="가장 소외된 이웃들의 아픔을 위로하며 도움을 주는 자와 받는 자가 구별되지 않는 세상..."
+            style="@style/body_12_R_lh20"
+            android:maxLines="3"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@+id/cvDonationBig2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="10dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/rbDonation2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/selector_radiobutton"
+        app:layout_constraintTop_toBottomOf="@+id/rowDonationRight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/rowDonationRight"
+        app:layout_constraintEnd_toEndOf="@+id/rowDonationRight"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="14dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

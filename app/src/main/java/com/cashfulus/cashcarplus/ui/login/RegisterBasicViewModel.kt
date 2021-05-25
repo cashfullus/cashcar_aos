@@ -37,14 +37,17 @@ class RegisterBasicViewModel(private val repository: UserRepository): ViewModel(
 
                 if(token != null) {
                     CoroutineScope(Dispatchers.IO).launch {
+                        loading.postValue(true)
                         val registerResponse = repository.registerPW(token, email.value!!, password.value!!, alarm, marketing, method)
 
                         if (registerResponse.isSucceed && registerResponse.contents!!.status) {
                             UserManager.jwtToken = registerResponse.contents!!.data.jwt_token
                             UserManager.userId = registerResponse.contents!!.data.user_id
                             UserManager.email = email.value!!
+                            loading.postValue(false)
                             response.postValue(true)
                         } else {
+                            loading.postValue(false)
                             error.postValue(registerResponse.error!!)
                         }
                     }

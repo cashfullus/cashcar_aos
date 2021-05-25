@@ -17,4 +17,6 @@ class LoadingDialog constructor(context: Context) : Dialog(context){
 
         setContentView(R.layout.dialog_loading)
     }
+
+    override fun onBackPressed() {}
 }

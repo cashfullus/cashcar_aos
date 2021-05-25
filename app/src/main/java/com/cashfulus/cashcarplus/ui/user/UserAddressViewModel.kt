@@ -20,6 +20,7 @@ class UserAddressViewModel(private val repository: UserRepository): ViewModel() 
     val data = SingleLiveEvent<UserAddress>()
     val response = SingleLiveEvent<Boolean>()
     val error = MutableLiveData<ErrorResponse>()
+    val loading = SingleLiveEvent<Boolean>()
 
     init {
         getAddressInfo()
@@ -29,10 +30,13 @@ class UserAddressViewModel(private val repository: UserRepository): ViewModel() 
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val addressResponse = repository.getUserAddress(UserManager.userId!!, UserManager.jwtToken!!)
+                loading.postValue(true)
 
                 if (addressResponse.isSucceed) {
+                    loading.postValue(false)
                     data.postValue(addressResponse.contents!!)
                 } else {
+                    loading.postValue(false)
                     error.postValue(addressResponse.error!!)
                 }
             }
@@ -44,13 +48,17 @@ class UserAddressViewModel(private val repository: UserRepository): ViewModel() 
     fun postAddressInfo() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                loading.postValue(true)
                 val addressResponse = repository.postUserAddress(UserManager.userId!!, phone.value!!, detailAddress.value!!, mainAddress.value!!, name.value!!, UserManager.jwtToken!!)
 
                 if (addressResponse.isSucceed && addressResponse.contents!!.isUpdate) {
+                    loading.postValue(false)
                     response.postValue(true)
                 } else if(addressResponse.isSucceed && !addressResponse.contents!!.isUpdate) {
+                    loading.postValue(false)
                     error.postValue(makeErrorResponseFromMessage("오류가 발생해서, 배송지 정보를 업데이트하지 못했습니다.", "/user/set/address"))
                 } else {
+                    loading.postValue(false)
                     error.postValue(addressResponse.error!!)
                 }
             }

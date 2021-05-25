@@ -293,6 +293,13 @@ class CarInfoActivity : BaseActivity(), PopupDialogClickListener {
             showToast(it.message)
         })
 
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it)
+                loadingDialog.show()
+            else
+                loadingDialog.dismiss()
+        })
+
         viewModel.companyIndex.observe(binding.lifecycleOwner!!, {
             if (it == -1) {
                 if (viewModel.isKorean.value!!) {

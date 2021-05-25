@@ -37,33 +37,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.smarteist.autoimageslider.SliderView
-                    android:id="@+id/svAdInfo"
+                <!-- Image Slider -->
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vpAdInfo"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="h, 36:27"
-                    app:sliderAnimationDuration="3000"
-                    app:sliderAutoCycleDirection="back_and_forth"
-                    app:sliderAutoCycleEnabled="true"
-                    app:sliderScrollTimeInSec="1"
-                    app:sliderStartAutoCycle="true"
-                    app:sliderIndicatorAnimationDuration="3000"
-                    app:sliderIndicatorGravity="center_horizontal|bottom"
-                    app:sliderIndicatorMarginBottom="30dp"
-                    app:sliderIndicatorOrientation="horizontal"
-                    app:sliderIndicatorPadding="3dp"
-                    app:sliderIndicatorRadius="1dp"
-                    app:sliderIndicatorSelectedColor="@color/brand_orange1"
-                    app:sliderIndicatorUnselectedColor="@color/grayscale_wt"
+                    app:layout_constraintDimensionRatio="h, 4:3"
                     app:layout_constraintTop_toTopOf="parent"/>
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tlAdInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="8dp"
+                    android:background="@android:color/transparent"
+                    app:tabBackground="@drawable/tab_pager_image_slider"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp"
+                    app:layout_constraintBottom_toTopOf="@+id/glAdImgSlider"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Guideline 대용 -->
+                <View
+                    android:id="@+id/glAdImgSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="@+id/vpAdInfo"
+                    android:layout_marginBottom="24dp"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clAdInfoContents"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="252dp"
                     android:background="@drawable/background_ad_info"
-                    app:layout_constraintTop_toTopOf="@+id/svAdInfo">
+                    app:layout_constraintTop_toBottomOf="@+id/glAdImgSlider">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/glAdInfo"

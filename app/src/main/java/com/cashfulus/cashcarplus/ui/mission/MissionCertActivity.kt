@@ -170,6 +170,13 @@ class MissionCertActivity : BaseActivity(), CameraBottomDialogClickListener {
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
         })
+
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it)
+                loadingDialog.show()
+            else
+                loadingDialog.dismiss()
+        })
     }
 
     /** 사진 촬영 후 cameraBottomDialog의 interface의 콜백 함수 부분 */

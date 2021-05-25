@@ -47,10 +47,19 @@ class ProfileImageDialog : DialogFragment() {
         if(activityResult.resultCode == AppCompatActivity.RESULT_OK) {
             val intent = Intent(requireActivity(), ImageCropActivity::class.java)
 
+            // 아니 코드 빠져 있었네 ㅁㅊ;;;;;;;
             if(Build.VERSION.SDK_INT >= 29) {
                 val source = ImageDecoder.createSource(requireContext().contentResolver, Uri.fromFile(File(mCurrentPhotoPath)))
                 try {
-
+                    val bitmap = resizeBitmap(ImageDecoder.decodeBitmap(source))
+                    val bitmapResult = rotateBitmap(bitmap, mCurrentPhotoPath)
+                    if(bitmapResult != null) {
+                        intent.putExtra("image", bitmapResult)
+                        cropActivity.launch(intent)
+                    } else {
+                        intent.putExtra("image", bitmap)
+                        cropActivity.launch(intent)
+                    }
                 } catch (e: IOException) {
                     e.printStackTrace()
                     clickListener.onError("오류 발생 : "+e.localizedMessage)

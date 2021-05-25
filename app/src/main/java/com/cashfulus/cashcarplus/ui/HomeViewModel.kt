@@ -47,8 +47,8 @@ class HomeViewModel(private val missionRepository: MissionRepository): ViewModel
     fun loadData() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                loading.postValue(true)
                 val response = missionRepository.getMyMission(UserManager.userId!!, UserManager.jwtToken!!)
-                Log.d("CashcarPlus", response.toString())
 
                 if(response.isSucceed) {
                     UserApplyId = response.contents!!.data.adInformation.adUserApplyId
@@ -105,8 +105,10 @@ class HomeViewModel(private val missionRepository: MissionRepository): ViewModel
                     }
 
                     currentMission.postValue(result)
+                    loading.postValue(false)
                 } else {
                     error.postValue(response.error!!)
+                    loading.postValue(false)
                 }
             }
         } else {

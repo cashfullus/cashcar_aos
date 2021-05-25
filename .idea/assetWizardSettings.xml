@@ -14,8 +14,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_alarm_new" />
-                            <entry key="sourceFile" value="$USER_HOME$/Downloads/ic 9/alarm_new.svg" />
+                            <entry key="outputName" value="ic_radio" />
+                            <entry key="sourceFile" value="$USER_HOME$/Downloads/radio.svg" />
                           </map>
                         </option>
                       </PersistentState>

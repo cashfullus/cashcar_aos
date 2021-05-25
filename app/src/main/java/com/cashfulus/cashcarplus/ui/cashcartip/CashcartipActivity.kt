@@ -1,6 +1,7 @@
 package com.cashfulus.cashcarplus.ui.cashcartip
 
 import android.os.Bundle
+import android.text.Html
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.cashfulus.cashcarplus.R
@@ -46,7 +47,11 @@ class CashcartipActivity : BaseActivity() {
         viewModel.response.observe(binding.lifecycleOwner!!, {
             Glide.with(this@CashcartipActivity).load(it.thumbnailImage).into(binding.ivCashcartip)
             binding.tvCashcartipTitle.text = it.title
-            binding.tvCashcartipContents.text = it.description
+            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
+                binding.tvCashcartipContents.text = Html.fromHtml(it.description)
+            } else {
+                binding.tvCashcartipContents.text = Html.fromHtml(it.description, Html.FROM_HTML_MODE_LEGACY)
+            }
 
             val adapter = CashcartipPostRecyclerAdapter(this@CashcartipActivity, it.images)
             binding.rvCashcartipContents.adapter = adapter

@@ -25,16 +25,22 @@ class MyCarViewModel(private val repository: CarRepository): ViewModel() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val carListResponse = repository.carList(UserManager.userId!!, UserManager.jwtToken!!)
+                loading.postValue(true)
 
                 if (carListResponse.isSucceed) {
+                    loading.postValue(false)
                     response.postValue(carListResponse.contents!!.data)
                 } else {
                     // 소유한 차량이 존재하지 않을때
-                    if(carListResponse.error!!.status == 201)
+                    if(carListResponse.error!!.status == 201) {
+                        loading.postValue(false)
                         empty.postValue(true)
+                    }
                     // 진짜로 오류가 발생한 경우
-                    else
+                    else {
+                        loading.postValue(false)
                         error.postValue(carListResponse.error!!)
+                    }
                 }
             }
         } else {
@@ -46,17 +52,22 @@ class MyCarViewModel(private val repository: CarRepository): ViewModel() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val carListResponse = repository.carList(UserManager.userId!!, UserManager.jwtToken!!)
+                loading.postValue(true)
 
                 if (carListResponse.isSucceed) {
                     response.postValue(carListResponse.contents!!.data)
+                    loading.postValue(false)
                 } else {
                     // 소유한 차량이 존재하지 않을때
                     if(carListResponse.error!!.status == 201) {
+                        loading.postValue(false)
                         empty.postValue(true)
                     }
                     // 진짜로 오류가 발생한 경우
-                    else
+                    else {
+                        loading.postValue(false)
                         error.postValue(carListResponse.error!!)
+                    }
                 }
             }
         } else {

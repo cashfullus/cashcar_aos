@@ -10,6 +10,7 @@ import com.cashfulus.cashcarplus.ui.alarm.AlarmViewModel
 import com.cashfulus.cashcarplus.ui.car.AddCarViewModel
 import com.cashfulus.cashcarplus.ui.car.CarInfoViewModel
 import com.cashfulus.cashcarplus.ui.car.MyCarViewModel
+import com.cashfulus.cashcarplus.ui.donation.DonationListViewModel
 import com.cashfulus.cashcarplus.ui.faq.FaqViewModel
 import com.cashfulus.cashcarplus.ui.inquiry.InquiryViewModel
 import com.cashfulus.cashcarplus.ui.login.EmailLoginViewModel
@@ -50,6 +51,7 @@ val viewModelModule = module {
     viewModel { DrivingViewModel() }
     viewModel { PointViewModel() }
     viewModel { MyActivitiesViewModel() }
+    viewModel { DonationListViewModel(repository = get()) }
     // viewModel { (activity: Activity) -> SignupViewModel(repository = get(), activity = activity) }
     //viewModel { ChannelInfoViewModel(channelId = "dfd", repository = get()) }
     //viewModel { SocketViewModel() }

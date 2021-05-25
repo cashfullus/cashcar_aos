@@ -21,11 +21,13 @@ class AdInfoViewModel(private val missionRepository: MissionRepository): ViewMod
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val result = missionRepository.getAd(adId, UserManager.jwtToken!!)
+                loading.postValue(true)
 
                 if(result.isSucceed) {
                     response.postValue(result.contents!!.data)
-                    Log.d("CashcarPlus", result.contents!!.data.toString())
+                    loading.postValue(false)
                 } else {
+                    loading.postValue(false)
                     error.postValue(result.error!!)
                 }
             }

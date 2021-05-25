@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.base.BaseFragment
+import com.cashfulus.cashcarplus.base.TestActivity
 import com.cashfulus.cashcarplus.databinding.FragmentHomeBinding
 import com.cashfulus.cashcarplus.ui.alarm.AlarmActivity
 import com.cashfulus.cashcarplus.ui.car.AddCarActivity
@@ -55,9 +56,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     private val adapter by lazy { HomeAdapter(childFragmentManager) }
 
     override fun init() {
+        /** Fragment의 경우 loadingDialog를 따로 만들어줘야 한다. */
+        val loadingDialog = LoadingDialog(requireActivity())
+
         /** Alarm Button 클릭 시 처리 */
         binding.btnHomeAlarm.setOnClickListener {
-            startActivity(Intent(requireActivity(), AlarmActivity::class.java))
+            //startActivity(Intent(requireActivity(), AlarmActivity::class.java))
+            startActivity(Intent(requireActivity(), TestActivity::class.java))
         }
 
         /** ViewModel 갱신 시 처리 */
@@ -198,7 +203,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -230,7 +235,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -259,7 +264,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -288,7 +293,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -337,7 +342,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -386,7 +391,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -532,6 +537,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             }
         }.attach()
         binding.tlHomeAd.setSelectedTabIndicatorColor(getColor(requireActivity(), android.R.color.transparent))
+
+        viewModel.loading.observe(binding.lifecycleOwner!!, {
+            if(it)
+                loadingDialog.show()
+            else
+                loadingDialog.dismiss()
+        })
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             binding.srlHome.isRefreshing = false

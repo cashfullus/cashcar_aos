@@ -31,6 +31,7 @@ class MissionViewModel(private val missionRepository: MissionRepository): ViewMo
     fun loadData() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                loading.postValue(true)
                 val result = missionRepository.getMissions(UserManager.userId!!, UserManager.jwtToken!!)
 
                 if(result.isSucceed) {
@@ -60,8 +61,10 @@ class MissionViewModel(private val missionRepository: MissionRepository): ViewMo
                         }
                     }
 
+                    loading.postValue(false)
                     response.postValue(AdMissionResponseForView(isMissionStart, missionLength, currentDate, result.contents.adUserInformation, result.contents.images, important, additional, driving, result.contents.adUserInformation.totalPoint+additionalPoint))
                 } else {
+                    loading.postValue(false)
                     error.postValue(result.error!!)
                 }
             }

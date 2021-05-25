@@ -16,17 +16,18 @@ import kotlinx.coroutines.launch
 class UserInfoViewModel(private val repository: UserRepository): ViewModel() {
     val originImg = SingleLiveEvent<String>()
     val profileImg = MutableLiveData<Uri>()
-    val nickname = MutableLiveData<String>()
+    val nickname = MutableLiveData<String>("")
     val name = MutableLiveData<String>()
     val email = MutableLiveData<String>()
     val phone = MutableLiveData<String>()
-    val gender = MutableLiveData<String>()
-    val birth = MutableLiveData<String>()
+    val gender = MutableLiveData<String>("")
+    val birth = MutableLiveData<String>("")
     val receiveAlarm = MutableLiveData<Boolean>()
     val receiveMarketing = MutableLiveData<Boolean>()
 
     val response = SingleLiveEvent<Boolean>()
     val error = MutableLiveData<ErrorResponse>()
+    val loading = SingleLiveEvent<Boolean>()
 
     init {
         receiveAlarm.postValue(UserManager.alarm == 1)
@@ -62,6 +63,7 @@ class UserInfoViewModel(private val repository: UserRepository): ViewModel() {
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
                             name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, if (receiveAlarm.value!!) 1 else 0,
                             if (receiveMarketing.value!!) 1 else 0, profileImg.value!!)
+                        loading.postValue(true)
 
                         if (updateResponse.isSucceed && updateResponse.contents!!.status) {
                             UserManager.alarm = if(receiveAlarm.value!!) 1 else 0
@@ -73,18 +75,23 @@ class UserInfoViewModel(private val repository: UserRepository): ViewModel() {
                             UserManager.name = name.value!!
                             UserManager.profileImage = updateResponse.contents.image
 
+                            loading.postValue(false)
                             response.postValue(true)
                         } else {
                             // 404 : 해당 계정이 없음 -> 로그아웃 처리
-                            if(updateResponse.error!!.status == 404)
+                            if(updateResponse.error!!.status == 404) {
+                                loading.postValue(false)
                                 response.postValue(false)
-                            else
+                            } else {
+                                loading.postValue(false)
                                 error.postValue(updateResponse.error!!)
+                            }
                         }
                     } else {
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
                             name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!,
                             if (receiveAlarm.value!!) 1 else 0, if (receiveMarketing.value!!) 1 else 0)
+                        loading.postValue(true)
 
                         if (updateResponse.isSucceed && updateResponse.contents!!.status) {
                             UserManager.alarm = if(receiveAlarm.value!!) 1 else 0
@@ -94,15 +101,22 @@ class UserInfoViewModel(private val repository: UserRepository): ViewModel() {
                             UserManager.marketing = if(receiveMarketing.value!!) 1 else 0
                             UserManager.nickName = nickname.value!!
                             UserManager.name = name.value!!
-                            UserManager.profileImage = ""
+                            if(originImg.value == null)
+                                UserManager.profileImage = ""
+                            else
+                                UserManager.profileImage = originImg.value!!
 
+                            loading.postValue(false)
                             response.postValue(true)
                         } else {
                             // 404 : 해당 계정이 없음 -> 로그아웃 처리
-                            if(updateResponse.error!!.status == 404)
+                            if(updateResponse.error!!.status == 404) {
+                                loading.postValue(false)
                                 response.postValue(false)
-                            else
+                            } else {
+                                loading.postValue(false)
                                 error.postValue(updateResponse.error!!)
+                            }
                         }
                     }
                 }
