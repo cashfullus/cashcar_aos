@@ -3,10 +3,10 @@ package com.cashfulus.cashcarplus.ui.login
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.cashfulus.cashcarplus.base.App
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.UserRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.ErrorResponse
@@ -19,19 +19,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class EmailLoginViewModel(private val repository: UserRepository): ViewModel() {
+class EmailLoginViewModel(private val repository: UserRepository): BaseViewModel() {
     val email = MutableLiveData<String>("")
     val password = MutableLiveData<String>("")
 
-    val loading = SingleLiveEvent<Boolean>()
     val response = MutableLiveData<Boolean>()
     val error = SingleLiveEvent<ErrorResponse>()
 
     fun loginPW() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                showLoadingDialog()
                 val loginResponse = repository.loginPW(email.value!!, password.value!!, "normal")
-                loading.postValue(true)
 
                 if (loginResponse.isSucceed) {
                     UserManager.isLogined = true
@@ -40,7 +39,7 @@ class EmailLoginViewModel(private val repository: UserRepository): ViewModel() {
                     UserManager.userId = loginResponse.contents!!.data!!.user_id
                     getUserInfo(loginResponse.contents!!.data!!.user_id, loginResponse.contents!!.data!!.jwt_token)
                 } else {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     error.postValue(loginResponse.error!!)
                 }
             }
@@ -77,12 +76,12 @@ class EmailLoginViewModel(private val repository: UserRepository): ViewModel() {
                     }
                     updateToken()
                 } else {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     error.postValue(loginResponse.error!!)
                 }
             }
         } else {
-            loading.postValue(false)
+            hideLoadingDialog()
             error.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, ""))
         }
     }
@@ -91,8 +90,8 @@ class EmailLoginViewModel(private val repository: UserRepository): ViewModel() {
         if(NetworkManager().checkNetworkState()) {
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    loading.postValue(false)
                     error.postValue(makeErrorResponseFromMessage("FCM 토큰이 존재하지 않습니다. 다시 시도해 주세요.", "/user/fcm"))
+                    hideLoadingDialog()
                     return@OnCompleteListener
                 }
 
@@ -110,20 +109,20 @@ class EmailLoginViewModel(private val repository: UserRepository): ViewModel() {
                             userDataEditer.putInt("userId", UserManager.userId!!)
                             userDataEditer.apply()
 
-                            loading.postValue(false)
+                            hideLoadingDialog()
                             response.postValue(true)
                         } else {
-                            loading.postValue(false)
+                            hideLoadingDialog()
                             error.postValue(loginResponse.error!!)
                         }
                     }
                 } else {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     error.postValue(makeErrorResponseFromMessage("FCM 토큰이 존재하지 않습니다. 다시 시도해 주세요.", "/user/fcm"))
                 }
             })
         } else {
-            loading.postValue(false)
+            hideLoadingDialog()
             error.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, ""))
         }
     }

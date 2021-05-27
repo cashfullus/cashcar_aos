@@ -26,10 +26,6 @@ class CashcartipFragment : BaseFragment<FragmentCashcartipBinding, CashcartipVie
             showToast(it.message)
         })
 
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-
-        })
-
         /** 전체 리스트 Refresh */
         binding.srlCashcartip.setOnRefreshListener {
             viewModel.loadCashcarTipList(1)

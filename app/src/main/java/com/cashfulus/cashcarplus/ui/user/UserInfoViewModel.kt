@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.UserRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.*
@@ -13,7 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserInfoViewModel(private val repository: UserRepository): ViewModel() {
+class UserInfoViewModel(private val repository: UserRepository): BaseViewModel() {
     val originImg = SingleLiveEvent<String>()
     val profileImg = MutableLiveData<Uri>()
     val nickname = MutableLiveData<String>("")
@@ -27,7 +28,6 @@ class UserInfoViewModel(private val repository: UserRepository): ViewModel() {
 
     val response = SingleLiveEvent<Boolean>()
     val error = MutableLiveData<ErrorResponse>()
-    val loading = SingleLiveEvent<Boolean>()
 
     init {
         receiveAlarm.postValue(UserManager.alarm == 1)
@@ -60,10 +60,10 @@ class UserInfoViewModel(private val repository: UserRepository): ViewModel() {
                     response.postValue(false)
                 } else {
                     if(profileImg.value != null) {
+                        showLoadingDialog()
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
                             name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, if (receiveAlarm.value!!) 1 else 0,
                             if (receiveMarketing.value!!) 1 else 0, profileImg.value!!)
-                        loading.postValue(true)
 
                         if (updateResponse.isSucceed && updateResponse.contents!!.status) {
                             UserManager.alarm = if(receiveAlarm.value!!) 1 else 0
@@ -75,23 +75,22 @@ class UserInfoViewModel(private val repository: UserRepository): ViewModel() {
                             UserManager.name = name.value!!
                             UserManager.profileImage = updateResponse.contents.image
 
-                            loading.postValue(false)
+                            hideLoadingDialog()
                             response.postValue(true)
                         } else {
+                            hideLoadingDialog()
                             // 404 : 해당 계정이 없음 -> 로그아웃 처리
                             if(updateResponse.error!!.status == 404) {
-                                loading.postValue(false)
                                 response.postValue(false)
                             } else {
-                                loading.postValue(false)
                                 error.postValue(updateResponse.error!!)
                             }
                         }
                     } else {
+                        showLoadingDialog()
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
                             name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!,
                             if (receiveAlarm.value!!) 1 else 0, if (receiveMarketing.value!!) 1 else 0)
-                        loading.postValue(true)
 
                         if (updateResponse.isSucceed && updateResponse.contents!!.status) {
                             UserManager.alarm = if(receiveAlarm.value!!) 1 else 0
@@ -106,15 +105,15 @@ class UserInfoViewModel(private val repository: UserRepository): ViewModel() {
                             else
                                 UserManager.profileImage = originImg.value!!
 
-                            loading.postValue(false)
+                            hideLoadingDialog()
                             response.postValue(true)
                         } else {
+                            hideLoadingDialog()
+
                             // 404 : 해당 계정이 없음 -> 로그아웃 처리
                             if(updateResponse.error!!.status == 404) {
-                                loading.postValue(false)
                                 response.postValue(false)
                             } else {
-                                loading.postValue(false)
                                 error.postValue(updateResponse.error!!)
                             }
                         }

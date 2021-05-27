@@ -17,7 +17,6 @@ class AdListViewModel(private val repository: AdRepository): ViewModel() {
     // 광고 리스트
     val adList = MutableLiveData<ArrayList<AdResponse>>()
     // 로딩 및 오류
-    val loading = SingleLiveEvent<Boolean>()
     val error = SingleLiveEvent<ErrorResponse>()
 
     init {

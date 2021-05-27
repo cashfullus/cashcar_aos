@@ -3,6 +3,7 @@ package com.cashfulus.cashcarplus.ui.car
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.CarRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.ErrorResponse
@@ -15,8 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MyCarViewModel(private val repository: CarRepository): ViewModel() {
-    val loading = SingleLiveEvent<Boolean>()
+class MyCarViewModel(private val repository: CarRepository): BaseViewModel() {
     val response = MutableLiveData<ArrayList<MyCarResponse>>()
     val empty = SingleLiveEvent<Boolean>()
     val error = MutableLiveData<ErrorResponse>()
@@ -24,21 +24,21 @@ class MyCarViewModel(private val repository: CarRepository): ViewModel() {
     init {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                showLoadingDialog()
                 val carListResponse = repository.carList(UserManager.userId!!, UserManager.jwtToken!!)
-                loading.postValue(true)
 
                 if (carListResponse.isSucceed) {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     response.postValue(carListResponse.contents!!.data)
                 } else {
+                    hideLoadingDialog()
+
                     // 소유한 차량이 존재하지 않을때
                     if(carListResponse.error!!.status == 201) {
-                        loading.postValue(false)
                         empty.postValue(true)
                     }
                     // 진짜로 오류가 발생한 경우
                     else {
-                        loading.postValue(false)
                         error.postValue(carListResponse.error!!)
                     }
                 }
@@ -51,21 +51,20 @@ class MyCarViewModel(private val repository: CarRepository): ViewModel() {
     fun refresh() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                showLoadingDialog()
                 val carListResponse = repository.carList(UserManager.userId!!, UserManager.jwtToken!!)
-                loading.postValue(true)
 
                 if (carListResponse.isSucceed) {
+                    hideLoadingDialog()
                     response.postValue(carListResponse.contents!!.data)
-                    loading.postValue(false)
                 } else {
+                    hideLoadingDialog()
                     // 소유한 차량이 존재하지 않을때
                     if(carListResponse.error!!.status == 201) {
-                        loading.postValue(false)
                         empty.postValue(true)
                     }
                     // 진짜로 오류가 발생한 경우
                     else {
-                        loading.postValue(false)
                         error.postValue(carListResponse.error!!)
                     }
                 }

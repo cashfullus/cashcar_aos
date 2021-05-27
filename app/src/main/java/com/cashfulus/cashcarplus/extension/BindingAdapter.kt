@@ -60,6 +60,13 @@ class BindingAdapter {
     }
 }
 
+@BindingAdapter("visibleOrGone")
+fun View.visibleOrGone(isVisible: Boolean?) {
+    if (isVisible != null) {
+        visibility = if (isVisible) View.VISIBLE else View.GONE
+    }
+}
+
 /*object UpgradedEditTextReverseBindingKt {
 
 }*/

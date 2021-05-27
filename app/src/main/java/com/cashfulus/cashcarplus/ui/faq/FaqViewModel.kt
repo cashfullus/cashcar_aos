@@ -2,6 +2,7 @@ package com.cashfulus.cashcarplus.ui.faq
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.FaqRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.ErrorResponse
@@ -13,7 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FaqViewModel(private val repository: FaqRepository): ViewModel() {
+class FaqViewModel(private val repository: FaqRepository): BaseViewModel() {
     val faqList = MutableLiveData<ArrayList<FaqResponse>>()
     val error = SingleLiveEvent<ErrorResponse>()
 

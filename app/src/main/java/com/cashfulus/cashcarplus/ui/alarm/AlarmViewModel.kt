@@ -2,6 +2,7 @@ package com.cashfulus.cashcarplus.ui.alarm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.AlarmRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.AlarmResponse
@@ -15,8 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AlarmViewModel (private val repository: AlarmRepository): ViewModel() {
-    val loading = SingleLiveEvent<Boolean>()
+class AlarmViewModel (private val repository: AlarmRepository): BaseViewModel() {
     val alarmList = MutableLiveData<ArrayList<AlarmResponse>>()
     val error = SingleLiveEvent<ErrorResponse>()
 
@@ -27,14 +27,16 @@ class AlarmViewModel (private val repository: AlarmRepository): ViewModel() {
     fun getAlarmList() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                showLoadingDialog()
                 val apiResponse = repository.getAlarmApi(UserManager.userId!!, 1, UserManager.jwtToken!!)
 
-                if(apiResponse.isSucceed)
+                if(apiResponse.isSucceed) {
                     alarmList.postValue(apiResponse.contents!!.data)
-                else
+                    hideLoadingDialog()
+                } else {
                     error.postValue(apiResponse.error!!)
-
-                loading.postValue(false)
+                    hideLoadingDialog()
+                }
             }
         } else {
             error.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, ""))

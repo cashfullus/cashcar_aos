@@ -9,16 +9,13 @@ import androidx.lifecycle.Observer
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityInquiryBinding
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.util.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class InquiryActivity : BaseActivity() {
 
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@InquiryActivity) }
     private val binding by binding<ActivityInquiryBinding>(R.layout.activity_inquiry)
     private val viewModel: InquiryViewModel by viewModel { parametersOf() }
 

@@ -7,15 +7,12 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityFaqBinding
 import com.cashfulus.cashcarplus.ui.adapter.ExpandableFaqListAdapter
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import kotlinx.android.synthetic.main.activity_faq.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class FaqActivity : BaseActivity() {
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@FaqActivity) }
     private val binding by binding<ActivityFaqBinding>(R.layout.activity_faq)
     private val viewModel: FaqViewModel by viewModel { parametersOf() }
 

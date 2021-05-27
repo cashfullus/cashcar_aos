@@ -83,5 +83,10 @@
             android:layout_marginTop="34dp"
             android:layout_marginHorizontal="16dp"/>
 
+        <com.cashfulus.cashcarplus.view.LoadingDialogView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:visibleOrGone="@{viewModel.isDialogVisible}"
+            tools:ignore="MissingConstraints"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

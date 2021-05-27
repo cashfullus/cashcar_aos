@@ -11,7 +11,6 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityAdInfoBinding
 import com.cashfulus.cashcarplus.ui.adapter.ImageSliderAdapter
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.util.UserManager
 import com.kakao.sdk.link.LinkClient
 import com.kakao.sdk.template.model.*
@@ -32,7 +31,6 @@ class AdInfoActivity : BaseActivity() {
     val numFormat = DecimalFormat("###,###")
 
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@AdInfoActivity) }
     private val binding by binding<ActivityAdInfoBinding>(R.layout.activity_ad_info)
     private val viewModel: AdInfoViewModel by viewModel { parametersOf(this@AdInfoActivity) }
 
@@ -49,9 +47,9 @@ class AdInfoActivity : BaseActivity() {
         }
 
         /** 정보 받아오기 */
-        if(intent.getIntExtra("id", -1) != -1)
+        if(intent.getIntExtra("id", -1) != -1) {
             viewModel.loadData(intent.getIntExtra("id", -1))
-        else {
+        } else {
             showToast("오류가 발생했습니다. 다시 시도해 주세요.")
             finish()
         }
@@ -188,13 +186,6 @@ class AdInfoActivity : BaseActivity() {
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
-        })
-
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it)
-                loadingDialog.show()
-            else
-                loadingDialog.dismiss()
         })
 
         /** 툴바 설정 */

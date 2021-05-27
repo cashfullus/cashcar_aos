@@ -3,6 +3,7 @@ package com.cashfulus.cashcarplus.ui.mission
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.MISSION_STATUS_SUCCESS
 import com.cashfulus.cashcarplus.data.repository.MissionRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
@@ -16,10 +17,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
-class MissionViewModel(private val missionRepository: MissionRepository): ViewModel() {
+class MissionViewModel(private val missionRepository: MissionRepository): BaseViewModel() {
     val response = MutableLiveData<AdMissionResponseForView>()
-    val loading = SingleLiveEvent<Boolean>()
     val error = SingleLiveEvent<ErrorResponse>()
 
     /** 미션 타입 */
@@ -31,7 +30,7 @@ class MissionViewModel(private val missionRepository: MissionRepository): ViewMo
     fun loadData() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
-                loading.postValue(true)
+                showLoadingDialog()
                 val result = missionRepository.getMissions(UserManager.userId!!, UserManager.jwtToken!!)
 
                 if(result.isSucceed) {
@@ -61,10 +60,10 @@ class MissionViewModel(private val missionRepository: MissionRepository): ViewMo
                         }
                     }
 
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     response.postValue(AdMissionResponseForView(isMissionStart, missionLength, currentDate, result.contents.adUserInformation, result.contents.images, important, additional, driving, result.contents.adUserInformation.totalPoint+additionalPoint))
                 } else {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     error.postValue(result.error!!)
                 }
             }

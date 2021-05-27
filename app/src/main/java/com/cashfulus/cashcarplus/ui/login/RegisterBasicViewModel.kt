@@ -1,7 +1,7 @@
 package com.cashfulus.cashcarplus.ui.login
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.UserRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.ErrorResponse
@@ -16,11 +16,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class RegisterBasicViewModel(private val repository: UserRepository): ViewModel() {
+class RegisterBasicViewModel(private val repository: UserRepository): BaseViewModel() {
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
 
-    val loading = SingleLiveEvent<Boolean>()
     val response = MutableLiveData<Boolean>()
     val error = SingleLiveEvent<ErrorResponse>()
 
@@ -37,17 +36,17 @@ class RegisterBasicViewModel(private val repository: UserRepository): ViewModel(
 
                 if(token != null) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        loading.postValue(true)
+                        showLoadingDialog()
                         val registerResponse = repository.registerPW(token, email.value!!, password.value!!, alarm, marketing, method)
 
                         if (registerResponse.isSucceed && registerResponse.contents!!.status) {
                             UserManager.jwtToken = registerResponse.contents!!.data.jwt_token
                             UserManager.userId = registerResponse.contents!!.data.user_id
                             UserManager.email = email.value!!
-                            loading.postValue(false)
+                            hideLoadingDialog()
                             response.postValue(true)
                         } else {
-                            loading.postValue(false)
+                            hideLoadingDialog()
                             error.postValue(registerResponse.error!!)
                         }
                     }

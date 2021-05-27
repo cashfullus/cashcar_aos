@@ -26,7 +26,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cashcarplus"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.donation.DonationListActivity"></activity>
+        <activity android:name=".ui.donation.DonationPrivacyActivity"></activity>
+        <activity android:name=".ui.donation.DonationRegisterActivity" />
+        <activity android:name=".ui.donation.DonationListActivity" />
         <activity android:name=".base.TestActivity" />
         <activity android:name=".ui.point.PointActivity" />
         <activity android:name=".ui.myactivities.MyActivitiesActivity" />

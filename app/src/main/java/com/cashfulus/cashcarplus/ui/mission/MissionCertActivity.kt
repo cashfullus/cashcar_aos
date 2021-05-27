@@ -1,31 +1,22 @@
 package com.cashfulus.cashcarplus.ui.mission
 
 import android.graphics.Bitmap
-import android.graphics.Typeface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
-import com.cashfulus.cashcarplus.databinding.ActivityMissionBinding
 import com.cashfulus.cashcarplus.databinding.ActivityMissionCertBinding
 import com.cashfulus.cashcarplus.ui.dialog.CameraBottomDialog
 import com.cashfulus.cashcarplus.ui.dialog.CameraBottomDialogClickListener
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.util.isValidGauge
-import com.cashfulus.cashcarplus.util.isValidNickname
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.text.DecimalFormat
 
 class MissionCertActivity : BaseActivity(), CameraBottomDialogClickListener {
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@MissionCertActivity) }
     private val binding by binding<ActivityMissionCertBinding>(R.layout.activity_mission_cert)
     private val viewModel: MissionCertViewModel by viewModel { parametersOf() }
 
@@ -149,6 +140,7 @@ class MissionCertActivity : BaseActivity(), CameraBottomDialogClickListener {
 
         /** LiveData 처리 */
         viewModel.response.observe(binding.lifecycleOwner!!, {
+
             if(!it.dataNotNull) {
                 showToast("일부 데이터가 전송되지 않았습니다. 다시 시도해 주세요.")
             } else if(!it.imageAllowed) {
@@ -169,13 +161,6 @@ class MissionCertActivity : BaseActivity(), CameraBottomDialogClickListener {
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
-        })
-
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it)
-                loadingDialog.show()
-            else
-                loadingDialog.dismiss()
         })
     }
 

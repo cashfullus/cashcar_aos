@@ -1,7 +1,6 @@
 package com.cashfulus.cashcarplus.ui.user
 
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
@@ -16,14 +15,11 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityUserAddressBinding
 import com.cashfulus.cashcarplus.ui.adinfo.AddressActivity
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.util.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class UserAddressActivity : BaseActivity() {
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@UserAddressActivity) }
     private val binding by binding<ActivityUserAddressBinding>(R.layout.activity_user_address)
     private val viewModel: UserAddressViewModel by viewModel { parametersOf() }
 
@@ -159,14 +155,6 @@ class UserAddressActivity : BaseActivity() {
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
-        })
-
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it && !this@UserAddressActivity.isFinishing) {
-                loadingDialog.show()
-            } else if(!it) {
-                loadingDialog.dismiss()
-            }
         })
 
         viewModel.response.observe(binding.lifecycleOwner!!, {

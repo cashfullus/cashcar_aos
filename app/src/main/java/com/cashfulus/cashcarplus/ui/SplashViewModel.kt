@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
  */
 
 class SplashViewModel(private val repository: UserRepository, private val versionRepo: VersionRepository) : ViewModel() {
-    val loading = SingleLiveEvent<Boolean>()
     val error = SingleLiveEvent<ErrorResponse>()
     val isLogined = SingleLiveEvent<Boolean>()
 

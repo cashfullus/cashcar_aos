@@ -95,4 +95,9 @@
         <item>최근 이용 내역</item>
     </string-array>
 
+    <string-array name="tmp">
+        <item>초록우산 어린이재단</item>
+        <item>밀알복지재단</item>
+    </string-array>
+
 </resources>

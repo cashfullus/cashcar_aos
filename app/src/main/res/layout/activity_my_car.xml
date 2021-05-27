@@ -31,5 +31,11 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbarMyCar"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <com.cashfulus.cashcarplus.view.LoadingDialogView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:visibleOrGone="@{viewModel.isDialogVisible}"
+            tools:ignore="MissingConstraints"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

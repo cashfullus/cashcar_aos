@@ -14,8 +14,6 @@ import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityMissionBinding
 import com.cashfulus.cashcarplus.extension.setStartMargins
 import com.cashfulus.cashcarplus.ui.adapter.*
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.DecimalFormat
@@ -23,13 +21,13 @@ import java.util.*
 import kotlin.properties.Delegates
 
 class MissionActivity : BaseActivity() {
-    private val DELAY_MS: Long = 500 //delay in milliseconds before task is to be executed
+    private val DELAY_MS: Long = 500 // delay in milliseconds before task is to be executed
     private val PERIOD_MS: Long = 3000 // time in milliseconds between successive task executions.
+
     var pageNum by Delegates.notNull<Int>()
     var currentPage = 0
     val numFormat = DecimalFormat("###,###")
 
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@MissionActivity) }
     private val binding by binding<ActivityMissionBinding>(R.layout.activity_mission)
     private val viewModel: MissionViewModel by viewModel { parametersOf() }
 
@@ -152,13 +150,6 @@ class MissionActivity : BaseActivity() {
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
-        })
-
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it)
-                loadingDialog.show()
-            else
-                loadingDialog.dismiss()
         })
 
         /** 최하단 주의사항 텍스트 일부 색상 설정 */

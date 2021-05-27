@@ -7,11 +7,8 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
@@ -20,7 +17,6 @@ import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityUserInfoBinding
 import com.cashfulus.cashcarplus.ui.adapter.SpinnerWithHintAdapter
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialog
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialogClickListener
 import com.cashfulus.cashcarplus.ui.dialog.ProfileImageDialogClickListener
@@ -30,7 +26,6 @@ import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.user.UserApiClient
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -39,7 +34,6 @@ import org.koin.core.parameter.parametersOf
 
 class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupDialogClickListener {
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@UserInfoActivity) }
     private val binding by binding<ActivityUserInfoBinding>(R.layout.activity_user_info)
     private val viewModel: UserInfoViewModel by viewModel { parametersOf() }
 
@@ -220,13 +214,6 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
-        })
-
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it)
-                loadingDialog.show()
-            else
-                loadingDialog.dismiss()
         })
 
         /** 비밀번호 변경 */

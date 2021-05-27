@@ -4,13 +4,10 @@ import android.os.Bundle
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityMyActivitiesBinding
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class MyActivitiesActivity : BaseActivity() {
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@MyActivitiesActivity) }
     private val binding by binding<ActivityMyActivitiesBinding>(R.layout.activity_my_activities)
     private val viewModel: MyActivitiesViewModel by viewModel { parametersOf() }
 

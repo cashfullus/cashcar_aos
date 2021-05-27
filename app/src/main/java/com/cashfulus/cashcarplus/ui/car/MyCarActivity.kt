@@ -2,7 +2,6 @@ package com.cashfulus.cashcarplus.ui.car
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -11,13 +10,10 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityMyCarBinding
 import com.cashfulus.cashcarplus.ui.adapter.MyCarRecyclerAdapter
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class MyCarActivity : BaseActivity() {
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@MyCarActivity) }
     private val binding by binding<ActivityMyCarBinding>(R.layout.activity_my_car)
     private val viewModel: MyCarViewModel by viewModel { parametersOf() }
 
@@ -86,13 +82,6 @@ class MyCarActivity : BaseActivity() {
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
             finish()
-        })
-
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it)
-                loadingDialog.show()
-            else
-                loadingDialog.dismiss()
         })
     }
 }

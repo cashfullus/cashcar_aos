@@ -1,7 +1,7 @@
 package com.cashfulus.cashcarplus.ui.myactivities
 
-import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 
-class MyActivitiesViewModel: ViewModel() {
+class MyActivitiesViewModel: BaseViewModel() {
 
 }

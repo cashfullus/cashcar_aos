@@ -25,5 +25,11 @@
             app:title="활동 내역"
             app:layout_constraintTop_toTopOf="parent"/>
 
+        <com.cashfulus.cashcarplus.view.LoadingDialogView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:visibleOrGone="@{viewModel.isDialogVisible}"
+            tools:ignore="MissingConstraints"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

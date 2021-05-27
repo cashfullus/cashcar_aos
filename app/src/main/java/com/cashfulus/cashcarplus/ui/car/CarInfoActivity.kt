@@ -1,34 +1,27 @@
 package com.cashfulus.cashcarplus.ui.car
 
-import android.app.Dialog
-import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityCarInfoBinding
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialog
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialogClickListener
 import com.cashfulus.cashcarplus.util.*
 import com.cashfulus.cashcarplus.view.ONLY_ONE_CAR
 import com.cashfulus.cashcarplus.view.ONLY_ONE_CAR_NOT_CHECKED
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 /** 2021.05.04 : 수정 가능/불가능 상태가 하나로 합쳐짐. */
 
 class CarInfoActivity : BaseActivity(), PopupDialogClickListener {
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@CarInfoActivity) }
     private val binding by binding<ActivityCarInfoBinding>(R.layout.activity_car_info)
     private val viewModel: CarInfoViewModel by viewModel { parametersOf() }
 
@@ -293,14 +286,8 @@ class CarInfoActivity : BaseActivity(), PopupDialogClickListener {
             showToast(it.message)
         })
 
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it)
-                loadingDialog.show()
-            else
-                loadingDialog.dismiss()
-        })
-
         viewModel.companyIndex.observe(binding.lifecycleOwner!!, {
+            /** getCarInfo의 경우, 회사 Spinner 정보를 셋팅하는 시점이 될 때 Dialog를 닫음. */
             if (it == -1) {
                 if (viewModel.isKorean.value!!) {
                     binding.spCarCompany.adapter = koreanAdapter

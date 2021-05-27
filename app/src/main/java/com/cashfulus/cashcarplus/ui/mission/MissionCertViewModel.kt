@@ -3,6 +3,7 @@ package com.cashfulus.cashcarplus.ui.mission
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.MissionRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.*
@@ -12,7 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MissionCertViewModel(private val repository: MissionRepository): ViewModel() {
+class MissionCertViewModel(private val repository: MissionRepository): BaseViewModel() {
     val sideImg = MutableLiveData<Bitmap>()
     val rearImg = MutableLiveData<Bitmap>()
     val gaugeImg = MutableLiveData<Bitmap>()
@@ -21,7 +22,6 @@ class MissionCertViewModel(private val repository: MissionRepository): ViewModel
 
     val response = MutableLiveData<AdMissionPost>()
     val error = SingleLiveEvent<ErrorResponse>()
-    val loading = SingleLiveEvent<Boolean>()
 
     fun uploadMission(missionId: Int, isAdditional: Boolean) {
         // 모든 값이 정상적으로 들어와있는지 검사
@@ -37,14 +37,14 @@ class MissionCertViewModel(private val repository: MissionRepository): ViewModel
             else {
                 if(NetworkManager().checkNetworkState()) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        loading.postValue(true)
+                        showLoadingDialog()
                         val apiRespose = repository.postMission(sideImg.value!!, rearImg.value!!, gaugeImg.value!!, gaugeKm.value!!, missionId, UserManager.userId!!, UserManager.jwtToken!!)
 
                         if (apiRespose.isSucceed) {
-                            loading.postValue(false)
+                            hideLoadingDialog()
                             response.postValue(apiRespose.contents!!)
                         } else {
-                            loading.postValue(false)
+                            hideLoadingDialog()
                             error.postValue(apiRespose.error!!)
                         }
                     }
@@ -60,14 +60,14 @@ class MissionCertViewModel(private val repository: MissionRepository): ViewModel
             else {
                 if(NetworkManager().checkNetworkState()) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        loading.postValue(true)
+                        showLoadingDialog()
                         val apiRespose = repository.postMission(sideImg.value!!, rearImg.value!!, missionId, UserManager.userId!!, UserManager.jwtToken!!)
 
                         if (apiRespose.isSucceed) {
-                            loading.postValue(false)
+                            hideLoadingDialog()
                             response.postValue(apiRespose.contents!!)
                         } else {
-                            loading.postValue(false)
+                            hideLoadingDialog()
                             error.postValue(apiRespose.error!!)
                         }
                     }

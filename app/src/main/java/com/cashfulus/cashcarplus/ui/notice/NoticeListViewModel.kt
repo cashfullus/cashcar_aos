@@ -2,6 +2,7 @@ package com.cashfulus.cashcarplus.ui.notice
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.NoticeRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.*
@@ -11,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NoticeListViewModel(private val repository: NoticeRepository): ViewModel() {
+class NoticeListViewModel(private val repository: NoticeRepository): BaseViewModel() {
     val noticeList = MutableLiveData<NoticeDataList>()
     val error = SingleLiveEvent<ErrorResponse>()
 

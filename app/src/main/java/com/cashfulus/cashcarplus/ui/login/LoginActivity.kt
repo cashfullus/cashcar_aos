@@ -1,29 +1,18 @@
 package com.cashfulus.cashcarplus.ui.login
 
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
-import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityLoginBinding
 import com.cashfulus.cashcarplus.ui.MainActivity
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.util.UserManager
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 
 class LoginActivity : BaseActivity() {
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@LoginActivity) }
     private val binding by binding<ActivityLoginBinding>(R.layout.activity_login)
     private val viewModel: LoginViewModel by viewModel { parametersOf() }
 

@@ -8,13 +8,10 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityCashcartipBinding
 import com.cashfulus.cashcarplus.ui.adapter.CashcartipPostRecyclerAdapter
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class CashcartipActivity : BaseActivity() {
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@CashcartipActivity) }
     private val binding by binding<ActivityCashcartipBinding>(R.layout.activity_cashcartip)
     private val viewModel: CashcartipViewModel by viewModel { parametersOf() }
 
@@ -60,10 +57,6 @@ class CashcartipActivity : BaseActivity() {
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
-        })
-
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-
         })
     }
 }

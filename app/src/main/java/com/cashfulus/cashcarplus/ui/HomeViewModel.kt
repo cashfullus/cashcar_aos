@@ -2,7 +2,7 @@ package com.cashfulus.cashcarplus.ui
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.*
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.*
@@ -32,11 +32,10 @@ const val MISSION_MESSAGE_APPLY_FAIL = "apply_fail"
 const val MISSION_MESSAGE_APPLY_SUCCESS = "apply_success"
 const val MISSION_MESSAGE_MISSION_FAIL = "mission_fail"
 
-class HomeViewModel(private val missionRepository: MissionRepository): ViewModel() {
+class HomeViewModel(private val missionRepository: MissionRepository): BaseViewModel() {
     // 현재 진행중인 광고 & 미션
     val currentMission = MutableLiveData<MyAdResponseWrapper>()
     // 로딩 및 오류
-    val loading = SingleLiveEvent<Boolean>()
     val error = SingleLiveEvent<ErrorResponse>()
     // 미션 삭제 성공 시 알림
     val missionDeleted = SingleLiveEvent<Boolean>()
@@ -47,7 +46,7 @@ class HomeViewModel(private val missionRepository: MissionRepository): ViewModel
     fun loadData() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
-                loading.postValue(true)
+                showLoadingDialog()
                 val response = missionRepository.getMyMission(UserManager.userId!!, UserManager.jwtToken!!)
 
                 if(response.isSucceed) {
@@ -105,10 +104,10 @@ class HomeViewModel(private val missionRepository: MissionRepository): ViewModel
                     }
 
                     currentMission.postValue(result)
-                    loading.postValue(false)
+                    hideLoadingDialog()
                 } else {
                     error.postValue(response.error!!)
-                    loading.postValue(false)
+                    hideLoadingDialog()
                 }
             }
         } else {
@@ -119,11 +118,14 @@ class HomeViewModel(private val missionRepository: MissionRepository): ViewModel
     fun deleteMyMission() {
         if(NetworkManager().checkNetworkState() && UserApplyId != null) {
             CoroutineScope(Dispatchers.IO).launch {
+                showLoadingDialog()
                 val response = missionRepository.deleteMyMission(UserApplyId!!, UserManager.userId!!, UserManager.jwtToken!!)
 
                 if(response.isSucceed) {
+                    hideLoadingDialog()
                     missionDeleted.postValue(true)
                 } else {
+                    hideLoadingDialog()
                     error.postValue(response.error!!)
                 }
             }

@@ -1,6 +1,9 @@
 package com.cashfulus.cashcarplus.ui.donation
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,18 +11,24 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityDonationListBinding
 import com.cashfulus.cashcarplus.ui.adapter.DonationRecyclerAdapter
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class DonationListActivity : BaseActivity() {
-
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@DonationListActivity) }
     private val binding by binding<ActivityDonationListBinding>(R.layout.activity_donation_list)
     private val viewModel: DonationListViewModel by viewModel { parametersOf() }
 
     val donationId = MutableLiveData<Int>()
+    val companyList = ArrayList<String>()
+
+    val donationActivity: ActivityResultLauncher<Intent> = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+    ) { activityResult ->
+        if(activityResult.resultCode == RESULT_OK) {
+            setResult(RESULT_OK)
+            finish()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +51,10 @@ class DonationListActivity : BaseActivity() {
         viewModel.response.observe(binding.lifecycleOwner!!, {
             binding.rvDonationList.adapter = DonationRecyclerAdapter(this@DonationListActivity, it.data, supportFragmentManager, donationId)
             binding.rvDonationList.layoutManager = LinearLayoutManager(this@DonationListActivity)
+
+            for(i in it.data) {
+                companyList.add(i.name)
+            }
         })
 
         donationId.observe(binding.lifecycleOwner!!, {
@@ -57,7 +70,9 @@ class DonationListActivity : BaseActivity() {
 
         /** '기부 신청하기' 버튼 클릭 시 */
         binding.btnDonate.setOnClickListener {
-            showToast("제작 중입니다. id : "+donationId.value!!.toString())
+            val intent = Intent(this@DonationListActivity, DonationRegisterActivity::class.java)
+            intent.putExtra("list", companyList)
+            donationActivity.launch(intent)
         }
     }
 }

@@ -1,27 +1,18 @@
 package com.cashfulus.cashcarplus.ui.alarm
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityAlarmBinding
 import com.cashfulus.cashcarplus.ui.adapter.AlarmRecyclerAdapter
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
-import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AlarmActivity : BaseActivity() {
 
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@AlarmActivity) }
     private val binding by binding<ActivityAlarmBinding>(R.layout.activity_alarm)
     private val viewModel: AlarmViewModel by viewModel { parametersOf() }
 
@@ -69,14 +60,6 @@ class AlarmActivity : BaseActivity() {
             Toast.makeText(this@AlarmActivity, it.message, Toast.LENGTH_LONG).show()
             // 새로고침 완료 : 새로고침 아이콘을 없앰.
             binding.srlAlarm.isRefreshing = false
-        })
-
-        viewModel.loading.observe(this@AlarmActivity, {
-            if (it) { // loading이 true인 경우
-                loadingDialog.show()
-            } else {
-                loadingDialog.dismiss()
-            }
         })
     }
 }

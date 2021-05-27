@@ -370,6 +370,12 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <com.cashfulus.cashcarplus.view.LoadingDialogView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:visibleOrGone="@{viewModel.isDialogVisible}"
+            tools:ignore="MissingConstraints"/>
     </LinearLayout>
 
 </layout>

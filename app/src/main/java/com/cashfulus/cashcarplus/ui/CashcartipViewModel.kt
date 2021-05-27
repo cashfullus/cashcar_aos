@@ -15,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CashcartipViewModel(private val repository: CashcarTipRepository): ViewModel() {
-    val loading = SingleLiveEvent<Boolean>()
     val firstData = MutableLiveData<CashcartipList>()
     val additionalData = MutableLiveData<CashcartipList>()
     val error = SingleLiveEvent<ErrorResponse>()
@@ -23,9 +22,7 @@ class CashcartipViewModel(private val repository: CashcarTipRepository): ViewMod
     fun loadCashcarTipList(page: Int) {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
-                loading.postValue(true)
                 val apiResponse = repository.getCashcarTipList(page, UserManager.userId!!, UserManager.jwtToken!!)
-                loading.postValue(false)
 
                 if(apiResponse.isSucceed) {
                     firstData.postValue(apiResponse.contents!!)

@@ -1,7 +1,7 @@
 package com.cashfulus.cashcarplus.ui.point
 
-import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 
-class PointViewModel : ViewModel() {
+class PointViewModel : BaseViewModel() {
 
 }

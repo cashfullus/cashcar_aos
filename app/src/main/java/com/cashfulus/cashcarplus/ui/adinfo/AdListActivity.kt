@@ -5,15 +5,12 @@ import androidx.lifecycle.Observer
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseFragmentActivity
 import com.cashfulus.cashcarplus.databinding.ActivityAdListBinding
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class AdListActivity : BaseFragmentActivity() {
 
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@AdListActivity) }
     private val binding by binding<ActivityAdListBinding>(R.layout.activity_ad_list)
     private val viewModel: AdListViewModel by viewModel { parametersOf() }
 

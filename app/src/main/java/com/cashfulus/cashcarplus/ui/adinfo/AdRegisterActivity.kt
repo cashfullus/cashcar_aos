@@ -1,12 +1,10 @@
 package com.cashfulus.cashcarplus.ui.adinfo
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
@@ -20,12 +18,10 @@ import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityAdRegisterBinding
 import com.cashfulus.cashcarplus.ui.MainActivity
 import com.cashfulus.cashcarplus.ui.car.AddCarActivity
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialog
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialogClickListener
 import com.cashfulus.cashcarplus.util.*
 import kotlinx.android.synthetic.main.widget_upgraded_edittext.view.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.DecimalFormat
@@ -34,7 +30,6 @@ class AdRegisterActivity : BaseActivity(), PopupDialogClickListener {
     val numFormat = DecimalFormat("###,###")
 
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@AdRegisterActivity) }
     private val binding by binding<ActivityAdRegisterBinding>(R.layout.activity_ad_register)
     private val viewModel: AdRegisterViewModel by viewModel { parametersOf(this@AdRegisterActivity) }
 
@@ -286,16 +281,10 @@ class AdRegisterActivity : BaseActivity(), PopupDialogClickListener {
             showToast("신청에 성공했습니다.")
             val intent = Intent(this@AdRegisterActivity, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent);
+            startActivity(intent)
         })
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
-        })
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it)
-                loadingDialog.show()
-            else
-                loadingDialog.dismiss()
         })
 
         /** Validation 관련 설정 */
@@ -404,6 +393,8 @@ class AdRegisterActivity : BaseActivity(), PopupDialogClickListener {
     }
 
     /** 신청 Dialog의 Callback */
-    override fun onPositive() = viewModel.registerAd(intent.getIntExtra("adId", -1), vehicleId!!)
-    override fun onNegative() {}
+    override fun onPositive() {
+        viewModel.registerAd(intent.getIntExtra("adId", -1), vehicleId!!)
+    }
+        override fun onNegative() {}
 }

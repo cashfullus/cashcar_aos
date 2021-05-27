@@ -1,7 +1,7 @@
 package com.cashfulus.cashcarplus.ui.user
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.UserRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.*
@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserAddressViewModel(private val repository: UserRepository): ViewModel() {
+class UserAddressViewModel(private val repository: UserRepository): BaseViewModel() {
     val name = MutableLiveData<String>()
     val phone = MutableLiveData<String>()
     val mainAddress = MutableLiveData<String>()
@@ -20,7 +20,6 @@ class UserAddressViewModel(private val repository: UserRepository): ViewModel() 
     val data = SingleLiveEvent<UserAddress>()
     val response = SingleLiveEvent<Boolean>()
     val error = MutableLiveData<ErrorResponse>()
-    val loading = SingleLiveEvent<Boolean>()
 
     init {
         getAddressInfo()
@@ -29,14 +28,14 @@ class UserAddressViewModel(private val repository: UserRepository): ViewModel() 
     fun getAddressInfo() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                showLoadingDialog()
                 val addressResponse = repository.getUserAddress(UserManager.userId!!, UserManager.jwtToken!!)
-                loading.postValue(true)
 
                 if (addressResponse.isSucceed) {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     data.postValue(addressResponse.contents!!)
                 } else {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     error.postValue(addressResponse.error!!)
                 }
             }
@@ -48,17 +47,17 @@ class UserAddressViewModel(private val repository: UserRepository): ViewModel() 
     fun postAddressInfo() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
-                loading.postValue(true)
+                showLoadingDialog()
                 val addressResponse = repository.postUserAddress(UserManager.userId!!, phone.value!!, detailAddress.value!!, mainAddress.value!!, name.value!!, UserManager.jwtToken!!)
 
                 if (addressResponse.isSucceed && addressResponse.contents!!.isUpdate) {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     response.postValue(true)
                 } else if(addressResponse.isSucceed && !addressResponse.contents!!.isUpdate) {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     error.postValue(makeErrorResponseFromMessage("오류가 발생해서, 배송지 정보를 업데이트하지 못했습니다.", "/user/set/address"))
                 } else {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     error.postValue(addressResponse.error!!)
                 }
             }

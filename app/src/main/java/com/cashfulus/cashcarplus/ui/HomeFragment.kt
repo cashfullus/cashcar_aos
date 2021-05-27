@@ -56,13 +56,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     private val adapter by lazy { HomeAdapter(childFragmentManager) }
 
     override fun init() {
-        /** Fragment의 경우 loadingDialog를 따로 만들어줘야 한다. */
-        val loadingDialog = LoadingDialog(requireActivity())
-
         /** Alarm Button 클릭 시 처리 */
         binding.btnHomeAlarm.setOnClickListener {
-            //startActivity(Intent(requireActivity(), AlarmActivity::class.java))
-            startActivity(Intent(requireActivity(), TestActivity::class.java))
+            startActivity(Intent(requireActivity(), AlarmActivity::class.java))
+            //startActivity(Intent(requireActivity(), TestActivity::class.java))
         }
 
         /** ViewModel 갱신 시 처리 */
@@ -537,13 +534,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             }
         }.attach()
         binding.tlHomeAd.setSelectedTabIndicatorColor(getColor(requireActivity(), android.R.color.transparent))
-
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it)
-                loadingDialog.show()
-            else
-                loadingDialog.dismiss()
-        })
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             binding.srlHome.isRefreshing = false

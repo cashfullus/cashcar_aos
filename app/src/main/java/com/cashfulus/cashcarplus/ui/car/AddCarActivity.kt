@@ -1,37 +1,24 @@
 package com.cashfulus.cashcarplus.ui.car
 
-import android.content.Intent
-import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.util.TypedValue
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.TextView
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 import com.cashfulus.cashcarplus.R
-import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityAddCarBinding
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.util.*
 import com.cashfulus.cashcarplus.view.NOT_SUPPORTERS_CAR
 import com.cashfulus.cashcarplus.view.ONLY_ONE_CAR
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.lang.reflect.Field
 
 class AddCarActivity : BaseActivity() {
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@AddCarActivity) }
     private val binding by binding<ActivityAddCarBinding>(R.layout.activity_add_car)
     private val viewModel: AddCarViewModel by viewModel { parametersOf() }
 
@@ -404,14 +391,6 @@ class AddCarActivity : BaseActivity() {
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
-        })
-
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it) {
-                loadingDialog.show()
-            } else {
-                loadingDialog.dismiss()
-            }
         })
     }
 

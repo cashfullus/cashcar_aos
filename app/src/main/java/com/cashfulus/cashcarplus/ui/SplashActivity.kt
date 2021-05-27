@@ -1,35 +1,28 @@
 package com.cashfulus.cashcarplus.ui
 
-import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.widget.Toast
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
 import com.cashfulus.cashcarplus.R
-import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.data.service.API_CONNECT_ERROR_CODE
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.data.service.VERSION_ERROR_CODE
 import com.cashfulus.cashcarplus.databinding.ActivitySplashBinding
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.ui.howtouse.HowToUseActivity
 import com.cashfulus.cashcarplus.ui.login.LoginActivity
 import com.cashfulus.cashcarplus.util.UserManager
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-
 
 class SplashActivity : BaseActivity() {
     //private lateinit var auth: FirebaseAuth
 
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@SplashActivity) }
     private val binding by binding<ActivitySplashBinding>(R.layout.activity_splash)
     private val viewModel: SplashViewModel by viewModel { parametersOf(this@SplashActivity) }
 

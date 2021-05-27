@@ -3,6 +3,7 @@ package com.cashfulus.cashcarplus.ui.inquiry
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.InquiryRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.ErrorResponse
@@ -14,7 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class InquiryViewModel(private val repository: InquiryRepository): ViewModel() {
+class InquiryViewModel(private val repository: InquiryRepository): BaseViewModel() {
 
     // UI Field에서 직접 입력받는 값들
     val company = MutableLiveData<String>()
@@ -24,7 +25,6 @@ class InquiryViewModel(private val repository: InquiryRepository): ViewModel() {
     val contents = MutableLiveData<String>()
 
     // 결과값 처리 관련 값들
-    val loading = SingleLiveEvent<Boolean>()
     val response = MutableLiveData<Boolean>()
     val error = SingleLiveEvent<ErrorResponse>()
 

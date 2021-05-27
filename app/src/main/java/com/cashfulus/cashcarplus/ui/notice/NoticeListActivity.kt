@@ -5,15 +5,12 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityNoticeListBinding
 import com.cashfulus.cashcarplus.ui.adapter.ExpandableNoticeListAdapter
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class NoticeListActivity : BaseActivity() {
 
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@NoticeListActivity) }
     private val binding by binding<ActivityNoticeListBinding>(R.layout.activity_notice_list)
     private val viewModel: NoticeListViewModel by viewModel { parametersOf() }
 

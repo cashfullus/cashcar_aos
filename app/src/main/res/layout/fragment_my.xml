@@ -109,7 +109,7 @@
                 android:id="@+id/tvMyPoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text="30,000"
                 style="@style/display_16_B"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

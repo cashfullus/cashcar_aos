@@ -3,7 +3,6 @@ package com.cashfulus.cashcarplus.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.widget.CheckBox
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
@@ -11,20 +10,14 @@ import androidx.lifecycle.MutableLiveData
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityClauseBinding
-import com.cashfulus.cashcarplus.ui.MainActivity
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.util.UserManager
 import kotlinx.android.synthetic.main.activity_clause.*
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 const val CLAUSE_AGREED = 0
 const val CLAUSE_CANCELED = -1
 
 class ClauseActivity : BaseActivity() {
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@ClauseActivity) }
     private val binding by binding<ActivityClauseBinding>(R.layout.activity_clause)
 
     // Button Validation

@@ -1,7 +1,7 @@
 package com.cashfulus.cashcarplus.ui
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.AdRepository
 import com.cashfulus.cashcarplus.data.repository.MissionRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
@@ -11,6 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MyViewModel(): ViewModel() {
+class MyViewModel(): BaseViewModel() {
 
 }

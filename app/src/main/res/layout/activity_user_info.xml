@@ -281,10 +281,14 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tvUserInfoLogout"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="16dp"/>
-
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <com.cashfulus.cashcarplus.view.LoadingDialogView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:visibleOrGone="@{viewModel.isDialogVisible}"
+            tools:ignore="MissingConstraints"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

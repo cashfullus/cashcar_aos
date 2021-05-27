@@ -8,16 +8,12 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityEmailLoginBinding
 import com.cashfulus.cashcarplus.ui.MainActivity
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.util.UserManager
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class EmailLoginActivity : BaseActivity() {
-
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@EmailLoginActivity) }
     private val binding by binding<ActivityEmailLoginBinding>(R.layout.activity_email_login)
     private val viewModel: EmailLoginViewModel by viewModel { parametersOf() }
 
@@ -60,14 +56,6 @@ class EmailLoginActivity : BaseActivity() {
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             binding.tvLoginError.visibility = View.VISIBLE
-        })
-
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it) {
-                loadingDialog.show()
-            } else {
-                loadingDialog.dismiss()
-            }
         })
     }
 }

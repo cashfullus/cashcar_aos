@@ -2,7 +2,6 @@ package com.cashfulus.cashcarplus.ui.login
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
@@ -18,22 +17,19 @@ import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityRegisterBinding
 import com.cashfulus.cashcarplus.ui.MainActivity
 import com.cashfulus.cashcarplus.ui.adapter.SpinnerWithHintAdapter
-import com.cashfulus.cashcarplus.ui.dialog.LoadingDialog
 import com.cashfulus.cashcarplus.ui.dialog.ProfileImageDialogClickListener
 import com.cashfulus.cashcarplus.util.*
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_register.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 /** 이름/이메일/연락처 3개만 필수!!! 나머지는 ""으로 전송해도 문제없다. */
 
-class RegisterActivity : BaseActivity(), ProfileImageDialogClickListener {
+class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
 
     // Loading Dialog 및 MVVM 관련 객체들
-    val loadingDialog: LoadingDialog by inject { parametersOf(this@RegisterActivity) }
     private val binding by binding<ActivityRegisterBinding>(R.layout.activity_register)
     private val viewModel: RegisterViewModel by viewModel { parametersOf() }
 
@@ -231,14 +227,6 @@ class RegisterActivity : BaseActivity(), ProfileImageDialogClickListener {
             showToast(it.message)
         })
 
-        viewModel.loading.observe(binding.lifecycleOwner!!, {
-            if(it) {
-                loadingDialog.show()
-            } else {
-                loadingDialog.dismiss()
-            }
-        })
-
         /** '시작하기' 버튼 활성화/비활성화 */
         isAllValid.observe(binding.lifecycleOwner!!, {
             binding.btnRegister.isEnabled = it
@@ -255,10 +243,11 @@ class RegisterActivity : BaseActivity(), ProfileImageDialogClickListener {
         })
         /** '시작하기' 버튼 클릭 이벤트 */
         binding.btnRegister.setOnClickListener {
-            if(intent.getStringExtra("method") == "kakao")
+            if(intent.getStringExtra("method") == "kakao") {
                 viewModel.registerKakao(isAlarmReceive, isMarketingReceive)
-            else
+            } else {
                 viewModel.updateUserInfo(isAlarmReceive, isMarketingReceive)
+            }
         }
     }
 

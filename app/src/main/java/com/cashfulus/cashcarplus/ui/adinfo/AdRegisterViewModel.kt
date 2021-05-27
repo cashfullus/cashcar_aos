@@ -2,7 +2,7 @@ package com.cashfulus.cashcarplus.ui.adinfo
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.MissionRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.*
@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AdRegisterViewModel(private val missionRepository: MissionRepository): ViewModel() {
+class AdRegisterViewModel(private val missionRepository: MissionRepository): BaseViewModel() {
     /** 입력 폼에서 받아오는 정보들 */
     val mainAddress = MutableLiveData<String>()
     val detailAddress = MutableLiveData<String>()
@@ -23,21 +23,20 @@ class AdRegisterViewModel(private val missionRepository: MissionRepository): Vie
     val cars = MutableLiveData<List<VehicleInformation>>()
     val userInfo = MutableLiveData<UserInformation>()
     val response = MutableLiveData<ApplyResponseData>()
-    val loading = SingleLiveEvent<Boolean>()
     val error = SingleLiveEvent<ErrorResponse>()
 
     fun getCarInfo(adId: Int) {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                showLoadingDialog()
                 val registerResponse = missionRepository.applyAdGet(UserManager.userId!!, adId, UserManager.jwtToken!!)
-                loading.postValue(true)
 
                 if (registerResponse.isSucceed) {
+                    hideLoadingDialog()
                     cars.postValue(registerResponse.contents!!.data.vehicle_information)
                     userInfo.postValue(registerResponse.contents!!.data.user_information)
-                    loading.postValue(false)
                 } else {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     error.postValue(registerResponse.error!!)
                 }
             }
@@ -51,14 +50,14 @@ class AdRegisterViewModel(private val missionRepository: MissionRepository): Vie
 
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
+                showLoadingDialog()
                 val registerResponse = missionRepository.applyAd(mainAddress.value!!, detailAddress.value!!, callNumber.value!!.replace("-", ""), name.value!!, UserManager.userId!!, adId, vehicleId, UserManager.jwtToken!!)
-                loading.postValue(true)
 
                 if (registerResponse.isSucceed) {
+                    hideLoadingDialog()
                     response.postValue(registerResponse.contents!!)
-                    loading.postValue(false)
                 } else {
-                    loading.postValue(false)
+                    hideLoadingDialog()
                     error.postValue(registerResponse.error!!)
                 }
             }

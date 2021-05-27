@@ -2,6 +2,7 @@ package com.cashfulus.cashcarplus.ui.donation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.DonationRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.DonationListResponseData
@@ -14,8 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DonationListViewModel(private val repository: DonationRepository): ViewModel() {
-    val loading = SingleLiveEvent<Boolean>()
+class DonationListViewModel(private val repository: DonationRepository): BaseViewModel() {
     val response = MutableLiveData<DonationListResponseData>()
     val error = SingleLiveEvent<ErrorResponse>()
 
@@ -26,9 +26,7 @@ class DonationListViewModel(private val repository: DonationRepository): ViewMod
     fun loadDonationList() {
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
-                loading.postValue(true)
                 val apiResponse = repository.getDonationList(UserManager.userId!!, UserManager.jwtToken!!)
-                loading.postValue(false)
 
                 if(apiResponse.isSucceed) {
                     response.postValue(apiResponse.contents!!)

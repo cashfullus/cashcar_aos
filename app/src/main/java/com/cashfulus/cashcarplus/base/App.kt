@@ -29,7 +29,7 @@ class App : Application() {
             androidFileProperties()
 
             // 모듈 목록 설정
-            modules(loadingModule, networkModule, remoteSourceModule, repositoryModule, viewModelModule)
+            modules(networkModule, remoteSourceModule, repositoryModule, viewModelModule)
         }
 
         KakaoSdk.init(this, "c4a351e2bdeb2dd3bf4e4822fc9aca19")
