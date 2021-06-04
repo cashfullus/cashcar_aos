@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <!-- Image Cropper fill the remaining available height -->
-    <com.theartofdev.edmodo.cropper.CropImageView
+    <com.canhub.cropper.CropImageView
         android:id="@+id/cropImageView"
         android:layout_width="match_parent"
         android:layout_height="0dp"

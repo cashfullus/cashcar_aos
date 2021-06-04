@@ -1,5 +1,6 @@
 package com.cashfulus.cashcarplus.ui.user
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -12,6 +13,8 @@ import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
+import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageView
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.base.BaseActivity
@@ -22,10 +25,10 @@ import com.cashfulus.cashcarplus.ui.dialog.PopupDialogClickListener
 import com.cashfulus.cashcarplus.ui.dialog.ProfileImageDialogClickListener
 import com.cashfulus.cashcarplus.ui.login.LoginActivity
 import com.cashfulus.cashcarplus.util.*
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.user.UserApiClient
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -57,20 +60,34 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
             viewModel = this@UserInfoActivity.viewModel
         }
 
+        /** 권한 확인 */
+        val permissionlistener: PermissionListener = object : PermissionListener {
+            override fun onPermissionGranted() {}
+
+            override fun onPermissionDenied(deniedPermissions: List<String>) {
+                showToast("카메라 관련 권한이 거부되었습니다.")
+            }
+        }
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
+                .check()
+
         /** 툴바 버튼 클릭 이벤트 */
-        binding.toolbarUserInfo.setLeftOnClick {
+        binding.btnUserInfoBack.setOnClickListener {
             finish()
         }
-        binding.toolbarUserInfo.setRightOnClick {
+        binding.btnUserInfoSubmit.setOnClickListener {
             viewModel.updateUserInfo()
             //showToast(viewModel.nickname.value!!+ "\n" + viewModel.name.value!! + "\n" + viewModel.email.value!! + "\n" + viewModel.phone.value!! + "\n" + viewModel.gender.value!! + "\n" + viewModel.birth.value!! + "\n" + viewModel.receiveAlarm.value!!.toString() + " " + viewModel.receiveMarketing.value!!.toString())
         }
         /** 툴바 체크버튼 Validation */
         isAllValid.observe(binding.lifecycleOwner!!, {
-            binding.toolbarUserInfo.getRightButtonRes().isSelected = it
-            binding.toolbarUserInfo.getRightButtonRes().isEnabled = it
-            binding.toolbarUserInfo.getRightButtonRes().isFocusable = it
-            binding.toolbarUserInfo.getRightButtonRes().isClickable = it
+            binding.btnUserInfoSubmit.isSelected = it
+            binding.btnUserInfoSubmit.isEnabled = it
+            binding.btnUserInfoSubmit.isFocusable = it
+            binding.btnUserInfoSubmit.isClickable = it
         })
 
         /** 성별 Spinner 설정 */
@@ -203,7 +220,7 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
         viewModel.response.observe(binding.lifecycleOwner!!, {
             if (it) {
                 showToast("유저 정보를 변경했습니다.")
-                //finish()
+                finish()
             } else {
                 showToast("유저 정보를 업데이트하는 도중 오류가 발생했습니다. 다시 로그인해 주세요.")
                 val intent = Intent(this@UserInfoActivity, LoginActivity::class.java)
@@ -217,19 +234,13 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
         })
 
         /** 비밀번호 변경 */
-        binding.tvUserInfoChangePW.setOnClickListener {
-            showToast("추후 업데이트될 예정입니다.")
-        }
-        binding.ivUserInfoChangePW.setOnClickListener {
+        binding.llUserInfoChangePW.setOnClickListener {
             showToast("추후 업데이트될 예정입니다.")
         }
 
         /** 로그아웃 */
         val logoutDialog = PopupDialog("로그아웃하시겠습니까?", "로그아웃", "취소")
-        binding.tvUserInfoLogout.setOnClickListener {
-            logoutDialog.show(supportFragmentManager, "Logout")
-        }
-        binding.ivUserInfoLogout.setOnClickListener {
+        binding.llUserInfoLogout.setOnClickListener {
             logoutDialog.show(supportFragmentManager, "Logout")
         }
     }
@@ -239,7 +250,7 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
 
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             val result = CropImage.getActivityResult(data)
-            val resultUri: Uri = result.uri
+            val resultUri: Uri = result!!.uriContent!!
 
             Glide.with(this@UserInfoActivity).load(resultUri).into(binding.ivUserInfo)
             viewModel.profileImg.postValue(resultUri)

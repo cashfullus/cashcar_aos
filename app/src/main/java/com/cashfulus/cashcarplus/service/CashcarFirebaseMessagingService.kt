@@ -74,10 +74,8 @@ class CashcarFirebaseMessagingService: FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "From: " + remoteMessage!!.from)
 
-        if(remoteMessage.notification != null && remoteMessage.notification!!.title != null && remoteMessage.notification!!.body != null) {
-            Log.d(TAG, "Notification: "+remoteMessage.notification!!.title)
-
-            sendNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!)
+        if(remoteMessage.notification != null) {
+            sendNotificationForeground(remoteMessage)
         } else if(remoteMessage.data.isNotEmpty()){
             Log.i("바디: ", remoteMessage.data["body"].toString())
             Log.i("타이틀: ", remoteMessage.data["title"].toString())
@@ -88,14 +86,14 @@ class CashcarFirebaseMessagingService: FirebaseMessagingService() {
         }
     }
 
-    private fun sendNotification(title: String, body: String) {
+    private fun sendNotificationForeground(remoteMessage: RemoteMessage) {
         // RequestCode, Id를 고유값으로 지정하여 알림이 개별 표시되도록 함
         val uniId: Int = (System.currentTimeMillis() / 7).toInt()
 
         // 일회용 PendingIntent
         // PendingIntent : Intent 의 실행 권한을 외부의 어플리케이션에게 위임한다.
-        val intent = Intent(this, SplashActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // Activity Stack 을 경로만 남긴다. A-B-C-D-B => A-B
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         val pendingIntent = PendingIntent.getActivity(this, uniId, intent, PendingIntent.FLAG_ONE_SHOT)
 
         // 알림 채널 이름
@@ -106,15 +104,15 @@ class CashcarFirebaseMessagingService: FirebaseMessagingService() {
 
         // 알림에 대한 UI 정보와 작업을 지정한다.
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.mipmap.appcion) // 아이콘 설정
-            .setContentTitle(title) // 제목
-            .setContentText(body) // 메시지 내용
-            .setAutoCancel(true)
-            .setSound(soundUri) // 알림 소리
-            .setContentIntent(pendingIntent) // 알림 실행 시 Intent
+                .setSmallIcon(R.mipmap.appcion) // 아이콘 설정
+                //.setContentTitle(remoteMessage.data["title"].toString())
+                .setContentText(remoteMessage.notification!!.body+"") // 메시지 내용
+                .setAutoCancel(true)
+                .setSound(soundUri) // 알림 소리
+                .setContentIntent(pendingIntent) // 알림 실행 시 Intent
 
         val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // 오레오 버전 이후에는 채널이 필요하다.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

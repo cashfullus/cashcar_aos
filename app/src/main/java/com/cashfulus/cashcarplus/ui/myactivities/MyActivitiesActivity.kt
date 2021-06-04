@@ -22,5 +22,9 @@ class MyActivitiesActivity : BaseActivity() {
             lifecycleOwner = this@MyActivitiesActivity
             viewModel = this@MyActivitiesActivity.viewModel
         }
+
+        binding.toolbarMyActivities.setLeftOnClick {
+            finish()
+        }
     }
 }

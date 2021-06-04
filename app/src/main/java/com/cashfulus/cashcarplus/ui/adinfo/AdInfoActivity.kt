@@ -61,12 +61,14 @@ class AdInfoActivity : BaseActivity() {
             binding.btnAdInfo.isEnabled = true
             binding.btnAdInfo.isFocusable = true
             binding.btnAdInfo.isClickable = true
+            binding.btnAdInfo.text = "신청하기"
         } else {
             binding.btnAdInfo.background = ContextCompat.getDrawable(this@AdInfoActivity, R.drawable.button_form_deactive)
             binding.btnAdInfo.setTextColor(getColor(R.color.grayscale_400))
             binding.btnAdInfo.isEnabled = false
             binding.btnAdInfo.isFocusable = false
             binding.btnAdInfo.isClickable = false
+            binding.btnAdInfo.text = "이미 광고를 진행 중입니다"
         }
 
         /** LiveData 관련 설정 */
@@ -109,6 +111,15 @@ class AdInfoActivity : BaseActivity() {
             binding.tvAdInfoAdTitle.text = it.title
             binding.tvAdInfoPoint.text = numFormat.format(it.total_point)
             binding.tvAdInfoCurrentPeople.text = numFormat.format(it.recruiting_count)+"명 신청"
+
+            binding.tvAdInfoMinDistance.text = if(it.min_distance == 0) "무관" else numFormat.format(it.min_distance)+" km"
+
+            if(it.gender == 0 && it.min_age_group == 0 && it.max_age_group == 0)
+                binding.tvAdInfoGender.text = "무관"
+            else {
+                binding.tvAdInfoGender.text =
+                        (if(it.gender == 0) "" else if(it.gender == 1) "남성 " else "여성 ") + (if(it.min_age_group == 0) "" else it.min_age_group.toString()+ "세 이상 ") + (if(it.max_age_group == 0) "" else it.max_age_group.toString()+ "세 이하")
+            }
 
             binding.tvAdInfoDate.text = it.recruit_start_date.substring(0,10).replace('-', '.') + " - " + it.recruit_end_date.substring(0,10).replace('-', '.')
             binding.tvAdInfoDuration.text = it.activity_period.toString()+"일 (1차 미션 시작일부터)"

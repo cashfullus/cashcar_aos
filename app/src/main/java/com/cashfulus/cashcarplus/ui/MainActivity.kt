@@ -31,6 +31,13 @@ class MainActivity : FragmentActivity() {
         vpMain.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         vpMain.isUserInputEnabled = false
 
+        /** 로그인이 되어 있지 않은 상태에서 MainActivity로 넘어온 경우.
+         * 이런 오류가 발생할 수 있는 경우는 1가지이다 : Splash Page에서 알람이 와서, 알람을 클릭해서 로그인 과정 도중 Main으로 넘어온 경우. */
+        if(!UserManager.isLogined) {
+            Toast.makeText(this@MainActivity, "오류가 발생했습니다. 다시 시도해 주세요.", Toast.LENGTH_LONG).show()
+            finish()
+        }
+
         TabLayoutMediator(tabMain, vpMain) { tab, position ->
             when(position) {
                 0 -> {
@@ -51,21 +58,6 @@ class MainActivity : FragmentActivity() {
                 }
             }
         }.attach()
-
-        /** 권한 확인 */
-        val permissionlistener: PermissionListener = object : PermissionListener {
-            override fun onPermissionGranted() {}
-
-            override fun onPermissionDenied(deniedPermissions: List<String>) {
-                Toast.makeText(this@MainActivity, "권한 거부\n$deniedPermissions", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
-                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE)
-                .check()
     }
 }
 

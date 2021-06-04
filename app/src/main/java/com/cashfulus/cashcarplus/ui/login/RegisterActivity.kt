@@ -1,5 +1,6 @@
 package com.cashfulus.cashcarplus.ui.login
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -19,8 +20,10 @@ import com.cashfulus.cashcarplus.ui.MainActivity
 import com.cashfulus.cashcarplus.ui.adapter.SpinnerWithHintAdapter
 import com.cashfulus.cashcarplus.ui.dialog.ProfileImageDialogClickListener
 import com.cashfulus.cashcarplus.util.*
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
+import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageView
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_register.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -53,6 +56,20 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
             lifecycleOwner = this@RegisterActivity
             viewModel = this@RegisterActivity.viewModel
         }
+
+        /** 권한 확인 */
+        val permissionlistener: PermissionListener = object : PermissionListener {
+            override fun onPermissionGranted() {}
+
+            override fun onPermissionDenied(deniedPermissions: List<String>) {
+                showToast("카메라 관련 권한이 거부되었습니다.")
+            }
+        }
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
+                .check()
 
         // 로그인 방식 : kakao, email
         val isAlarmReceive = intent.getBooleanExtra("alarm", false)
@@ -256,7 +273,7 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
 
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             val result = CropImage.getActivityResult(data)
-            val resultUri: Uri = result.uri
+            val resultUri: Uri = result!!.uriContent!!
 
             Glide.with(this@RegisterActivity).load(resultUri).into(binding.ivRegister)
             viewModel.profileImg.postValue(resultUri)

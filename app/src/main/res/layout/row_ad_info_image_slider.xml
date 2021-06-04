@@ -12,6 +12,6 @@
         android:scaleType="centerCrop"
         android:src="@drawable/reference_image1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintDimensionRatio="h, 4:3"/>
+        app:layout_constraintDimensionRatio="h, 360:254"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,12 +1,14 @@
 package com.cashfulus.cashcarplus.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseFragment
 import com.cashfulus.cashcarplus.databinding.FragmentAdListBinding
 import com.cashfulus.cashcarplus.ui.adapter.AdRecyclerAdapter
+import com.cashfulus.cashcarplus.view.NoScrollLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -25,13 +27,14 @@ class AdListFragment : BaseFragment<FragmentAdListBinding, AdListViewModel>(R.la
     }
 
     override fun init() {
-        binding.rvAdList.layoutManager = LinearLayoutManager(requireActivity())
-        val adapter = AdRecyclerAdapter(requireActivity())
-        binding.rvAdList.adapter = adapter
+        binding.rvAdList.layoutManager = NoScrollLayoutManager(requireActivity())
+        //binding.rvAdList.isNestedScrollingEnabled = true
 
         viewModel.loadAdList(tabState!!)
         viewModel.adList.observe(binding.lifecycleOwner!!, {
-            adapter.refresh(it, tabState!!)
+            val adapter = AdRecyclerAdapter(requireActivity(), it, tabState!!)
+            binding.rvAdList.adapter = adapter
+            //adapter.refresh(it, tabState!!)
         })
 
         viewModel.error.observe(binding.lifecycleOwner!!, {

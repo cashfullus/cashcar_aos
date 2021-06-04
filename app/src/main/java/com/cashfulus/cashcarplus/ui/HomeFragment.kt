@@ -13,10 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.*
@@ -24,6 +21,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -32,13 +30,18 @@ import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.base.BaseFragment
 import com.cashfulus.cashcarplus.base.TestActivity
 import com.cashfulus.cashcarplus.databinding.FragmentHomeBinding
+import com.cashfulus.cashcarplus.model.AdResponse
+import com.cashfulus.cashcarplus.ui.adapter.AdRecyclerAdapter
+import com.cashfulus.cashcarplus.ui.adapter.RecyclerData
 import com.cashfulus.cashcarplus.ui.alarm.AlarmActivity
 import com.cashfulus.cashcarplus.ui.car.AddCarActivity
 import com.cashfulus.cashcarplus.ui.dialog.*
 import com.cashfulus.cashcarplus.ui.mission.MissionActivity
+import com.cashfulus.cashcarplus.ui.mission.MissionCertActivity
 import com.cashfulus.cashcarplus.util.UserManager
 import com.cashfulus.cashcarplus.view.*
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.annotations.SerializedName
 import kotlinx.android.synthetic.main.dialog_popup.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -51,20 +54,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
     // 광고 리스트 탭의 state(선택된 것)
     var tabState = "ongoing" //"scheduled", "done"
-
-    // 광고 리스트 탭 adapter
-    private val adapter by lazy { HomeAdapter(childFragmentManager) }
+    // 각 탭에서의 광고 갯수
+    val adNum: Array<Int> = arrayOf(0, 0, 0)
 
     override fun init() {
         /** Alarm Button 클릭 시 처리 */
         binding.btnHomeAlarm.setOnClickListener {
             startActivity(Intent(requireActivity(), AlarmActivity::class.java))
-            //startActivity(Intent(requireActivity(), TestActivity::class.java))
         }
 
         /** ViewModel 갱신 시 처리 */
         viewModel.currentMission.observe(binding.lifecycleOwner!!, {
-            // 알람 관련 설정
+            // 응답 데이터(it이 안 먹는 부분이 있기 때문에 사용)
+            val dataResult = it.data
+
             if(!it.data.data.isReadAlarm) {
                 binding.btnHomeAlarm.setImageDrawable(getDrawable(requireActivity(), R.drawable.ic_alarm_none))
             } else {
@@ -109,6 +112,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface = ResourcesCompat.getFont(requireActivity(), R.font.notosanskr_regular)
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(getColor(requireActivity(), R.color.grayscale_500))
+
+                    card.setOnClickListener {}
                 }
 
                 // 신청한 미션 검토중
@@ -161,6 +166,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     pbMission.progress = it.data.data.adInformation!!.ongoingDayPercent
 
                     card.findViewById<Button>(R.id.btnCurrentMissionCancel).visibility = View.GONE
+                    card.setOnClickListener {}
                 }
                 // 신청한 광고가 조건에 맞지 않아서 운영자에 의해 취소됨
                 HOME_STATE_AD_REGISTER_FAILED -> {
@@ -213,11 +219,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text = it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
                     card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
-                    if(it.data.data.adInformation!!.order == 0)
+                    if(it.data.data.adInformation!!.order == 0) {
                         card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_SUB_MISSION_START, "추가 미션 인증")
-                    else
-                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_MAIN_MISSION_START, it.data.data.adInformation!!.order.toString()+"차 미션 인증")
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
+                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
+                            val intent = Intent(requireActivity(), MissionCertActivity::class.java)
+                            intent.putExtra("type", "additional")
+                            intent.putExtra("title", dataResult.data.adInformation.title)
+                            intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
+                            intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
+                            startActivity(intent)
+                        }
+                    } else {
+                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_MAIN_MISSION_START, it.data.data.adInformation!!.order.toString() + "차 미션 인증")
+                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
+                            val intent = Intent(requireActivity(), MissionCertActivity::class.java)
+                            intent.putExtra("type", "important")
+                            intent.putExtra("title", dataResult.data.adInformation.title)
+                            intent.putExtra("order", dataResult.data.adInformation.order)
+                            intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
+                            intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
+                            startActivity(intent)
+                        }
+                    }
+
+                    card.setOnClickListener {
                         val intent = Intent(requireActivity(), MissionActivity::class.java)
                         intent.putExtra("id", viewModel.UserApplyId)
                         startActivity(intent)
@@ -246,7 +271,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_MAIN_MISSION_VERIFY, "")
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {  }
+                    card.setOnClickListener {
                         val intent = Intent(requireActivity(), MissionActivity::class.java)
                         intent.putExtra("id", viewModel.UserApplyId)
                         startActivity(intent)
@@ -261,7 +287,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
 
                     card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
                     Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
@@ -273,9 +299,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text = it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
                     card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text = it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
                     card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.GONE
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_ALL_MISSION_EMPTY, "")
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
+                    card.setOnClickListener {
                         val intent = Intent(requireActivity(), MissionActivity::class.java)
                         intent.putExtra("id", viewModel.UserApplyId)
                         startActivity(intent)
@@ -305,6 +331,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_MAIN_MISSION_RESEND, "")
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
+                        val intent = Intent(requireActivity(), MissionCertActivity::class.java)
+                        intent.putExtra("type", "important")
+                        intent.putExtra("title", dataResult.data.adInformation.title)
+                        intent.putExtra("order", dataResult.data.adInformation.order)
+                        intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
+                        intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
+                        startActivity(intent)
+                    }
+                    card.setOnClickListener {
                         val intent = Intent(requireActivity(), MissionActivity::class.java)
                         intent.putExtra("id", viewModel.UserApplyId)
                         startActivity(intent)
@@ -354,6 +389,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_SUB_MISSION_RESEND, "")
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
+                        val intent = Intent(requireActivity(), MissionCertActivity::class.java)
+                        intent.putExtra("type", "additional")
+                        intent.putExtra("title", dataResult.data.adInformation.title)
+                        intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
+                        intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
+                        startActivity(intent)
+                    }
+                    card.setOnClickListener {
                         val intent = Intent(requireActivity(), MissionActivity::class.java)
                         intent.putExtra("id", viewModel.UserApplyId)
                         startActivity(intent)
@@ -402,7 +445,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
                     card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_MAIN_MISSION_VERIFY, "")
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {  }
+                    card.setOnClickListener {
                         val intent = Intent(requireActivity(), MissionActivity::class.java)
                         intent.putExtra("id", viewModel.UserApplyId)
                         startActivity(intent)
@@ -413,27 +457,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     pbMission.progress = it.data.data.adInformation!!.ongoingDayPercent
                 }
                 HOME_STATE_SUCCESS -> {
-                    UserManager.hasMission = true
-                    binding.cardNoneMission.visibility = View.GONE
-                    binding.cardCurrentMission.visibility = View.VISIBLE
-                    val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
+                    UserManager.hasMission = false
+                    binding.cardNoneMission.visibility = View.VISIBLE
+                    binding.cardCurrentMission.visibility = View.GONE
+                    val card = binding.cardNoneMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56f, resources.displayMetrics).toInt()
 
-                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
-                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
-                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text = it.data.data.adInformation!!.title
-                    /*if(it.data.data.adInformation!!.ongoingDays == 0)
-                        card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = "-"
-                    else*/
-                        card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = it.data.data.adInformation!!.ongoingDays.toString() + "일"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text = it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text = it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.GONE
+                    card.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_mission_no_mission)
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "현재 진행 중인 서포터즈 활동이 없습니다"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface = ResourcesCompat.getFont(requireActivity(), R.font.notosanskr_regular)
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(getColor(requireActivity(), R.color.grayscale_500))
 
-                    val pbMission = card.findViewById<ProgressBar>(R.id.pbRowMission)
-                    pbMission.max = 100
-                    pbMission.progress = it.data.data.adInformation!!.ongoingDayPercent
+                    card.setOnClickListener {}
 
                     // 팝업을 아직 보지 않은 상태라면 띄움.
                     if(it.data.data.message.isRead == 0) {
@@ -506,34 +542,87 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     }
                 }
             }
+
+            /** Sticky ScrollView 관련 처리 */
+            binding.usvHome.run {
+                header = binding.tlHomeAd
+                setInitPosition(binding.tlHomeAd.top.toFloat())
+                Log.d("Cashcarplus", "run : "+binding.tlHomeAd.top.toString())
+
+                stickListener = { _ ->
+                    binding.btnHomePageUp.visibility = View.VISIBLE
+                }
+                freeListener = { _ ->
+                    binding.btnHomePageUp.visibility = View.GONE
+                }
+            }
+
+            // 미션 상태 변경 시 최상단으로 스크롤.
+            binding.usvHome.smoothScrollTo(0,0)
         })
 
         /** 아래 광고 리스트 */
-        binding.vpHomeAd.adapter = HomeFragment@adapter
-        binding.vpHomeAd.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        binding.vpHomeAd.isUserInputEnabled = true
-        TabLayoutMediator(binding.tlHomeAd, binding.vpHomeAd) { tab, position ->
-            when(position) {
-                0 -> {
-                    tab.customView = getTabView(position)
+        viewModel.loadAllAdList()
+        viewModel.adList.observe(binding.lifecycleOwner!!, {
+            adNum[0] = if(it[0].size%2 == 0) it[0].size/2 else it[0].size/2+1
+            adNum[1] = if(it[1].size%2 == 0) it[1].size/2 else it[1].size/2+1
+            adNum[2] = if(it[2].size%2 == 0) it[2].size/2 else it[2].size/2+1
+
+            var clRowAd: ConstraintLayout? = null
+
+            binding.vpHomeAd.adapter = MyAdapter(requireActivity(), it)//HomeFragment@adapter
+            binding.vpHomeAd.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+            binding.vpHomeAd.isUserInputEnabled = true
+            TabLayoutMediator(binding.tlHomeAd, binding.vpHomeAd) { tab, position ->
+                when(position) {
+                    0 -> {
+                        tab.customView = getTabView(position)
+                    }
+                    1 -> {
+                        tab.customView = getTabView(position)
+                        /*tabState = "scheduled"
+                        tab1Indicator.visibility = View.GONE
+                        tab2Indicator.visibility = View.VISIBLE
+                        tab3Indicator.visibility = View.GONE*/
+                    }
+                    2 -> {
+                        tab.customView = getTabView(position)
+                        /*tabState = "done"
+                        tab1Indicator.visibility = View.GONE
+                        tab2Indicator.visibility = View.GONE
+                        tab3Indicator.visibility = View.VISIBLE*/
+                    }
                 }
-                1 -> {
-                    tab.customView = getTabView(position)
-                    /*tabState = "scheduled"
-                    tab1Indicator.visibility = View.GONE
-                    tab2Indicator.visibility = View.VISIBLE
-                    tab3Indicator.visibility = View.GONE*/
+            }.attach()
+            binding.tlHomeAd.setSelectedTabIndicatorColor(getColor(requireActivity(), android.R.color.transparent))
+
+            binding.vpHomeAd.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    if(clRowAd == null) {
+                        clRowAd = requireActivity().findViewById(R.id.clRowAd)
+
+                        clRowAd!!.post {
+                            val wMeasureSpec = View.MeasureSpec.makeMeasureSpec(clRowAd!!.width, View.MeasureSpec.EXACTLY)
+                            val hMeasureSpec = View.MeasureSpec.makeMeasureSpec(clRowAd!!.height, View.MeasureSpec.UNSPECIFIED)
+                            clRowAd!!.measure(wMeasureSpec, hMeasureSpec)
+                        }
+                    }
+
+                    if (binding.vpHomeAd.layoutParams.height != clRowAd!!.height*adNum[position]) {
+                        // ParentViewGroup is, for example, LinearLayout
+                        // ... or whatever the parent of the ViewPager2 is
+                        binding.vpHomeAd.layoutParams = (binding.vpHomeAd.layoutParams as LinearLayout.LayoutParams)
+                                .also { lp -> lp.height = clRowAd!!.height*adNum[position] }
+                    }
                 }
-                2 -> {
-                    tab.customView = getTabView(position)
-                    /*tabState = "done"
-                    tab1Indicator.visibility = View.GONE
-                    tab2Indicator.visibility = View.GONE
-                    tab3Indicator.visibility = View.VISIBLE*/
-                }
-            }
-        }.attach()
-        binding.tlHomeAd.setSelectedTabIndicatorColor(getColor(requireActivity(), android.R.color.transparent))
+            })
+        })
+
+        /** 광고 아래로 스크롤 시 맨 위로 올리는 버튼 */
+        binding.btnHomePageUp.setOnClickListener {
+            binding.usvHome.smoothScrollTo(0,0)
+        }
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             binding.srlHome.isRefreshing = false
@@ -550,113 +639,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             viewModel.loadData()
             binding.srlHome.isRefreshing = false
         }
-
-        /*when(currentState) {
-            CURRENT_MISSION_NO_CAR -> {
-                val view = ConstraintLayout.LayoutInflater.from(context).inflate(R.layout.card_none_mission, binding.cardCurrentMission, false)
-                view.findViewById<ConstraintLayout>(R.id.clCurrentMissionNone).background = ContextCompat.getDrawable(requireActivity(), R.drawable.button_mission_no_car)
-                view.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "내 차량 정보 등록하기"
-                view.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface = ResourcesCompat.getFont(requireActivity(), R.font.notosanskr_700)
-                view.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16.0f)
-                view.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(ContextCompat.getColor(requireActivity(), R.color.grayscale_wt))
-
-                binding.cardCurrentMission.addView(view)
-            }
-            CURRENT_MISSION_NONE -> {
-                val view = LayoutInflater.from(context).inflate(R.layout.card_none_mission, binding.cardCurrentMission, false)
-                view.findViewById<ConstraintLayout>(R.id.clCurrentMissionNone).background = ContextCompat.getDrawable(requireActivity(), R.drawable.button_mission_no_mission)
-                view.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "현재 진행 중인 서포터즈 활동이 없습니다"
-                view.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface = ResourcesCompat.getFont(requireActivity(), R.font.notosanskr_400)
-                view.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16.0f)
-                view.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(ContextCompat.getColor(requireActivity(), R.color.grayscale_500))
-
-                binding.cardCurrentMission.addView(view)
-            }
-            CURRENT_CONSIDERATION_DISABLE_CANCEL -> {
-                val view = LayoutInflater.from(context).inflate(R.layout.card_current_mission, binding.cardCurrentMission, false)
-                view.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.VISIBLE
-                view.findViewById<Button>(R.id.btnCurrentMissionCancel).visibility = View.GONE
-                view.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.GONE
-
-                binding.cardCurrentMission.addView(view)
-            }
-            CURRENT_MAIN_MISSION_START -> {
-                val view = LayoutInflater.from(context).inflate(R.layout.card_current_mission, binding.cardCurrentMission, false)
-                view.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
-                view.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
-                view.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_MAIN_MISSION_START, "1차 미션 인증")
-
-                binding.cardCurrentMission.addView(view)
-            }
-        }*/
-
-        /*viewModel.currentMission.observe(binding.lifecycleOwner!!, Observer {
-            binding.tvRowMissionTitleX.text = it.title
-            binding.tvRowMissionContents.text = it.contents
-            binding.pbRowMission.progress = it.progress
-            binding.pbRowMission.max = it.finalDay
-            binding.tvRowMissionDate.text = Integer.toString(it.progress)+" / "+Integer.toString(it.finalDay)+"일"
-            binding.tvRowMissionPoint.text = numFormat.format(it.point)
-
-            binding.tvRowMissionTitle2.text = Integer.toString(it.step)+"차 미션을 인증해 주세요"
-            binding.tvRowMissionDate2.text = it.stepDate+"까지"
-            binding.tvRowMissionMessage2.text = it.message
-        })
-
-        viewModel.adList.observe(binding.lifecycleOwner!!, Observer {
-            /** 광고 리스트의 TabLayout 제목 셋팅 */
-            binding.vpHomeAd.adapter = AdListViewPagerAdapter(this@HomeFragment, it)
-
-            TabLayoutMediator(binding.tlHomeAd, binding.vpHomeAd) { tab, position ->
-                when(position) {
-                    0 -> tab.text = "모집중"
-                    1 -> tab.text = "모집예정"
-                    2 -> tab.text = "종료"
-                    else -> tab.text = ""
-                }
-            }.attach()
-        })
-
-        viewModel.error.observe(binding.lifecycleOwner!!, Observer {
-            if(viewModel.error.value != null) {
-                showToast(viewModel.error.value!!.message)
-            }
-        })
-
-        /** '인증하기' 버튼 클릭 시 */
-        binding.btnRowMission2.setOnClickListener {
-            startActivity(Intent(requireActivity(), MissionCheckActivity::class.java))
-        }
-
-        /** '더보기' 버튼 클릭 시 */
-        binding.tvHomeAdMore.setOnClickListener {
-            startActivity(Intent(requireActivity(), AdListActivity::class.java))
-        }*/
-
-        /*val adapter = YoutuberListAdapter(requireActivity())
-
-        /** 채널 리스트 RecyclerView 관련 설정 */
-        val linearLayoutManager = LinearLayoutManager(requireActivity())
-        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        rvHome.layoutManager = linearLayoutManager
-        rvHome.adapter = adapter
-
-        rvHome.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                // 최하단 이벤트 감지 : 추가로 몇십개의 데이터 갱신
-                if(!recyclerView.canScrollVertically(1)) {
-
-                }
-            }
-        })
-
-        /** 최상단 이벤트 감지 : 전체 Refresh (SwipeRefreshLayout 이용) */
-        srlHome.setOnRefreshListener {
-            // 채널 RecyclerView를 새로고침 -> 데이터 로딩이 끝나면 아래의 channelList의 observe로 이동.
-            mViewModel.refreshChannelList()
-        }*/
     }
 
     fun getTabView(position: Int) : View {
@@ -692,72 +674,93 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         viewModel.loadData()
     }
 
-    inner class HomeAdapter(fa: FragmentManager) : FragmentStateAdapter(fa, lifecycle) {
-        override fun getItemCount(): Int = 3
+    inner class MyAdapter(private val context: Context, private val dataList: ArrayList<ArrayList<AdResponse>>) : RecyclerView.Adapter<MyAdapter.Holder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter.Holder {
+            val view = LayoutInflater.from(context).inflate(R.layout.row_tmp, parent, false)
+            return Holder(view)
+        }
 
-        override fun createFragment(position: Int): Fragment {
-            return when(position) {
-                // scheduled(예정) ongoing(진행중) done(모집완료)
-                0       -> AdListFragment.newInstance("ongoing")
-                1       -> AdListFragment.newInstance("scheduled")
-                2       -> AdListFragment.newInstance("done")
-                else -> AdListFragment.newInstance("ongoing")
+        override fun onBindViewHolder(holder: Holder, position: Int) {
+            when(position) {
+                0 -> {
+                    val adapter = AdRecyclerAdapter(context, dataList[position], "ongoing")
+                    holder.rvTmp.adapter = adapter
+                    holder.rvTmp.layoutManager = NoScrollLayoutManager(context)
+                }
+                1 -> {
+                    val adapter = AdRecyclerAdapter(context, dataList[position], "scheduled")
+                    holder.rvTmp.adapter = adapter
+                    holder.rvTmp.layoutManager = NoScrollLayoutManager(context)
+                }
+                2 -> {
+                    val adapter = AdRecyclerAdapter(context, dataList[position], "done")
+                    holder.rvTmp.adapter = adapter
+                    holder.rvTmp.layoutManager = NoScrollLayoutManager(context)
+                }
             }
+        }
+
+        override fun getItemCount(): Int {
+            return dataList.size
+        }
+
+        inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val rvTmp: RecyclerView = itemView.findViewById(R.id.rvRowTmp)
+        }
+    }
+}
+
+/** 서포터즈 신청 취소 Dialog
+(PopupDialog가 Fragment에선 정상적으로 작동하지 않는 관계로 여기에 작성.)*/
+class CancelMissionPopupDialog(private val msg: String, private val okMsg: String, private val cancelMsg: String, private val positiveFun: (() -> Unit)) : DialogFragment() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.dialog_popup, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        tvPopup.text = msg
+        btnPopupOk.text = okMsg
+        btnPopupCancel.text = cancelMsg
+
+        btnPopupOk.setOnClickListener {
+            positiveFun()
+            dismiss()
+        }
+
+        btnPopupCancel.setOnClickListener {
+            dismiss()
         }
     }
 
-    /** 서포터즈 신청 취소 Dialog
-        (PopupDialog가 Fragment에선 정상적으로 작동하지 않는 관계로 여기에 작성.)*/
-    class CancelMissionPopupDialog(private val msg: String, private val okMsg: String, private val cancelMsg: String, private val positiveFun: (() -> Unit)) : DialogFragment() {
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-            return inflater.inflate(R.layout.dialog_popup, container, false)
-        }
+    override fun onResume() {
+        super.onResume()
 
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
+        // 꼭 DialogFragment 클래스에서 선언하지 않아도 된다.clRowAd!!.height
+        val windowManager = App().context().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val size = Point()
 
-            dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        @Suppress("DEPRECATION")
+        val display = windowManager.defaultDisplay
+        @Suppress("DEPRECATION")
+        display.getSize(size)
 
-            tvPopup.text = msg
-            btnPopupOk.text = okMsg
-            btnPopupCancel.text = cancelMsg
-
-            btnPopupOk.setOnClickListener {
-                positiveFun()
-                dismiss()
-            }
-
-            btnPopupCancel.setOnClickListener {
-                dismiss()
-            }
-        }
-
-        override fun onResume() {
-            super.onResume()
-
-            // 꼭 DialogFragment 클래스에서 선언하지 않아도 된다.
-            val windowManager = App().context().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            val size = Point()
-
+        /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            val display = requireActivity().display
+            display?.getRealSize(size)
+        } else {
             @Suppress("DEPRECATION")
             val display = windowManager.defaultDisplay
             @Suppress("DEPRECATION")
             display.getSize(size)
+        }*/
 
-            /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                val display = requireActivity().display
-                display?.getRealSize(size)
-            } else {
-                @Suppress("DEPRECATION")
-                val display = windowManager.defaultDisplay
-                @Suppress("DEPRECATION")
-                display.getSize(size)
-            }*/
-
-            val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-            val deviceWidth = size.x
-            params?.width = (deviceWidth * 0.9).toInt()
-            dialog?.window?.attributes = params as WindowManager.LayoutParams
-        }
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        params?.width = (deviceWidth * 0.9).toInt()
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 }

@@ -15,11 +15,11 @@ import com.cashfulus.cashcarplus.model.AdResponse
 import com.cashfulus.cashcarplus.ui.adinfo.AdInfoActivity
 import java.text.DecimalFormat
 
-class AdRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<AdRecyclerAdapter.Holder>() {
-    private var adList = ArrayList<AdResponse>()
+class AdRecyclerAdapter(private val context: Context, private val newList: ArrayList<AdResponse>, private val newTabState: String) : RecyclerView.Adapter<AdRecyclerAdapter.Holder>() {
+    private var adList = newList//ArrayList<AdResponse>()
     val numFormat = DecimalFormat("###,###")
     // 클릭 가능/불가능
-    var tabState = "ongoing" //"scheduled", "done"
+    var tabState = newTabState // "ongoing" //"scheduled", "done"
     private val TYPE_ONGOING = 1
     private val TYPE_SCHEDULED = 2
     private val TYPE_DONE = 3
@@ -34,6 +34,7 @@ class AdRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<AdR
                 view.findViewById<TextView>(R.id.tvRowAdEndDate1).visibility = View.VISIBLE
                 view.findViewById<TextView>(R.id.tvRowAdDDay1).visibility = View.GONE
                 view.findViewById<TextView>(R.id.tvRowAdEnd1).visibility = View.GONE
+                view.findViewById<View>(R.id.tvRowAdEnd1Back).visibility = View.GONE
 
                 view.findViewById<TextView>(R.id.tvRowAdRegion2).visibility = View.VISIBLE
                 view.findViewById<TextView>(R.id.tvRowAdPerson2).visibility = View.VISIBLE
@@ -41,6 +42,7 @@ class AdRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<AdR
                 view.findViewById<TextView>(R.id.tvRowAdEndDate2).visibility = View.VISIBLE
                 view.findViewById<TextView>(R.id.tvRowAdDDay2).visibility = View.GONE
                 view.findViewById<TextView>(R.id.tvRowAdEnd2).visibility = View.GONE
+                view.findViewById<View>(R.id.tvRowAdEnd2Back).visibility = View.GONE
                 return Holder(view)
             }
             TYPE_SCHEDULED -> {
@@ -51,6 +53,7 @@ class AdRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<AdR
                 view.findViewById<TextView>(R.id.tvRowAdEndDate1).visibility = View.INVISIBLE
                 view.findViewById<TextView>(R.id.tvRowAdDDay1).visibility = View.VISIBLE
                 view.findViewById<TextView>(R.id.tvRowAdEnd1).visibility = View.GONE
+                view.findViewById<View>(R.id.tvRowAdEnd1Back).visibility = View.GONE
 
                 view.findViewById<TextView>(R.id.tvRowAdRegion2).visibility = View.INVISIBLE
                 view.findViewById<TextView>(R.id.tvRowAdPerson2).visibility = View.INVISIBLE
@@ -58,6 +61,7 @@ class AdRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<AdR
                 view.findViewById<TextView>(R.id.tvRowAdEndDate2).visibility = View.INVISIBLE
                 view.findViewById<TextView>(R.id.tvRowAdDDay2).visibility = View.VISIBLE
                 view.findViewById<TextView>(R.id.tvRowAdEnd2).visibility = View.GONE
+                view.findViewById<View>(R.id.tvRowAdEnd2Back).visibility = View.GONE
                 return Holder(view)
             }
             else -> {
@@ -68,6 +72,7 @@ class AdRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<AdR
                 view.findViewById<TextView>(R.id.tvRowAdEndDate1).visibility = View.INVISIBLE
                 view.findViewById<TextView>(R.id.tvRowAdDDay1).visibility = View.GONE
                 view.findViewById<TextView>(R.id.tvRowAdEnd1).visibility = View.VISIBLE
+                view.findViewById<View>(R.id.tvRowAdEnd1Back).visibility = View.VISIBLE
 
                 view.findViewById<TextView>(R.id.tvRowAdRegion2).visibility = View.VISIBLE
                 view.findViewById<TextView>(R.id.tvRowAdPerson2).visibility = View.INVISIBLE
@@ -75,6 +80,7 @@ class AdRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<AdR
                 view.findViewById<TextView>(R.id.tvRowAdEndDate2).visibility = View.INVISIBLE
                 view.findViewById<TextView>(R.id.tvRowAdDDay2).visibility = View.GONE
                 view.findViewById<TextView>(R.id.tvRowAdEnd2).visibility = View.VISIBLE
+                view.findViewById<View>(R.id.tvRowAdEnd2Back).visibility = View.VISIBLE
                 return Holder(view)
             }
         }
@@ -122,13 +128,6 @@ class AdRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<AdR
             "scheduled" -> {
                 holder.tvDDay1.text = "D"+adList[position*2].timeDiff.toString()
 
-                holder.row1.setOnClickListener {
-                    val intent = Intent(context, AdInfoActivity::class.java)
-                    intent.putExtra("id", adList[position * 2].adId)
-                    intent.putExtra("canRegister", false)
-                    context.startActivity(intent)
-                }
-
                 if (position*2+1 < adList.size) {
                     // 오른쪽에도 데이터 셋팅
                     holder.row2.visibility = View.VISIBLE
@@ -137,13 +136,6 @@ class AdRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<AdR
                     holder.tvTitle2.text = adList[position * 2 + 1].title
                     holder.tvPoint2.text = numFormat.format(adList[position * 2 + 1].totalPoint)
                     holder.tvDDay2.text = "D-"+adList[position*2+1].timeDiff.toString()
-
-                    holder.row2.setOnClickListener {
-                        val intent = Intent(context, AdInfoActivity::class.java)
-                        intent.putExtra("id", adList[position * 2 + 1].adId)
-                        intent.putExtra("canRegister", false)
-                        context.startActivity(intent)
-                    }
                 } else {
                     holder.row2.visibility = View.GONE
                 }

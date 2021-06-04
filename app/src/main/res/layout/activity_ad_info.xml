@@ -52,6 +52,7 @@
                     app:tabBackground="@drawable/tab_pager_image_slider"
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp"
+                    app:tabPaddingEnd="4dp"
                     app:layout_constraintBottom_toTopOf="@+id/glAdImgSlider"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -251,6 +252,50 @@
                         app:layout_constraintStart_toEndOf="@+id/tvAdInfoTitle4"
                         app:layout_constraintTop_toTopOf="@+id/tvAdInfoTitle4" />
 
+                    <TextView
+                        android:id="@+id/tvAdInfoTitle12"
+                        style="@style/title_12_R"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="최소 거리"
+                        android:textColor="@color/grayscale_500"
+                        app:layout_constraintStart_toStartOf="@+id/tvAdInfoTitle1"
+                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle4" />
+
+                    <TextView
+                        android:id="@+id/tvAdInfoMinDistance"
+                        style="@style/display_16_R"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="50 km"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvAdInfoTitle12"
+                        app:layout_constraintStart_toEndOf="@+id/tvAdInfoTitle12"
+                        app:layout_constraintTop_toTopOf="@+id/tvAdInfoTitle12" />
+
+                    <TextView
+                        android:id="@+id/tvAdInfoTitle13"
+                        style="@style/title_12_R"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="성별 연령"
+                        android:textColor="@color/grayscale_500"
+                        app:layout_constraintStart_toStartOf="@+id/tvAdInfoTitle1"
+                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle12" />
+
+                    <TextView
+                        android:id="@+id/tvAdInfoGender"
+                        style="@style/display_16_R"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="무관"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvAdInfoTitle13"
+                        app:layout_constraintStart_toEndOf="@+id/tvAdInfoTitle13"
+                        app:layout_constraintTop_toTopOf="@+id/tvAdInfoTitle13" />
+
                     <View
                         android:id="@+id/lineAdInfo2"
                         android:layout_width="match_parent"
@@ -258,7 +303,7 @@
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="23dp"
                         android:background="@color/grayscale_200"
-                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle4" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle13" />
 
                     <TextView
                         android:id="@+id/tvAdInfoTitle11"

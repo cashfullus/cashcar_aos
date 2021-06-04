@@ -18,7 +18,6 @@ import com.cashfulus.cashcarplus.ui.car.CarInfoActivity
 import java.text.DecimalFormat
 
 class MyCarRecyclerAdapter(private val context: Context, private val requestActivity: ActivityResultLauncher<Intent>) : RecyclerView.Adapter<MyCarRecyclerAdapter.Holder>() {
-
     private var dataList = ArrayList<MyCarResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyCarRecyclerAdapter.Holder {

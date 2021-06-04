@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/clRowAd"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -129,9 +130,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson1"
             android:layout_marginEnd="8dp"/>
 
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/tvRowAdEnd1"
+        <View
+            android:id="@+id/tvRowAdEnd1Back"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/background_ad_end"
@@ -142,6 +142,18 @@
             android:gravity="center"
             app:layout_constraintTop_toTopOf="@+id/clRowAdStart"
             app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson1"
+            android:layout_marginEnd="8dp"/>
+        <TextView
+            android:id="@+id/tvRowAdEnd1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="종료"
+            android:fontFamily="@font/notosanskr_bold"
+            android:textSize="24dp"
+            android:textColor="@color/brand_orange1"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@+id/cvRowAd1"
+            app:layout_constraintBottom_toBottomOf="@+id/cvRowAd1"
             android:layout_marginEnd="8dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -260,9 +272,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson2"/>
 
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/tvRowAdEnd2"
+        <View
+            android:id="@+id/tvRowAdEnd2Back"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/background_ad_end"
@@ -272,7 +283,19 @@
             android:textColor="@color/brand_orange1"
             android:gravity="center"
             app:layout_constraintTop_toTopOf="@+id/clRowAdEnd"
-            app:layout_constraintBottom_toBottomOf="@+id/tvRowAdPerson2"
+            app:layout_constraintBottom_toBottomOf="@+id/clRowAdEnd"
+            android:layout_marginStart="8dp"/>
+        <TextView
+            android:id="@+id/tvRowAdEnd2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="종료"
+            android:fontFamily="@font/notosanskr_bold"
+            android:textSize="24dp"
+            android:textColor="@color/brand_orange1"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@+id/cvRowAd2"
+            app:layout_constraintBottom_toBottomOf="@+id/cvRowAd2"
             android:layout_marginStart="8dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

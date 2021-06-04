@@ -138,6 +138,9 @@ data class AdInfoResponse(
         @SerializedName("back_length") val back_length: Int,
         @SerializedName("back_width") val back_width: Int,
         @SerializedName("description") val description: String,
+        @SerializedName("gender") val gender: Int, //0: 무관, 1: 남자, 2: 여자
+        @SerializedName("max_age_group") val max_age_group: Int, //0: 무관
+        @SerializedName("min_age_group") val min_age_group: Int, //0: 무관
         @SerializedName("images") val images: List<ImageUrl>,
         @SerializedName("max_recruiting_count") val max_recruiting_count: Int,
         @SerializedName("min_distance") val min_distance: Int,

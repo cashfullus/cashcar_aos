@@ -1,10 +1,13 @@
 package com.cashfulus.cashcarplus.ui.mission
 
+import android.Manifest
+import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 import com.cashfulus.cashcarplus.R
@@ -13,6 +16,8 @@ import com.cashfulus.cashcarplus.databinding.ActivityMissionCertBinding
 import com.cashfulus.cashcarplus.ui.dialog.CameraBottomDialog
 import com.cashfulus.cashcarplus.ui.dialog.CameraBottomDialogClickListener
 import com.cashfulus.cashcarplus.util.isValidGauge
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -36,6 +41,21 @@ class MissionCertActivity : BaseActivity(), CameraBottomDialogClickListener {
             lifecycleOwner = this@MissionCertActivity
             viewModel = this@MissionCertActivity.viewModel
         }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+        /** 권한 확인 */
+        val permissionlistener: PermissionListener = object : PermissionListener {
+            override fun onPermissionGranted() {}
+
+            override fun onPermissionDenied(deniedPermissions: List<String>) {
+                showToast("카메라 관련 권한이 거부되었습니다.")
+            }
+        }
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
+                .check()
 
         /** 미션 인증, 추가 미션 인증 구분 */
         if(intent.getStringExtra("type") == "important") {

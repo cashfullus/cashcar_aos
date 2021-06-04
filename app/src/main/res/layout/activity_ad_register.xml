@@ -258,8 +258,7 @@
                         android:layout_height="wrap_content"
                         android:hint="예) 영동대로 517, 삼성동 159"
                         android:text="@={viewModel.mainAddress}"
-                        style="@style/title_14_R"
-                        android:textColor="@color/grayscale_400" />
+                        style="@style/title_14_R" />
                     <View
                         android:id="@+id/btnAdRegisterAddress1"
                         android:layout_width="0dp"

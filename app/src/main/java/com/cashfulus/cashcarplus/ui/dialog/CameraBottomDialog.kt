@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
+import android.hardware.camera2.CameraCharacteristics
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -17,17 +18,16 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.cashfulus.cashcarplus.R
-import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.util.resizeBitmap
 import com.cashfulus.cashcarplus.util.rotateBitmap
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet_camera.*
 import java.io.File
 import java.io.IOException
-import java.lang.ClassCastException
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 interface CameraBottomDialogClickListener {
     fun onClick(imgNum: Int, image: Bitmap)
@@ -40,7 +40,7 @@ class CameraBottomDialog(imgNum: Int) : BottomSheetDialogFragment() {
     private lateinit var mCurrentPhotoPath: String
 
     private val requestActivity: ActivityResultLauncher<Intent> = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
+            ActivityResultContracts.StartActivityForResult()
     ) { activityResult ->
         if(activityResult.resultCode == AppCompatActivity.RESULT_OK) {
             if(Build.VERSION.SDK_INT >= 29) {
@@ -54,7 +54,7 @@ class CameraBottomDialog(imgNum: Int) : BottomSheetDialogFragment() {
                         clickListener.onClick(imgNum, bitmap)
                 } catch (e: IOException) {
                     e.printStackTrace()
-                    clickListener.onError("오류 발생 : "+e.localizedMessage)
+                    clickListener.onError("오류 발생 : " + e.localizedMessage)
                 }
             } else {
                 try {
@@ -66,11 +66,11 @@ class CameraBottomDialog(imgNum: Int) : BottomSheetDialogFragment() {
                         clickListener.onClick(imgNum, bitmap)
                 } catch (e: IOException) {
                     e.printStackTrace()
-                    clickListener.onError("오류 발생 : "+e.localizedMessage)
+                    clickListener.onError("오류 발생 : " + e.localizedMessage)
                 }
             }
         } else {
-            Log.d("Cashcar", "Error occured : "+activityResult.resultCode.toString())
+            Log.d("Cashcar", "Error occured : " + activityResult.resultCode.toString())
         }
 
         dismiss()

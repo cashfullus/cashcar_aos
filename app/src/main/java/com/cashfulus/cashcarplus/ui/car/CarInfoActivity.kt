@@ -3,6 +3,7 @@ package com.cashfulus.cashcarplus.ui.car
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -85,10 +86,14 @@ class CarInfoActivity : BaseActivity(), PopupDialogClickListener {
                         } else {
                             binding.etCarModel.setSuccess("차량 모델명 입력 완료")
 
-                            if(!binding.etCarModel.hasError && !binding.etCarYear.hasError && !binding.etCarNumber.hasError) {
-                                if(binding.etCarCompany.visibility != View.VISIBLE)
+                            if(!binding.etCarNumber.hasError && !binding.etCarModel.hasError && !binding.etCarYear.hasError) {
+                                if(binding.etCarCompany.visibility != View.VISIBLE && binding.etCarOwner.visibility != View.VISIBLE)
                                     isAllValid.postValue(true)
-                                else if(!binding.etCarCompany.hasError)
+                                else if(binding.etCarCompany.visibility != View.VISIBLE && !binding.etCarOwner.hasError)
+                                    isAllValid.postValue(true)
+                                else if(!binding.etCarCompany.hasError && binding.etCarOwner.visibility != View.VISIBLE)
+                                    isAllValid.postValue(true)
+                                else if(!binding.etCarCompany.hasError && !binding.etCarOwner.hasError)
                                     isAllValid.postValue(true)
                                 else
                                     isAllValid.postValue(false)
@@ -114,10 +119,14 @@ class CarInfoActivity : BaseActivity(), PopupDialogClickListener {
                         } else {
                             binding.etCarYear.setSuccess("연식 입력 완료")
 
-                            if(!binding.etCarModel.hasError && !binding.etCarYear.hasError && !binding.etCarNumber.hasError) {
-                                if(binding.etCarCompany.visibility != View.VISIBLE)
+                            if(!binding.etCarNumber.hasError && !binding.etCarModel.hasError && !binding.etCarYear.hasError) {
+                                if(binding.etCarCompany.visibility != View.VISIBLE && binding.etCarOwner.visibility != View.VISIBLE)
                                     isAllValid.postValue(true)
-                                else if(!binding.etCarCompany.hasError)
+                                else if(binding.etCarCompany.visibility != View.VISIBLE && !binding.etCarOwner.hasError)
+                                    isAllValid.postValue(true)
+                                else if(!binding.etCarCompany.hasError && binding.etCarOwner.visibility != View.VISIBLE)
+                                    isAllValid.postValue(true)
+                                else if(!binding.etCarCompany.hasError && !binding.etCarOwner.hasError)
                                     isAllValid.postValue(true)
                                 else
                                     isAllValid.postValue(false)
@@ -143,10 +152,14 @@ class CarInfoActivity : BaseActivity(), PopupDialogClickListener {
                         } else {
                             binding.etCarNumber.setSuccess("차량번호 입력 완료")
 
-                            if(!binding.etCarModel.hasError && !binding.etCarYear.hasError && !binding.etCarNumber.hasError) {
-                                if(binding.etCarCompany.visibility != View.VISIBLE)
+                            if(!binding.etCarNumber.hasError && !binding.etCarModel.hasError && !binding.etCarYear.hasError) {
+                                if(binding.etCarCompany.visibility != View.VISIBLE && binding.etCarOwner.visibility != View.VISIBLE)
                                     isAllValid.postValue(true)
-                                else if(!binding.etCarCompany.hasError)
+                                else if(binding.etCarCompany.visibility != View.VISIBLE && !binding.etCarOwner.hasError)
+                                    isAllValid.postValue(true)
+                                else if(!binding.etCarCompany.hasError && binding.etCarOwner.visibility != View.VISIBLE)
+                                    isAllValid.postValue(true)
+                                else if(!binding.etCarCompany.hasError && !binding.etCarOwner.hasError)
                                     isAllValid.postValue(true)
                                 else
                                     isAllValid.postValue(false)
@@ -169,10 +182,47 @@ class CarInfoActivity : BaseActivity(), PopupDialogClickListener {
                 } else {
                     binding.etCarCompany.setSuccess("제조사 입력 완료")
 
-                    if(!binding.etCarModel.hasError && !binding.etCarYear.hasError && !binding.etCarNumber.hasError && !binding.etCarCompany.hasError)
-                        isAllValid.postValue(true)
-                    else
+                    if(!binding.etCarNumber.hasError && !binding.etCarModel.hasError && !binding.etCarYear.hasError) {
+                        if(binding.etCarCompany.visibility != View.VISIBLE && binding.etCarOwner.visibility != View.VISIBLE)
+                            isAllValid.postValue(true)
+                        else if(binding.etCarCompany.visibility != View.VISIBLE && !binding.etCarOwner.hasError)
+                            isAllValid.postValue(true)
+                        else if(!binding.etCarCompany.hasError && binding.etCarOwner.visibility != View.VISIBLE)
+                            isAllValid.postValue(true)
+                        else if(!binding.etCarCompany.hasError && !binding.etCarOwner.hasError)
+                            isAllValid.postValue(true)
+                        else
+                            isAllValid.postValue(false)
+                    } else {
                         isAllValid.postValue(false)
+                    }
+                }
+            }
+        })
+        binding.etCarOwner.getEditText().addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                if(!s.toString().isValidOwner()) {
+                    binding.etCarOwner.setError("2자~30자 길이로 입력해주세요.")
+                    isAllValid.postValue(false)
+                } else {
+                    binding.etCarOwner.setSuccess("차량소유주와의 관계 입력 완료")
+
+                    if(!binding.etCarNumber.hasError && !binding.etCarModel.hasError && !binding.etCarYear.hasError) {
+                        if(binding.etCarCompany.visibility != View.VISIBLE && binding.etCarOwner.visibility != View.VISIBLE)
+                            isAllValid.postValue(true)
+                        else if(binding.etCarCompany.visibility != View.VISIBLE && !binding.etCarOwner.hasError)
+                            isAllValid.postValue(true)
+                        else if(!binding.etCarCompany.hasError && binding.etCarOwner.visibility != View.VISIBLE)
+                            isAllValid.postValue(true)
+                        else if(!binding.etCarCompany.hasError && !binding.etCarOwner.hasError)
+                            isAllValid.postValue(true)
+                        else
+                            isAllValid.postValue(false)
+                    } else {
+                        isAllValid.postValue(false)
+                    }
                 }
             }
         })
@@ -204,29 +254,67 @@ class CarInfoActivity : BaseActivity(), PopupDialogClickListener {
                 if(viewModel.isKorean.value!!)
                     if(position == resources.getStringArray(R.array.korean_company).size-1) {
                         binding.etCarCompany.visibility = View.VISIBLE
-                        binding.etCarCompany.getEditText().setText("")
                     } else {
                         viewModel.company.postValue(resources.getStringArray(R.array.korean_company)[position])
                         binding.etCarCompany.visibility = View.GONE
 
-                        if(!binding.etCarModel.hasError && !binding.etCarYear.hasError && !binding.etCarNumber.hasError)
-                            isAllValid.postValue(true)
-                        else
+                        if(!binding.etCarNumber.hasError && !binding.etCarModel.hasError && !binding.etCarYear.hasError) {
+                            if(binding.etCarOwner.visibility != View.VISIBLE)
+                                isAllValid.postValue(true)
+                            else if(!binding.etCarOwner.hasError)
+                                isAllValid.postValue(true)
+                            else
+                                isAllValid.postValue(false)
+                        } else {
                             isAllValid.postValue(false)
+                        }
                     }
                 else {
                     if(position == resources.getStringArray(R.array.foreign_company).size-1) {
                         binding.etCarCompany.visibility = View.VISIBLE
-                        binding.etCarCompany.getEditText().setText("")
                     } else {
                         viewModel.company.postValue(resources.getStringArray(R.array.foreign_company)[position])
                         binding.etCarCompany.visibility = View.GONE
 
-                        if(!binding.etCarModel.hasError && !binding.etCarYear.hasError && !binding.etCarNumber.hasError)
+                        if(!binding.etCarNumber.hasError && !binding.etCarModel.hasError && !binding.etCarYear.hasError) {
+                            if(binding.etCarOwner.visibility != View.VISIBLE)
+                                isAllValid.postValue(true)
+                            else if(!binding.etCarOwner.hasError)
+                                isAllValid.postValue(true)
+                            else
+                                isAllValid.postValue(false)
+                        } else {
+                            isAllValid.postValue(false)
+                        }
+                    }
+                }
+            }
+        }
+
+        /** '차량소유주와의 관계' Spinner */
+        val relationAdapter = ArrayAdapter(this, R.layout.row_spinner_origin, resources.getStringArray(R.array.car_owner).toList())
+        relationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spCarOwner.adapter = relationAdapter
+        binding.spCarOwner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                viewModel.owner.postValue(resources.getStringArray(R.array.car_owner)[0])
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(position == resources.getStringArray(R.array.car_owner).size-1) {
+                    binding.etCarOwner.visibility = View.VISIBLE
+                } else {
+                    viewModel.owner.postValue(resources.getStringArray(R.array.car_owner)[position])
+                    binding.etCarOwner.visibility = View.GONE
+
+                    if (!binding.etCarModel.hasError && !binding.etCarYear.hasError && !binding.etCarNumber.hasError) {
+                        if(binding.etCarCompany.visibility != View.VISIBLE)
+                            isAllValid.postValue(true)
+                        else if(!binding.etCarCompany.hasError)
                             isAllValid.postValue(true)
                         else
                             isAllValid.postValue(false)
-                    }
+                    } else
+                        isAllValid.postValue(false)
                 }
             }
         }
@@ -287,20 +375,15 @@ class CarInfoActivity : BaseActivity(), PopupDialogClickListener {
         })
 
         viewModel.companyIndex.observe(binding.lifecycleOwner!!, {
-            /** getCarInfo의 경우, 회사 Spinner 정보를 셋팅하는 시점이 될 때 Dialog를 닫음. */
             if (it == -1) {
                 if (viewModel.isKorean.value!!) {
                     binding.spCarCompany.adapter = koreanAdapter
-                    binding.spCarCompany.setSelection(5)
-                    binding.spCarCompany.visibility = View.GONE
-                    binding.etCarCompany.visibility = View.VISIBLE
+                    binding.spCarCompany.setSelection(6)
                 } else {
                     binding.spCarCompany.adapter = foreignAdapter
-                    binding.spCarCompany.setSelection(9)
-                    binding.spCarCompany.visibility = View.GONE
-                    binding.etCarCompany.visibility = View.VISIBLE
-                }
-            } else {
+                    binding.spCarCompany.setSelection(23)}
+
+              } else {
                 if (viewModel.isKorean.value!!)
                     binding.spCarCompany.adapter = koreanAdapter
                 else
@@ -321,6 +404,20 @@ class CarInfoActivity : BaseActivity(), PopupDialogClickListener {
             // 삭제는 가능한데 미션이 존재 : 체크박스 해제된 상태로 비활성화
             else if(UserManager.hasMission)
                 binding.cbCarSupporters.setCurrentState(ONLY_ONE_CAR_NOT_CHECKED)
+        })
+
+        var isOwnerLoaded = false
+        viewModel.owner.observe(binding.lifecycleOwner!!, {
+            if(it != "];9(" && !isOwnerLoaded) { // it이 초기값이 아니고, 아직 로딩된 적이 없다면 체크.
+                isOwnerLoaded = true
+                when (it) {
+                    "본인" -> { binding.spCarOwner.setSelection(0) }
+                    "배우자" -> { binding.spCarOwner.setSelection(1) }
+                    "부모" -> { binding.spCarOwner.setSelection(2) }
+                    "형제/자매" -> { binding.spCarOwner.setSelection(3) }
+                    else -> { binding.spCarOwner.setSelection(4) }
+                }
+            }
         })
     }
 

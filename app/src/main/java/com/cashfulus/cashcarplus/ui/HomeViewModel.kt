@@ -35,6 +35,8 @@ const val MISSION_MESSAGE_MISSION_FAIL = "mission_fail"
 class HomeViewModel(private val missionRepository: MissionRepository): BaseViewModel() {
     // 현재 진행중인 광고 & 미션
     val currentMission = MutableLiveData<MyAdResponseWrapper>()
+    // 광고 리스트
+    val adList = MutableLiveData<ArrayList<ArrayList<AdResponse>>>()
     // 로딩 및 오류
     val error = SingleLiveEvent<ErrorResponse>()
     // 미션 삭제 성공 시 알림
@@ -142,6 +144,47 @@ class HomeViewModel(private val missionRepository: MissionRepository): BaseViewM
             }
         } else {
             error.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, ""))
+        }
+    }
+
+    fun loadAllAdList() {
+        if(NetworkManager().checkNetworkState()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                showLoadingDialog()
+                val response1 = missionRepository.getAdList("ongoing", 1, UserManager.jwtToken!!)
+
+                if(response1.isSucceed) {
+                    val response2 = missionRepository.getAdList("scheduled", 1, UserManager.jwtToken!!)
+
+                    if(response2.isSucceed) {
+                        val response3 = missionRepository.getAdList("done", 1, UserManager.jwtToken!!)
+
+                        if(response3.isSucceed) {
+                            val result = ArrayList<ArrayList<AdResponse>>()
+                            result.add(response1.contents!!.data)
+                            result.add(response2.contents!!.data)
+                            result.add(response3.contents!!.data)
+                            hideLoadingDialog()
+                            adList.postValue(result)
+                        } else {
+                            hideLoadingDialog()
+                            error.postValue(response3.error!!)
+                            Log.e("Cashcarplus", "response3")
+                        }
+                    } else {
+                        hideLoadingDialog()
+                        error.postValue(response2.error!!)
+                        Log.e("Cashcarplus", "response2")
+                    }
+                } else {
+                    hideLoadingDialog()
+                    error.postValue(response1.error!!)
+                    Log.e("Cashcarplus", "response1")
+                }
+            }
+        } else {
+            error.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, ""))
+            Log.e("Cashcarplus", "뭔데 왜?")
         }
     }
 

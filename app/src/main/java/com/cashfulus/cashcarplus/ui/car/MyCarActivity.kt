@@ -10,10 +10,12 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityMyCarBinding
 import com.cashfulus.cashcarplus.ui.adapter.MyCarRecyclerAdapter
+import com.cashfulus.cashcarplus.ui.dialog.PopupDialog
+import com.cashfulus.cashcarplus.ui.dialog.PopupDialogClickListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class MyCarActivity : BaseActivity() {
+class MyCarActivity : BaseActivity(), PopupDialogClickListener {
     private val binding by binding<ActivityMyCarBinding>(R.layout.activity_my_car)
     private val viewModel: MyCarViewModel by viewModel { parametersOf() }
 
@@ -37,6 +39,9 @@ class MyCarActivity : BaseActivity() {
             viewModel = this@MyCarActivity.viewModel
         }
 
+        /** Popup 설정 */
+        val cannotDeleteDialog = PopupDialog("차량은 최대 3대까지만 등록 가능합니다.", null, "확인")
+
         /** 툴바 버튼 설정 */
         binding.toolbarMyCar.setLeftOnClick {
             finish()
@@ -53,10 +58,7 @@ class MyCarActivity : BaseActivity() {
             // 새로 추가하는 차량은 광고 서포터즈 차량이 아니어도 됨.
             if (it.size >= 3) {
                 binding.toolbarMyCar.setRightOnClick {
-                    val builder = AlertDialog.Builder(this@MyCarActivity)
-                    builder.setMessage("차량은 최대 3대까지만 등록 가능합니다.")
-                    builder.setPositiveButton("확인", null)
-                    builder.create().show()
+                    cannotDeleteDialog.show(supportFragmentManager, "cannotDelete")
                 }
             } else {
                 binding.toolbarMyCar.setRightOnClick {
@@ -84,4 +86,8 @@ class MyCarActivity : BaseActivity() {
             finish()
         })
     }
+
+    /** cannotDeleteDialog의 interface의 콜백 함수 부분 */
+    override fun onPositive() {}
+    override fun onNegative() {}
 }

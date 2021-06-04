@@ -29,8 +29,8 @@ class CarInfoViewModel(private val repository: CarRepository): BaseViewModel() {
     val year = MutableLiveData<String>()
     val carNumber = MutableLiveData<String>()
     val isSupporters = MutableLiveData<Boolean>(true)
+    val owner = MutableLiveData<String>("];9(")
     var isDeletable: Boolean? = null
-    var ownerRelationship: String? = null
 
     // 받아온 제조사 정보를 Spinner에 보내기 위한 LiveData
     val companyIndex = SingleLiveEvent<Int>()
@@ -53,8 +53,8 @@ class CarInfoViewModel(private val repository: CarRepository): BaseViewModel() {
                     year.postValue(carResponse.contents!!.data.year.toString())
                     carNumber.postValue(carResponse.contents!!.data.carNumber)
                     isSupporters.postValue(carResponse.contents!!.data.supporters == 1)
+                    owner.postValue(carResponse.contents!!.data.ownerRelationship)
                     isDeletable = carResponse.contents!!.data.isDelete
-                    ownerRelationship = carResponse.contents!!.data.ownerRelationship
 
                     when(carResponse.contents!!.data.brand) {
                         "현대" -> { companyIndex.postValue(0) }
@@ -87,7 +87,7 @@ class CarInfoViewModel(private val repository: CarRepository): BaseViewModel() {
                         "페라리" -> { companyIndex.postValue(20) }
                         "포르쉐" -> { companyIndex.postValue(21) }
                         "푸조" -> { companyIndex.postValue(22) }
-                        
+
                         else  -> { companyIndex.postValue(-1) }
                     }
 
@@ -136,11 +136,11 @@ class CarInfoViewModel(private val repository: CarRepository): BaseViewModel() {
 
     // 자동차 정보 수정
     fun modifyCarInfo(vehicleId: Int) {
-        if(NetworkManager().checkNetworkState() && ownerRelationship != null) {
+        if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
                 showLoadingDialog()
                 val carResponse = repository.modifyCarInfo(if(isSupporters.value!!) 1 else 0, if(isKorean.value!!) 0 else 1,
-                        company.value!!, modelName.value!!, year.value!!.toInt(), carNumber.value!!, ownerRelationship!!, UserManager.userId!!, vehicleId, UserManager.jwtToken!!)
+                        company.value!!, modelName.value!!, year.value!!.toInt(), carNumber.value!!, owner.value!!, UserManager.userId!!, vehicleId, UserManager.jwtToken!!)
 
                 if (carResponse.isSucceed) {
                     hideLoadingDialog()

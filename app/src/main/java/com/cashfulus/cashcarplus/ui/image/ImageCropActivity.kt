@@ -5,8 +5,6 @@ import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.cashfulus.cashcarplus.R
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_image_crop.*
 
 class ImageCropActivity : AppCompatActivity(){
