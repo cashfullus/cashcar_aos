@@ -5,10 +5,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -26,27 +26,37 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cashcarplus"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.donation.DonationPrivacyActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize"/>
-        <activity android:name=".ui.donation.DonationRegisterActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize"/>
-        <activity android:name=".ui.donation.DonationListActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize"/>
-        <activity android:name=".base.TestActivity"
+        <activity android:name=".ui.image.CameraActivity"
+            android:configChanges="orientation|screenLayout"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.point.PointActivity"
+        <activity
+            android:name=".ui.donation.DonationPrivacyActivity"
+            android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.myactivities.MyActivitiesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.donation.DonationRegisterActivity"
+            android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.donation.DonationListActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".base.TestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.point.PointActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.myactivities.MyActivitiesActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.cashcartip.CashcartipActivity"
             android:launchMode="singleTop"
@@ -73,9 +83,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mission.MissionCertActivity"
+            android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mission.MissionActivity"
             android:launchMode="singleTop"
@@ -187,8 +197,10 @@
                     android:scheme="kakaoc4a351e2bdeb2dd3bf4e4822fc9aca19" />
             </intent-filter>
         </activity>
-        <activity android:name="com.canhub.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity
+            android:name="com.canhub.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.cashfulus.cashcarplus.fileprovider"
@@ -201,7 +213,7 @@
 
         <service
             android:name=".service.CashcarFirebaseMessagingService"
-            android:exported="true"> <!--android:enabled="true"-->
+            android:exported="true"> <!-- android:enabled="true" -->
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

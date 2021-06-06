@@ -59,19 +59,19 @@ class MissionCertActivity : BaseActivity(), CameraBottomDialogClickListener {
 
         /** 미션 인증, 추가 미션 인증 구분 */
         if(intent.getStringExtra("type") == "important") {
-            binding.ivMissionCert3.visibility = View.VISIBLE
+            binding.cvMissionCert3.visibility = View.VISIBLE
             binding.tvMissionCertTitle6.visibility = View.VISIBLE
             binding.etMissionCertMileage.visibility = View.VISIBLE
             binding.tvMissionCertKm.visibility = View.VISIBLE
             binding.tvMissionCertNum.text = "필수 미션 "+intent.getIntExtra("order", -1).toString()+"회차"
         } else if(intent.getStringExtra("type") == "additional") {
-            binding.ivMissionCert3.visibility = View.GONE
+            binding.cvMissionCert3.visibility = View.GONE
             binding.tvMissionCertTitle6.visibility = View.GONE
             binding.etMissionCertMileage.visibility = View.GONE
             binding.tvMissionCertKm.visibility = View.GONE
-            binding.tvMissionCertNum.text = "스티커 추가 인증"
+            binding.tvMissionCertNum.text = intent.getStringExtra("missionname")
         } else {
-            binding.ivMissionCert3.visibility = View.GONE
+            binding.cvMissionCert3.visibility = View.GONE
             binding.tvMissionCertTitle6.visibility = View.GONE
             binding.etMissionCertMileage.visibility = View.GONE
             binding.tvMissionCertKm.visibility = View.GONE

@@ -4,15 +4,19 @@ import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageView
 import com.cashfulus.cashcarplus.R
@@ -60,20 +64,6 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
             viewModel = this@UserInfoActivity.viewModel
         }
 
-        /** 권한 확인 */
-        val permissionlistener: PermissionListener = object : PermissionListener {
-            override fun onPermissionGranted() {}
-
-            override fun onPermissionDenied(deniedPermissions: List<String>) {
-                showToast("카메라 관련 권한이 거부되었습니다.")
-            }
-        }
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
-                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
-                .check()
-
         /** 툴바 버튼 클릭 이벤트 */
         binding.btnUserInfoBack.setOnClickListener {
             finish()
@@ -103,7 +93,7 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
             }
         })
         viewModel.originImg.observe(binding.lifecycleOwner!!, {
-            Glide.with(this@UserInfoActivity).load(it).into(binding.ivUserInfo)
+            Glide.with(this@UserInfoActivity).load(it).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivUserInfo)
         })
 
         /** Form Validation + 이메일 변경 가능 여부 체크 */
@@ -210,9 +200,33 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
         binding.cvUserInfo.setOnClickListener {
             //val profileImageDialog = ProfileImageDialog()
             //profileImageDialog.show(supportFragmentManager, "Image")
+            /** 권한 확인 */
+            val permissionlistener: PermissionListener = object : PermissionListener {
+                override fun onPermissionGranted() {}
+
+                override fun onPermissionDenied(deniedPermissions: List<String>) {
+                    showToast("카메라 관련 권한이 거부되었습니다.")
+                }
+            }
+
+            if(Build.VERSION.SDK_INT >= 30) {
+                TedPermission.with(this)
+                        .setPermissionListener(permissionlistener)
+                        .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+                        .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)// Manifest.permission.MANAGE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
+                        .check()
+            } else {
+                TedPermission.with(this)
+                        .setPermissionListener(permissionlistener)
+                        .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+                        .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
+                        .check()
+            }
+
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1, 1)
+                    .setRequestedSize(500, 500)
                     .start(this)
         }
 
@@ -250,10 +264,19 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
 
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             val result = CropImage.getActivityResult(data)
-            val resultUri: Uri = result!!.uriContent!!
 
-            Glide.with(this@UserInfoActivity).load(resultUri).into(binding.ivUserInfo)
-            viewModel.profileImg.postValue(resultUri)
+            if(Build.VERSION.SDK_INT >= 30) {
+                val resultUri: Uri = result!!.uriContent!!
+                val resultPathString = result!!.getUriFilePath(App().context())
+                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+                Glide.with(this@UserInfoActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivUserInfo)
+                viewModel.profileImgAnd11.postValue(resultPathString)
+            } else {
+                val resultUri: Uri = result!!.uriContent!!
+                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+                Glide.with(this@UserInfoActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivUserInfo)
+                viewModel.profileImg.postValue(resultUri)
+            }
 
             if(!binding.etUserInfoNickname.hasError && !binding.etUserInfoName.hasError && !binding.etUserInfoPhone.hasError && !binding.etUserInfoBirth.hasError)
                 isAllValid.postValue(true)

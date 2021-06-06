@@ -8,10 +8,11 @@
 
     <ImageView
         android:id="@+id/ivHowToUse"
-        android:layout_width="234dp"
-        android:layout_height="156dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="h, 1:1"
         android:src="@drawable/howtouse_01"
-        android:layout_marginHorizontal="50dp"
+        android:layout_marginHorizontal="35dp"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/tvHowToUseTitle"
@@ -24,13 +25,13 @@
         android:layout_height="wrap_content"
         android:background="@drawable/tv_background_howtouse"
         android:text="STEP 01"
-        style="@style/title_14_M"
+        style="@style/title_12_R"
         android:textColor="@color/grayscale_wt"
         app:layout_constraintTop_toBottomOf="@+id/ivHowToUse"
         app:layout_constraintBottom_toTopOf="@+id/tvHowToUseContents"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="67dp"/>
+        android:layout_marginTop="34dp"/>
 
     <TextView
         android:id="@+id/tvHowToUseContents"
@@ -40,6 +41,6 @@
         style="@style/body_howtouse"
         app:layout_constraintTop_toBottomOf="@+id/tvHowToUseTitle"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="35dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseFragment
 import com.cashfulus.cashcarplus.databinding.FragmentMyBinding
@@ -61,7 +62,7 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyViewModel>(R.layout.fragmen
             binding.tvMyName.text = UserManager.name
             binding.tvMyEmail.text = UserManager.email
             if(!UserManager.profileImage.isNullOrBlank())
-                Glide.with(requireActivity()).load(UserManager.profileImage!!).into(binding.ivMyProfile)
+                Glide.with(requireActivity()).load(UserManager.profileImage!!).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivMyProfile)
         }
     }
 

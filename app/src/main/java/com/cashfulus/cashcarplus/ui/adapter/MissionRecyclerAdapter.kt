@@ -179,6 +179,7 @@ class MissionAdditionalRecyclerAdapter(private val context: Context, private val
                     intent.putExtra("title", title)
                     intent.putExtra("endDate", dataList[position*2].endDate)
                     intent.putExtra("id", dataList[position*2].missionId)
+                    intent.putExtra("missionname", dataList[position*2].title)
                     context.startActivity(intent)
                 }
             }
@@ -193,6 +194,7 @@ class MissionAdditionalRecyclerAdapter(private val context: Context, private val
                     intent.putExtra("title", title)
                     intent.putExtra("endDate", dataList[position*2].endDate)
                     intent.putExtra("id", dataList[position*2].missionId)
+                    intent.putExtra("missionname", dataList[position*2].title)
                     context.startActivity(intent)
                 }
             }
@@ -224,6 +226,7 @@ class MissionAdditionalRecyclerAdapter(private val context: Context, private val
                         intent.putExtra("title", title)
                         intent.putExtra("endDate", dataList[position*2+1].endDate)
                         intent.putExtra("id", dataList[position*2+1].missionId)
+                        intent.putExtra("missionname", dataList[position*2+1].title)
                         context.startActivity(intent)
                     }
                 }
@@ -238,6 +241,7 @@ class MissionAdditionalRecyclerAdapter(private val context: Context, private val
                         intent.putExtra("title", title)
                         intent.putExtra("endDate", dataList[position*2+1].endDate)
                         intent.putExtra("id", dataList[position*2+1].missionId)
+                        intent.putExtra("missionname", dataList[position*2+1].title)
                         context.startActivity(intent)
                     }
                 }

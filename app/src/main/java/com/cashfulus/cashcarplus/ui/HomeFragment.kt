@@ -1,8 +1,10 @@
 package com.cashfulus.cashcarplus.ui
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
@@ -19,34 +21,29 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.base.BaseFragment
-import com.cashfulus.cashcarplus.base.TestActivity
 import com.cashfulus.cashcarplus.databinding.FragmentHomeBinding
 import com.cashfulus.cashcarplus.model.AdResponse
 import com.cashfulus.cashcarplus.ui.adapter.AdRecyclerAdapter
-import com.cashfulus.cashcarplus.ui.adapter.RecyclerData
 import com.cashfulus.cashcarplus.ui.alarm.AlarmActivity
 import com.cashfulus.cashcarplus.ui.car.AddCarActivity
 import com.cashfulus.cashcarplus.ui.dialog.*
+import com.cashfulus.cashcarplus.ui.howtouse.HowToUseActivity
 import com.cashfulus.cashcarplus.ui.mission.MissionActivity
 import com.cashfulus.cashcarplus.ui.mission.MissionCertActivity
 import com.cashfulus.cashcarplus.util.UserManager
 import com.cashfulus.cashcarplus.view.*
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.gson.annotations.SerializedName
 import kotlinx.android.synthetic.main.dialog_popup.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.lang.ClassCastException
 import java.text.DecimalFormat
+
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.fragment_home) {
     val numFormat = DecimalFormat("###,###")
@@ -56,6 +53,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     var tabState = "ongoing" //"scheduled", "done"
     // 각 탭에서의 광고 갯수
     val adNum: Array<Int> = arrayOf(0, 0, 0)
+
+    // 알람 수신을 위한 BroadcastReceiver
+    private var receiver: BroadcastReceiver? = null
+    private var mIsReceiverRegistered = false
 
     override fun init() {
         /** Alarm Button 클릭 시 처리 */
@@ -68,10 +69,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             // 응답 데이터(it이 안 먹는 부분이 있기 때문에 사용)
             val dataResult = it.data
 
-            if(!it.data.data.isReadAlarm) {
-                binding.btnHomeAlarm.setImageDrawable(getDrawable(requireActivity(), R.drawable.ic_alarm_none))
+            if (!it.data.data.isReadAlarm) {
+                binding.btnHomeAlarm.setImageDrawable(
+                        getDrawable(
+                                requireActivity(),
+                                R.drawable.ic_alarm_none
+                        )
+                )
             } else {
-                binding.btnHomeAlarm.setImageDrawable(getDrawable(requireActivity(), R.drawable.ic_alarm_new))
+                binding.btnHomeAlarm.setImageDrawable(
+                        getDrawable(
+                                requireActivity(),
+                                R.drawable.ic_alarm_new
+                        )
+                )
             }
 
             when (it.status) {
@@ -81,21 +92,43 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.VISIBLE
                     binding.cardCurrentMission.visibility = View.GONE
                     val card = binding.cardNoneMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            56f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.background = requireActivity().getDrawable(R.drawable.button_mission_no_car)
+                    card.background =
+                            requireActivity().getDrawable(R.drawable.button_mission_no_car)
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "내 차량 정보 등록하기"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface = ResourcesCompat.getFont(requireActivity(), R.font.notosanskr_bold)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(getColor(requireActivity(), R.color.grayscale_wt))
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface =
+                            ResourcesCompat.getFont(
+                                    requireActivity(),
+                                    R.font.notosanskr_bold
+                            )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            16f
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(
+                            getColor(
+                                    requireActivity(),
+                                    R.color.grayscale_wt
+                            )
+                    )
 
                     card.setOnClickListener {
-                        requireActivity().startActivity(Intent(requireActivity(), AddCarActivity::class.java))
+                        requireActivity().startActivity(
+                                Intent(
+                                        requireActivity(),
+                                        AddCarActivity::class.java
+                                )
+                        )
                     }
 
                     /** 최초 로그인 후 실행인 경우 띄움 */
                     val initSP = App().context().getSharedPreferences("started", MODE_PRIVATE)
-                    if(!initSP.getBoolean("started", false)) {
+                    if (!initSP.getBoolean("started", false)) {
                         WelcomeDialog().show(parentFragmentManager, "WelcomeDialog")
                         initSP.edit().putBoolean("started", true).apply()
                     }
@@ -105,13 +138,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.VISIBLE
                     binding.cardCurrentMission.visibility = View.GONE
                     val card = binding.cardNoneMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            56f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_mission_no_mission)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "현재 진행 중인 서포터즈 활동이 없습니다"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface = ResourcesCompat.getFont(requireActivity(), R.font.notosanskr_regular)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(getColor(requireActivity(), R.color.grayscale_500))
+                    card.background = ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.button_mission_no_mission
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).text =
+                            "현재 진행 중인 서포터즈 활동이 없습니다"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface =
+                            ResourcesCompat.getFont(
+                                    requireActivity(),
+                                    R.font.notosanskr_regular
+                            )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            16f
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(
+                            getColor(
+                                    requireActivity(),
+                                    R.color.grayscale_500
+                            )
+                    )
 
                     card.setOnClickListener {}
                 }
@@ -122,24 +175,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            152f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.VISIBLE
-                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
-                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text = it.data.data.adInformation!!.title
+                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility =
+                            View.VISIBLE
+                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(
+                            card.findViewById(
+                                    R.id.ivCurrentMission
+                            )
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text =
+                            it.data.data.adInformation!!.title
                     card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = "검토중"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text = it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text = it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.GONE
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener { }
+                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text =
+                            it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text =
+                            it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(
+                            it.data.data.adInformation!!.point
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility =
+                            View.GONE
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission)
+                            .setOnClickListener { }
 
                     val pbMission = card.findViewById<ProgressBar>(R.id.pbRowMission)
                     pbMission.max = 100
                     pbMission.progress = it.data.data.adInformation!!.ongoingDayPercent
 
                     card.findViewById<Button>(R.id.btnCurrentMissionCancel).setOnClickListener {
-                        val popupDialog = CancelMissionPopupDialog("서포터즈 신청을 취소할 시 추후 패널티를 받을 수 있습니다.\n정말 신청을 취소하시겠습니까?", "확인", "취소", {viewModel.deleteMyMission()})
+                        val popupDialog = CancelMissionPopupDialog(
+                                "서포터즈 신청을 취소할 시 추후 패널티를 받을 수 있습니다.\n정말 신청을 취소하시겠습니까?",
+                                "확인",
+                                "취소",
+                                { viewModel.deleteMyMission() })
                         popupDialog.show(parentFragmentManager, "CancelSupporters")
                     }
                 }
@@ -149,17 +222,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            152f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.VISIBLE
-                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
-                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text = it.data.data.adInformation!!.title
+                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility =
+                            View.VISIBLE
+                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(
+                            card.findViewById(
+                                    R.id.ivCurrentMission
+                            )
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text =
+                            it.data.data.adInformation!!.title
                     card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = "검토중"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text = it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text = it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.GONE
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener { }
+                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text =
+                            it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text =
+                            it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(
+                            it.data.data.adInformation!!.point
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility =
+                            View.GONE
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission)
+                            .setOnClickListener { }
 
                     val pbMission = card.findViewById<ProgressBar>(R.id.pbRowMission)
                     pbMission.max = 100
@@ -174,16 +263,36 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.VISIBLE
                     binding.cardCurrentMission.visibility = View.GONE
                     val card = binding.cardNoneMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            56f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_mission_no_mission)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "현재 진행 중인 서포터즈 활동이 없습니다"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface = ResourcesCompat.getFont(requireActivity(), R.font.notosanskr_regular)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(getColor(requireActivity(), R.color.grayscale_500))
+                    card.background = ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.button_mission_no_mission
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).text =
+                            "현재 진행 중인 서포터즈 활동이 없습니다"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface =
+                            ResourcesCompat.getFont(
+                                    requireActivity(),
+                                    R.font.notosanskr_regular
+                            )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            16f
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(
+                            getColor(
+                                    requireActivity(),
+                                    R.color.grayscale_500
+                            )
+                    )
 
                     // 팝업을 아직 보지 않은 상태라면 띄움.
-                    if(it.data.data.message.isRead == 0) {
+                    if (it.data.data.message.isRead == 0) {
                         val listener = object : MissionDialogClickListener {
                             override fun onPositiveClick() {
                                 viewModel.messageRead(it.data.data.message.reasonId) //loadData()도 이 함수 안에 있다.
@@ -194,7 +303,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             }
                         }
 
-                        val dialog = MissionDialog(it.data.data.message.title, it.data.data.message.reason, "확인")
+                        val dialog = MissionDialog(
+                                it.data.data.message.title,
+                                it.data.data.message.reason,
+                                "확인"
+                        )
                         dialog.listener = listener
                         dialog.show(parentFragmentManager, "MissionDialog")
                     }
@@ -206,40 +319,78 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            212f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
-                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
-                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text = it.data.data.adInformation!!.title
+                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility =
+                            View.GONE
+                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(
+                            card.findViewById(
+                                    R.id.ivCurrentMission
+                            )
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text =
+                            it.data.data.adInformation!!.title
                     /*if(it.data.data.adInformation!!.ongoingDays == 0)
                         card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = "-"
                     else*/
-                        card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = it.data.data.adInformation!!.ongoingDays.toString() + "일"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text = it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text = it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
-                    if(it.data.data.adInformation!!.order == 0) {
-                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_SUB_MISSION_START, "추가 미션 인증")
-                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
-                            val intent = Intent(requireActivity(), MissionCertActivity::class.java)
-                            intent.putExtra("type", "additional")
-                            intent.putExtra("title", dataResult.data.adInformation.title)
-                            intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
-                            intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
-                            startActivity(intent)
-                        }
+                    card.findViewById<TextView>(R.id.tvCurrentMissionDate).text =
+                            it.data.data.adInformation!!.ongoingDays.toString() + "일"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text =
+                            it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text =
+                            it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(
+                            it.data.data.adInformation!!.point
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility =
+                            View.VISIBLE
+                    if (it.data.data.adInformation!!.order == 0) {
+                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(
+                                CURRENT_SUB_MISSION_START,
+                                "추가 미션 인증"
+                        )
+                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission)
+                                .setOnClickListener {
+                                    val intent =
+                                            Intent(requireActivity(), MissionCertActivity::class.java)
+                                    intent.putExtra("type", "additional")
+                                    intent.putExtra("title", dataResult.data.adInformation.title)
+                                    intent.putExtra(
+                                            "endDate",
+                                            dataResult.data.adInformation.missionEndDate
+                                    )
+                                    intent.putExtra(
+                                            "id",
+                                            dataResult.data.adInformation.adMissionCardUserId
+                                    )
+                                    startActivity(intent)
+                                }
                     } else {
-                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_MAIN_MISSION_START, it.data.data.adInformation!!.order.toString() + "차 미션 인증")
-                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
-                            val intent = Intent(requireActivity(), MissionCertActivity::class.java)
-                            intent.putExtra("type", "important")
-                            intent.putExtra("title", dataResult.data.adInformation.title)
-                            intent.putExtra("order", dataResult.data.adInformation.order)
-                            intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
-                            intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
-                            startActivity(intent)
-                        }
+                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(
+                                CURRENT_MAIN_MISSION_START,
+                                it.data.data.adInformation!!.order.toString() + "차 미션 인증"
+                        )
+                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission)
+                                .setOnClickListener {
+                                    val intent =
+                                            Intent(requireActivity(), MissionCertActivity::class.java)
+                                    intent.putExtra("type", "important")
+                                    intent.putExtra("title", dataResult.data.adInformation.title)
+                                    intent.putExtra("order", dataResult.data.adInformation.order)
+                                    intent.putExtra(
+                                            "endDate",
+                                            dataResult.data.adInformation.missionEndDate
+                                    )
+                                    intent.putExtra(
+                                            "id",
+                                            dataResult.data.adInformation.adMissionCardUserId
+                                    )
+                                    startActivity(intent)
+                                }
                     }
 
                     card.setOnClickListener {
@@ -257,21 +408,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            212f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
-                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
-                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text = it.data.data.adInformation!!.title
+                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility =
+                            View.GONE
+                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(
+                            card.findViewById(
+                                    R.id.ivCurrentMission
+                            )
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text =
+                            it.data.data.adInformation!!.title
                     /*if(it.data.data.adInformation!!.ongoingDays == 0)
                         card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = "-"
                     else*/
-                        card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = it.data.data.adInformation!!.ongoingDays.toString() + "일"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text = it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text = it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_MAIN_MISSION_VERIFY, "")
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {  }
+                    card.findViewById<TextView>(R.id.tvCurrentMissionDate).text =
+                            it.data.data.adInformation!!.ongoingDays.toString() + "일"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text =
+                            it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text =
+                            it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(
+                            it.data.data.adInformation!!.point
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility =
+                            View.VISIBLE
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(
+                            CURRENT_MAIN_MISSION_VERIFY,
+                            ""
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission)
+                            .setOnClickListener { }
                     card.setOnClickListener {
                         val intent = Intent(requireActivity(), MissionActivity::class.java)
                         intent.putExtra("id", viewModel.UserApplyId)
@@ -287,20 +458,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 152f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            152f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
-                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
-                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text = it.data.data.adInformation!!.title
+                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility =
+                            View.GONE
+                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(
+                            card.findViewById(
+                                    R.id.ivCurrentMission
+                            )
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text =
+                            it.data.data.adInformation!!.title
                     /*if(it.data.data.adInformation!!.ongoingDays == 0)
                         card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = "-"
                     else*/
-                        card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = it.data.data.adInformation!!.ongoingDays.toString() + "일"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text = it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text = it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.GONE
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_ALL_MISSION_EMPTY, "")
+                    card.findViewById<TextView>(R.id.tvCurrentMissionDate).text =
+                            it.data.data.adInformation!!.ongoingDays.toString() + "일"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text =
+                            it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text =
+                            it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(
+                            it.data.data.adInformation!!.point
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility =
+                            View.GONE
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(
+                            CURRENT_ALL_MISSION_EMPTY,
+                            ""
+                    )
                     card.setOnClickListener {
                         val intent = Intent(requireActivity(), MissionActivity::class.java)
                         intent.putExtra("id", viewModel.UserApplyId)
@@ -316,29 +506,49 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            212f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
-                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
-                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text = it.data.data.adInformation!!.title
+                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility =
+                            View.GONE
+                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(
+                            card.findViewById(
+                                    R.id.ivCurrentMission
+                            )
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text =
+                            it.data.data.adInformation!!.title
                     /*if(it.data.data.adInformation!!.ongoingDays == 0)
                         card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = "-"
                     else*/
-                    card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = it.data.data.adInformation!!.ongoingDays.toString() + "일"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text = it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text = it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_MAIN_MISSION_RESEND, "")
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
-                        val intent = Intent(requireActivity(), MissionCertActivity::class.java)
-                        intent.putExtra("type", "important")
-                        intent.putExtra("title", dataResult.data.adInformation.title)
-                        intent.putExtra("order", dataResult.data.adInformation.order)
-                        intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
-                        intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
-                        startActivity(intent)
-                    }
+                    card.findViewById<TextView>(R.id.tvCurrentMissionDate).text =
+                            it.data.data.adInformation!!.ongoingDays.toString() + "일"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text =
+                            it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text =
+                            it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(
+                            it.data.data.adInformation!!.point
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility =
+                            View.VISIBLE
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(
+                            CURRENT_MAIN_MISSION_RESEND,
+                            ""
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission)
+                            .setOnClickListener {
+                                val intent = Intent(requireActivity(), MissionCertActivity::class.java)
+                                intent.putExtra("type", "important")
+                                intent.putExtra("title", dataResult.data.adInformation.title)
+                                intent.putExtra("order", dataResult.data.adInformation.order)
+                                intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
+                                intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
+                                startActivity(intent)
+                            }
                     card.setOnClickListener {
                         val intent = Intent(requireActivity(), MissionActivity::class.java)
                         intent.putExtra("id", viewModel.UserApplyId)
@@ -350,7 +560,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     pbMission.progress = it.data.data.adInformation!!.ongoingDayPercent
 
                     // 팝업을 아직 보지 않은 상태라면 띄움.
-                    if(it.data.data.message.isRead == 0) {
+                    if (it.data.data.message.isRead == 0) {
                         val listener = object : MissionDialogClickListener {
                             override fun onPositiveClick() {
                                 viewModel.messageRead(it.data.data.message.reasonId) //loadData()도 이 함수 안에 있다.
@@ -364,7 +574,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             }
                         }
 
-                        val dialog = MissionDialog(it.data.data.message.title, it.data.data.message.reason, "재인증하기")
+                        val dialog = MissionDialog(
+                                it.data.data.message.title,
+                                it.data.data.message.reason,
+                                "재인증하기"
+                        )
                         dialog.listener = listener
                         dialog.show(parentFragmentManager, "MissionDialog")
                     }
@@ -374,28 +588,48 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            212f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
-                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
-                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text = it.data.data.adInformation!!.title
+                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility =
+                            View.GONE
+                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(
+                            card.findViewById(
+                                    R.id.ivCurrentMission
+                            )
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text =
+                            it.data.data.adInformation!!.title
                     /*if(it.data.data.adInformation!!.ongoingDays == 0)
                         card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = "-"
                     else*/
-                    card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = it.data.data.adInformation!!.ongoingDays.toString() + "일"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text = it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text = it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_SUB_MISSION_RESEND, "")
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
-                        val intent = Intent(requireActivity(), MissionCertActivity::class.java)
-                        intent.putExtra("type", "additional")
-                        intent.putExtra("title", dataResult.data.adInformation.title)
-                        intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
-                        intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
-                        startActivity(intent)
-                    }
+                    card.findViewById<TextView>(R.id.tvCurrentMissionDate).text =
+                            it.data.data.adInformation!!.ongoingDays.toString() + "일"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text =
+                            it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text =
+                            it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(
+                            it.data.data.adInformation!!.point
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility =
+                            View.VISIBLE
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(
+                            CURRENT_SUB_MISSION_RESEND,
+                            ""
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission)
+                            .setOnClickListener {
+                                val intent = Intent(requireActivity(), MissionCertActivity::class.java)
+                                intent.putExtra("type", "additional")
+                                intent.putExtra("title", dataResult.data.adInformation.title)
+                                intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
+                                intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
+                                startActivity(intent)
+                            }
                     card.setOnClickListener {
                         val intent = Intent(requireActivity(), MissionActivity::class.java)
                         intent.putExtra("id", viewModel.UserApplyId)
@@ -407,7 +641,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     pbMission.progress = it.data.data.adInformation!!.ongoingDayPercent
 
                     // 팝업을 아직 보지 않은 상태라면 띄움.
-                    if(it.data.data.message.isRead == 0) {
+                    if (it.data.data.message.isRead == 0) {
                         val listener = object : MissionDialogClickListener {
                             override fun onPositiveClick() {
                                 viewModel.messageRead(it.data.data.message.reasonId) //loadData()도 이 함수 안에 있다.
@@ -421,7 +655,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             }
                         }
 
-                        val dialog = MissionDialog(it.data.data.message.title, it.data.data.message.reason, "재인증하기")
+                        val dialog = MissionDialog(
+                                it.data.data.message.title,
+                                it.data.data.message.reason,
+                                "재인증하기"
+                        )
                         dialog.listener = listener
                         dialog.show(parentFragmentManager, "MissionDialog")
                     }
@@ -431,21 +669,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.GONE
                     binding.cardCurrentMission.visibility = View.VISIBLE
                     val card = binding.cardCurrentMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            212f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
-                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
-                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text = it.data.data.adInformation!!.title
+                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility =
+                            View.GONE
+                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(
+                            card.findViewById(
+                                    R.id.ivCurrentMission
+                            )
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text =
+                            it.data.data.adInformation!!.title
                     /*if(it.data.data.adInformation!!.ongoingDays == 0)
                         card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = "-"
                     else*/
-                        card.findViewById<TextView>(R.id.tvCurrentMissionDate).text = it.data.data.adInformation!!.ongoingDays.toString() + "일"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text = it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text = it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_MAIN_MISSION_VERIFY, "")
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {  }
+                    card.findViewById<TextView>(R.id.tvCurrentMissionDate).text =
+                            it.data.data.adInformation!!.ongoingDays.toString() + "일"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text =
+                            it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text =
+                            it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(
+                            it.data.data.adInformation!!.point
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility =
+                            View.VISIBLE
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(
+                            CURRENT_MAIN_MISSION_VERIFY,
+                            ""
+                    )
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission)
+                            .setOnClickListener { }
                     card.setOnClickListener {
                         val intent = Intent(requireActivity(), MissionActivity::class.java)
                         intent.putExtra("id", viewModel.UserApplyId)
@@ -461,18 +719,38 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.VISIBLE
                     binding.cardCurrentMission.visibility = View.GONE
                     val card = binding.cardNoneMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            56f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_mission_no_mission)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "현재 진행 중인 서포터즈 활동이 없습니다"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface = ResourcesCompat.getFont(requireActivity(), R.font.notosanskr_regular)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(getColor(requireActivity(), R.color.grayscale_500))
+                    card.background = ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.button_mission_no_mission
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).text =
+                            "현재 진행 중인 서포터즈 활동이 없습니다"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface =
+                            ResourcesCompat.getFont(
+                                    requireActivity(),
+                                    R.font.notosanskr_regular
+                            )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            16f
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(
+                            getColor(
+                                    requireActivity(),
+                                    R.color.grayscale_500
+                            )
+                    )
 
                     card.setOnClickListener {}
 
                     // 팝업을 아직 보지 않은 상태라면 띄움.
-                    if(it.data.data.message.isRead == 0) {
+                    if (it.data.data.message.isRead == 0) {
                         val listener = object : MissionDialogClickListener {
                             override fun onPositiveClick() {
                                 viewModel.messageRead(it.data.data.message.reasonId) //loadData()도 이 함수 안에 있다.
@@ -484,7 +762,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             }
                         }
 
-                        val dialog = MissionDialog(it.data.data.message.title, it.data.data.message.reason, "포인트 확인")
+                        val dialog = MissionDialog(
+                                it.data.data.message.title,
+                                it.data.data.message.reason,
+                                "포인트 확인"
+                        )
                         dialog.listener = listener
                         dialog.show(parentFragmentManager, "MissionDialog")
                     }
@@ -516,16 +798,36 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     binding.cardNoneMission.visibility = View.VISIBLE
                     binding.cardCurrentMission.visibility = View.GONE
                     val card = binding.cardNoneMission
-                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56f, resources.displayMetrics).toInt()
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            56f,
+                            resources.displayMetrics
+                    ).toInt()
 
-                    card.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_mission_no_mission)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "현재 진행 중인 서포터즈 활동이 없습니다"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface = ResourcesCompat.getFont(requireActivity(), R.font.notosanskr_regular)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f)
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(getColor(requireActivity(), R.color.grayscale_500))
+                    card.background = ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.button_mission_no_mission
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).text =
+                            "현재 진행 중인 서포터즈 활동이 없습니다"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface =
+                            ResourcesCompat.getFont(
+                                    requireActivity(),
+                                    R.font.notosanskr_regular
+                            )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            16f
+                    )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextColor(
+                            getColor(
+                                    requireActivity(),
+                                    R.color.grayscale_500
+                            )
+                    )
 
                     // 팝업을 아직 보지 않은 상태라면 띄움.
-                    if(it.data.data.message.isRead == 0) {
+                    if (it.data.data.message.isRead == 0) {
                         val listener = object : MissionDialogClickListener {
                             override fun onPositiveClick() {
                                 viewModel.messageRead(it.data.data.message.reasonId) //loadData()도 이 함수 안에 있다.
@@ -536,7 +838,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             }
                         }
 
-                        val dialog = MissionDialog(it.data.data.message.title, it.data.data.message.reason, "확인")
+                        val dialog = MissionDialog(
+                                it.data.data.message.title,
+                                it.data.data.message.reason,
+                                "확인"
+                        )
                         dialog.listener = listener
                         dialog.show(parentFragmentManager, "MissionDialog")
                     }
@@ -547,7 +853,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             binding.usvHome.run {
                 header = binding.tlHomeAd
                 setInitPosition(binding.tlHomeAd.top.toFloat())
-                Log.d("Cashcarplus", "run : "+binding.tlHomeAd.top.toString())
+                Log.d("Cashcarplus", "run : " + binding.tlHomeAd.top.toString())
 
                 stickListener = { _ ->
                     binding.btnHomePageUp.visibility = View.VISIBLE
@@ -558,15 +864,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             }
 
             // 미션 상태 변경 시 최상단으로 스크롤.
-            binding.usvHome.smoothScrollTo(0,0)
+            binding.usvHome.smoothScrollTo(0, 0)
         })
 
         /** 아래 광고 리스트 */
         viewModel.loadAllAdList()
         viewModel.adList.observe(binding.lifecycleOwner!!, {
-            adNum[0] = if(it[0].size%2 == 0) it[0].size/2 else it[0].size/2+1
-            adNum[1] = if(it[1].size%2 == 0) it[1].size/2 else it[1].size/2+1
-            adNum[2] = if(it[2].size%2 == 0) it[2].size/2 else it[2].size/2+1
+            adNum[0] = if (it[0].size % 2 == 0) it[0].size / 2 else it[0].size / 2 + 1
+            adNum[1] = if (it[1].size % 2 == 0) it[1].size / 2 else it[1].size / 2 + 1
+            adNum[2] = if (it[2].size % 2 == 0) it[2].size / 2 else it[2].size / 2 + 1
 
             var clRowAd: ConstraintLayout? = null
 
@@ -574,7 +880,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             binding.vpHomeAd.orientation = ViewPager2.ORIENTATION_HORIZONTAL
             binding.vpHomeAd.isUserInputEnabled = true
             TabLayoutMediator(binding.tlHomeAd, binding.vpHomeAd) { tab, position ->
-                when(position) {
+                when (position) {
                     0 -> {
                         tab.customView = getTabView(position)
                     }
@@ -594,26 +900,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     }
                 }
             }.attach()
-            binding.tlHomeAd.setSelectedTabIndicatorColor(getColor(requireActivity(), android.R.color.transparent))
+            binding.tlHomeAd.setSelectedTabIndicatorColor(
+                    getColor(
+                            requireActivity(),
+                            android.R.color.transparent
+                    )
+            )
 
-            binding.vpHomeAd.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            binding.vpHomeAd.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    if(clRowAd == null) {
+                    if (clRowAd == null) {
                         clRowAd = requireActivity().findViewById(R.id.clRowAd)
 
                         clRowAd!!.post {
-                            val wMeasureSpec = View.MeasureSpec.makeMeasureSpec(clRowAd!!.width, View.MeasureSpec.EXACTLY)
-                            val hMeasureSpec = View.MeasureSpec.makeMeasureSpec(clRowAd!!.height, View.MeasureSpec.UNSPECIFIED)
+                            val wMeasureSpec = View.MeasureSpec.makeMeasureSpec(
+                                    clRowAd!!.width,
+                                    View.MeasureSpec.EXACTLY
+                            )
+                            val hMeasureSpec = View.MeasureSpec.makeMeasureSpec(
+                                    clRowAd!!.height,
+                                    View.MeasureSpec.UNSPECIFIED
+                            )
                             clRowAd!!.measure(wMeasureSpec, hMeasureSpec)
                         }
                     }
 
-                    if (binding.vpHomeAd.layoutParams.height != clRowAd!!.height*adNum[position]) {
+                    if (binding.vpHomeAd.layoutParams.height != clRowAd!!.height * adNum[position]) {
                         // ParentViewGroup is, for example, LinearLayout
                         // ... or whatever the parent of the ViewPager2 is
-                        binding.vpHomeAd.layoutParams = (binding.vpHomeAd.layoutParams as LinearLayout.LayoutParams)
-                                .also { lp -> lp.height = clRowAd!!.height*adNum[position] }
+                        binding.vpHomeAd.layoutParams =
+                                (binding.vpHomeAd.layoutParams as LinearLayout.LayoutParams)
+                                        .also { lp -> lp.height = clRowAd!!.height * adNum[position] }
                     }
                 }
             })
@@ -621,7 +940,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
         /** 광고 아래로 스크롤 시 맨 위로 올리는 버튼 */
         binding.btnHomePageUp.setOnClickListener {
-            binding.usvHome.smoothScrollTo(0,0)
+            binding.usvHome.smoothScrollTo(0, 0)
         }
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
@@ -668,13 +987,66 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         return view
     }
 
+    private fun startRegisterReceiver() {
+        if (!mIsReceiverRegistered) {
+            if (receiver == null) {
+                receiver = object : BroadcastReceiver() {
+                    override fun onReceive(context: Context?, intent: Intent?) {
+                        Log.d("CashcarMsg", "Message Received")
+                        viewModel.loadData()
+                    }
+                }
+            }
+            requireActivity().registerReceiver(receiver, IntentFilter("com.package.notification"))
+            Log.d("CashcarMsg", "startRegisterReceiver()")
+            mIsReceiverRegistered = true
+        }
+    }
+
+    private fun finishRegisterReceiver() {
+        if (mIsReceiverRegistered) {
+            requireActivity().unregisterReceiver(receiver)
+            receiver = null
+            mIsReceiverRegistered = false
+
+            Log.d("CashcarMsg", "finishRegisterReceiver()")
+        }
+    }
+
+    private fun pauseRegisterReceiver() {
+        if (mIsReceiverRegistered) {
+            mIsReceiverRegistered = false
+        }
+
+        Log.d("CashcarMsg", "pauseRegisterReceiver()")
+    }
+
     /** Home Tab으로 넘어올 때마다 데이터를 다시 로드함. */
     override fun onResume() {
         super.onResume()
         viewModel.loadData()
+        startRegisterReceiver()
     }
 
-    inner class MyAdapter(private val context: Context, private val dataList: ArrayList<ArrayList<AdResponse>>) : RecyclerView.Adapter<MyAdapter.Holder>() {
+    override fun onPause() {
+        super.onPause();
+        pauseRegisterReceiver()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        finishRegisterReceiver()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        startRegisterReceiver()
+    }
+
+    inner class MyAdapter(
+            private val context: Context,
+            private val dataList: ArrayList<ArrayList<AdResponse>>
+    ) : RecyclerView.Adapter<MyAdapter.Holder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter.Holder {
             val view = LayoutInflater.from(context).inflate(R.layout.row_tmp, parent, false)
             return Holder(view)
@@ -712,8 +1084,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
 /** 서포터즈 신청 취소 Dialog
 (PopupDialog가 Fragment에선 정상적으로 작동하지 않는 관계로 여기에 작성.)*/
-class CancelMissionPopupDialog(private val msg: String, private val okMsg: String, private val cancelMsg: String, private val positiveFun: (() -> Unit)) : DialogFragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+class CancelMissionPopupDialog(
+        private val msg: String,
+        private val okMsg: String,
+        private val cancelMsg: String,
+        private val positiveFun: (() -> Unit)
+) : DialogFragment() {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.dialog_popup, container, false)
     }
 

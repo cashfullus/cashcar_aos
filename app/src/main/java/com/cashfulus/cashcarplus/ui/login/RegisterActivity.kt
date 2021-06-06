@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
@@ -13,6 +14,8 @@ import android.widget.AdapterView
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityRegisterBinding
@@ -22,6 +25,7 @@ import com.cashfulus.cashcarplus.ui.dialog.ProfileImageDialogClickListener
 import com.cashfulus.cashcarplus.util.*
 import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageView
+import com.cashfulus.cashcarplus.base.App
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_register.*
@@ -226,6 +230,7 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
             CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
+                .setRequestedSize(500, 500)
                 .start(this)
         }
 
@@ -273,10 +278,19 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
 
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             val result = CropImage.getActivityResult(data)
-            val resultUri: Uri = result!!.uriContent!!
 
-            Glide.with(this@RegisterActivity).load(resultUri).into(binding.ivRegister)
-            viewModel.profileImg.postValue(resultUri)
+            if(Build.VERSION.SDK_INT >= 30) {
+                val resultUri: Uri = result!!.uriContent!!
+                val resultPathString = result!!.getUriFilePath(App().context())
+                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+                Glide.with(this@RegisterActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivRegister)
+                viewModel.profileImgAnd11.postValue(resultPathString)
+            } else {
+                val resultUri: Uri = result!!.uriContent!!
+                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+                Glide.with(this@RegisterActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivRegister)
+                viewModel.profileImg.postValue(resultUri)
+            }
 
             if(!binding.etRegisterName.hasError && !binding.etRegisterPhone.hasError && !binding.etRegisterEmail.hasError)
                 isAllValid.postValue(true)

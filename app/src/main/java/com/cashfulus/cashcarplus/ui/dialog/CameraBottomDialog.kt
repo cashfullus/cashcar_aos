@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.cashfulus.cashcarplus.R
+import com.cashfulus.cashcarplus.ui.image.CameraActivity
 import com.cashfulus.cashcarplus.util.resizeBitmap
 import com.cashfulus.cashcarplus.util.rotateBitmap
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -43,15 +44,14 @@ class CameraBottomDialog(imgNum: Int) : BottomSheetDialogFragment() {
             ActivityResultContracts.StartActivityForResult()
     ) { activityResult ->
         if(activityResult.resultCode == AppCompatActivity.RESULT_OK) {
+            mCurrentPhotoPath = activityResult.data!!.getStringExtra("mCurrentPhotoPath")!!
+
             if(Build.VERSION.SDK_INT >= 29) {
                 val source = ImageDecoder.createSource(requireContext().contentResolver, Uri.fromFile(File(mCurrentPhotoPath)))
                 try {
                     val bitmap = resizeBitmap(ImageDecoder.decodeBitmap(source))
-                    val bitmapResult = rotateBitmap(bitmap, mCurrentPhotoPath)
-                    if(bitmapResult != null)
-                        clickListener.onClick(imgNum, bitmapResult)
-                    else
-                        clickListener.onClick(imgNum, bitmap)
+                    //val bitmapResult = rotateBitmap(bitmap, mCurrentPhotoPath)
+                    clickListener.onClick(imgNum, bitmap)
                 } catch (e: IOException) {
                     e.printStackTrace()
                     clickListener.onError("오류 발생 : " + e.localizedMessage)
@@ -59,11 +59,12 @@ class CameraBottomDialog(imgNum: Int) : BottomSheetDialogFragment() {
             } else {
                 try {
                     val bitmap = resizeBitmap(MediaStore.Images.Media.getBitmap(requireContext().contentResolver, Uri.fromFile(File(mCurrentPhotoPath))))
-                    val bitmapResult = rotateBitmap(bitmap, mCurrentPhotoPath)
+                    clickListener.onClick(imgNum, bitmap)
+                    /*val bitmapResult = rotateBitmap(bitmap, mCurrentPhotoPath)
                     if(bitmapResult != null)
                         clickListener.onClick(imgNum, bitmapResult)
                     else
-                        clickListener.onClick(imgNum, bitmap)
+                        clickListener.onClick(imgNum, bitmap)*/
                 } catch (e: IOException) {
                     e.printStackTrace()
                     clickListener.onError("오류 발생 : " + e.localizedMessage)
@@ -94,30 +95,8 @@ class CameraBottomDialog(imgNum: Int) : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnBottomSheetCamera.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if(intent.resolveActivity(requireContext().packageManager) != null) {
-                var photoFile: File? = null
-
-                try { photoFile = createImageFile() }
-                catch (e: IOException) { clickListener.onError("오류 발생 : " + e.localizedMessage) }
-
-                if(photoFile != null) {
-                    val photoURI = FileProvider.getUriForFile(requireContext(), "com.cashfulus.cashcarplus.fileprovider", photoFile)
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    requestActivity.launch(intent)
-                } else {
-                    clickListener.onError("카메라 호출 도중 오류가 발생했습니다. 다시 시도해 주세요.")
-                    dismiss()
-                }
-            }
+            val intent = Intent(requireActivity(), CameraActivity::class.java) // Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            requestActivity.launch(intent)
         }
-    }
-
-    private fun createImageFile(): File {
-        val imageFileName = "JPEG_"+SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())+"_"
-        val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        val image = File.createTempFile(imageFileName, ".jpg", storageDir)
-        mCurrentPhotoPath = image.absolutePath
-        return image
     }
 }

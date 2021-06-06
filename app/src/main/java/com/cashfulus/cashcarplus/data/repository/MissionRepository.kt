@@ -94,7 +94,7 @@ class MissionRepositoryImpl(private val remoteMissionSource: RemoteMissionSource
             return ApiResponse(true, Gson().fromJson(apiResult.body()!!, ApplyResponseData::class.java), null)
         } else if (apiResult.code() == 404) {
             val result = Gson().fromJson(apiResult.errorBody()!!.string(), ApplyResponseData::class.java)
-            //false가 되어있는 것이 문제
+
             if(!result.data.area) {
                 return ApiResponse(false, null, makeCustomErrorResponse(apiResult.code(), "입력해주신 주소는 브랜드가 요청한 지역에 해당되지 않기 때문에 신청할 수 없습니다.", "/ad/apply"))
             } else if(!result.data.vehicle) {
@@ -105,6 +105,8 @@ class MissionRepositoryImpl(private val remoteMissionSource: RemoteMissionSource
                 return ApiResponse(false, null, makeCustomErrorResponse(apiResult.code(), "이미 신청하신 서포터즈입니다.", "/ad/apply"))
             } else if(!result.data.userInformation) {
                 return ApiResponse(false, null, makeCustomErrorResponse(apiResult.code(), "유저 정보가 잘못되었습니다. 입력하지 않은 곳이 있는지 확인해주세요.", "/ad/apply"))
+            } else if(!result.data.rejectApply) {
+                return ApiResponse(false, null, makeCustomErrorResponse(apiResult.code(), "조건이 맞지 않아서 거절된 광고입니다.", "/ad/apply"))
             } else {
                 return ApiResponse(false, null, makeErrorResponseFromStatusCode(apiResult.code(), "/ad/apply"))
             }

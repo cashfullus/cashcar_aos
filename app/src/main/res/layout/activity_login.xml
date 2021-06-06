@@ -101,28 +101,18 @@
             android:layout_height="85dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_login_kakao"
-            app:layout_constraintTop_toTopOf="@+id/btnLoginApple"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnLoginApple"/>
-        <ImageButton
-            android:id="@+id/btnLoginApple"
-            android:layout_width="60dp"
-            android:layout_height="85dp"
-            android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_login_apple"
             app:layout_constraintTop_toBottomOf="@+id/tvLoginEasyLogin"
-            android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toStartOf="@+id/btnLoginAskAd"
+            android:layout_marginTop="24dp"/>
         <ImageButton
             android:id="@+id/btnLoginAskAd"
             android:layout_width="60dp"
             android:layout_height="85dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_login_ask_ad"
-            app:layout_constraintTop_toTopOf="@+id/btnLoginApple"
-            app:layout_constraintStart_toEndOf="@+id/btnLoginApple"
+            app:layout_constraintTop_toTopOf="@+id/btnLoginKakao"
+            app:layout_constraintStart_toEndOf="@+id/btnLoginKakao"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <com.cashfulus.cashcarplus.view.LoadingDialogView

@@ -122,7 +122,7 @@
         <item name="android:fontFamily">@font/notosanskr_regular</item>
         <item name="android:textSize">18dp</item>
         <item name="android:textColor">@color/grayscale_bk</item>
-        <item name="android:lineSpacingExtra">32px</item>
+        <item name="android:lineSpacingExtra">5dp</item>
         <item name="android:textAlignment">center</item>
     </style>
 

@@ -2,6 +2,7 @@ package com.cashfulus.cashcarplus.data.repository
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.cashfulus.cashcarplus.base.App
@@ -21,6 +22,7 @@ interface UserRepository {
     suspend fun registerPW(fcmToken: String, email: String, password: String, alarm: Boolean, marketing: Boolean, loginType: String) : ApiResponse<RegisterResponse>
     suspend fun getUserInfo(userId: Int, token: String) : ApiResponse<UserInfoResponse>
     suspend fun updateUserInfo(token: String, userId: Int, nickname: String, email: String, name: String, callNumber: String, gender: String, birth: String, alarm: Int, marketing: Int, imgUri: Uri): ApiResponse<UserUpdateResponseWithImg>
+    suspend fun updateUserInfo(token: String, userId: Int, nickname: String, email: String, name: String, callNumber: String, gender: String, birth: String, alarm: Int, marketing: Int, imgPath: String): ApiResponse<UserUpdateResponseWithImg>
     suspend fun updateUserInfo(token: String, userId: Int, nickname: String, email: String, name: String, callNumber: String, gender: String, birth: String, alarm: Int, marketing: Int): ApiResponse<UserUpdateResponse>
     suspend fun getUserAddress(userId: Int, token: String): ApiResponse<UserAddress>
     suspend fun postUserAddress(userId: Int, callNumber: String, detailAddress: String, mainAddress: String, name: String, token: String): ApiResponse<UserAddressUpdated>
@@ -108,6 +110,18 @@ class UserRepositoryImpl(private val remoteUserSource: RemoteUserSource) : UserR
 
     override suspend fun updateUserInfo(token: String, userId: Int, nickname: String, email: String, name: String, callNumber: String, gender: String, birth: String, alarm: Int, marketing: Int, imgUri: Uri): ApiResponse<UserUpdateResponseWithImg> {
         val apiResult: Response<String> = remoteUserSource.postUserInfo(userId, nickname, email, name, callNumber, gender, birth, alarm, marketing, File(imgUri.path!!), "Bearer "+token)
+
+        if(apiResult.code() == 201) {
+            return ApiResponse(true, Gson().fromJson(apiResult.body()!!, UserUpdateResponseWithImg::class.java), null)
+        } else if(apiResult.code() == 404) {// 사용자 정보가 존재하지 않음
+            return ApiResponse(false, null, makeCustomErrorResponse(404, "해당 사용자 정보가 존재하지 않습니다.", "/user/profile"))
+        } else {
+            return ApiResponse(false, null, makeErrorResponseFromStatusCode(apiResult.code(), "/user/profile"))
+        }
+    }
+    /** For Android 11 */
+    override suspend fun updateUserInfo(token: String, userId: Int, nickname: String, email: String, name: String, callNumber: String, gender: String, birth: String, alarm: Int, marketing: Int, imgPath: String): ApiResponse<UserUpdateResponseWithImg> {
+        val apiResult: Response<String> = remoteUserSource.postUserInfo(userId, nickname, email, name, callNumber, gender, birth, alarm, marketing, File(imgPath), "Bearer "+token)
 
         if(apiResult.code() == 201) {
             return ApiResponse(true, Gson().fromJson(apiResult.body()!!, UserUpdateResponseWithImg::class.java), null)

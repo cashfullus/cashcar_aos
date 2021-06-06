@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/tools"
+    tools:context=".ui.image.CameraActivity">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.cashfulus.cashcarplus.ui.alarm.AlarmViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.cashfulus.cashcarplus.view.UpgradedToolbar
+            android:id="@+id/toolbarCamera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftButtonImg="@drawable/ic_btn_back"
+            app:layout_collapseMode="pin"
+            app:title="카메라"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.otaliastudios.cameraview.CameraView
+            android:id="@+id/cameraView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:keepScreenOn="true"
+            app:cameraPictureSizeAspectRatio="1:1"
+            app:cameraPlaySounds="false"
+            app:layout_constraintDimensionRatio="h, 1:1"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarCamera" />
+            <!--app:layout_constraintBottom_toTopOf="@+id/btnCamera"/>-->
+
+        <ImageView
+            android:id="@+id/ivTmp22"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="w, 1:1"
+            app:layout_constraintTop_toBottomOf="@+id/cameraView"
+            app:layout_constraintBottom_toTopOf="@+id/btnCamera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <Button
+            android:id="@+id/btnCamera"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/ic_camera"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <!--app:layout_constraintTop_toBottomOf="@+id/cameraView"-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

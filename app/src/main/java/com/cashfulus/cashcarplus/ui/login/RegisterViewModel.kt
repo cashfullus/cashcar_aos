@@ -1,6 +1,7 @@
 package com.cashfulus.cashcarplus.ui.login
 
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val repository: UserRepository): BaseViewModel() {
     val profileImg = MutableLiveData<Uri>()
+    val profileImgAnd11 = MutableLiveData<String>()
     val nickname = MutableLiveData<String>("")
     val name = MutableLiveData<String>()
     val email = MutableLiveData<String>()
@@ -71,11 +73,45 @@ class RegisterViewModel(private val repository: UserRepository): BaseViewModel()
                 if(UserManager.jwtToken == null || UserManager.userId == null) {
                     response.postValue(false)
                 } else {
-                    if(profileImg.value != null) {
+                    if(Build.VERSION.SDK_INT < 30 && profileImg.value != null) {
                         showLoadingDialog()
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
                             name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, if (receiveAlarm) 1 else 0,
                             if (receiveMarketing) 1 else 0, profileImg.value!!)
+
+                        if (updateResponse.isSucceed && updateResponse.contents!!.status) {
+                            UserManager.alarm = if(receiveAlarm) 1 else 0
+                            UserManager.callNumber = phone.value!!
+                            UserManager.dateBirth = birth.value!!
+                            UserManager.gender = gender.value!!
+                            UserManager.marketing = if(receiveMarketing) 1 else 0
+                            UserManager.nickName = nickname.value!!
+                            UserManager.name = name.value!!
+                            UserManager.profileImage = updateResponse.contents.image
+
+                            val userData = App().context(). getSharedPreferences("userData", AppCompatActivity.MODE_PRIVATE)
+                            val editor = userData.edit()
+                            editor.putString("jwtToken", UserManager.jwtToken)
+                            editor.putInt("userId", UserManager.userId!!)
+                            editor.apply()
+
+                            hideLoadingDialog()
+                            response.postValue(true)
+                        } else {
+                            hideLoadingDialog()
+
+                            // 404 : 해당 계정이 없음 -> 로그아웃 처리
+                            if(updateResponse.error!!.status == 404) {
+                                response.postValue(false)
+                            } else {
+                                error.postValue(updateResponse.error!!)
+                            }
+                        }
+                    } else if(Build.VERSION.SDK_INT >= 30 && profileImgAnd11.value != null) {
+                        showLoadingDialog()
+                        val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
+                                name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, if (receiveAlarm) 1 else 0,
+                                if (receiveMarketing) 1 else 0, profileImgAnd11.value!!)
 
                         if (updateResponse.isSucceed && updateResponse.contents!!.status) {
                             UserManager.alarm = if(receiveAlarm) 1 else 0

@@ -114,4 +114,7 @@ dependencies {
 
     // Sticky ScrollView
     implementation 'com.github.amarjain07:StickyScrollView:1.0.2'
+
+    // CameraView
+    implementation 'com.otaliastudios:cameraview:2.7.0'
 }

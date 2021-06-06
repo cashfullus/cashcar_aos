@@ -28,6 +28,7 @@ import java.net.URL
 // 주제별 구독은 맨 첨에 처리 안 하면 인식되지 않음
 // notification에 정보를 보내는 경우 notification이 포함된 코드를 쓰면 된다. 단, 그 경우 background에서 data 수신이 이루어지지 않는 문제가 있다.
 
+
 /** 기능이 업데이트되면서, 특별한 추가 작업이 없어도 포어그라운드 상태에서 불러오는 게 가능한 걸로 보인다.*/
 class CashcarFirebaseMessagingService: FirebaseMessagingService() {
     private val TAG = "CashcarAlarm"
@@ -75,6 +76,10 @@ class CashcarFirebaseMessagingService: FirebaseMessagingService() {
         Log.d(TAG, "From: " + remoteMessage!!.from)
 
         if(remoteMessage.notification != null) {
+            val intent = Intent()
+            intent.action = "com.package.notification"
+            sendBroadcast(intent)
+
             sendNotificationForeground(remoteMessage)
         } else if(remoteMessage.data.isNotEmpty()){
             Log.i("바디: ", remoteMessage.data["body"].toString())

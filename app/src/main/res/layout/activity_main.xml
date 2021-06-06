@@ -17,6 +17,7 @@
         android:id="@+id/tabMain"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:elevation="25dp"
         app:layout_constraintDimensionRatio="h,375:57"
         app:tabIndicatorColor="@color/orange"
         app:tabIconTint="@null"

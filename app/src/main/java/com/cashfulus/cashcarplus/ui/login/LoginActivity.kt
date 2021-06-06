@@ -44,10 +44,6 @@ class LoginActivity : BaseActivity() {
             //viewModel.kakaoLogin(this@LoginActivity)
         }
 
-        binding.btnLoginApple.setOnClickListener {
-            showToast("준비중입니다.")
-        }
-
         binding.btnLoginAskAd.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.cashcar_kakao_channel))))
         }

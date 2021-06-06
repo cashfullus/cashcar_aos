@@ -174,7 +174,8 @@ data class ApplyResponse(
     @SerializedName("already_apply") val alreadyApply: Boolean,
     @SerializedName("area") val area: Boolean,
     @SerializedName("user_information") val userInformation: Boolean,
-    @SerializedName("vehicle") val vehicle: Boolean
+    @SerializedName("vehicle") val vehicle: Boolean,
+    @SerializedName("reject_apply") val rejectApply: Boolean
 )
 
 data class AdApplyInfoResponseData(

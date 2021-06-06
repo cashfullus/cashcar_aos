@@ -1,6 +1,7 @@
 package com.cashfulus.cashcarplus.ui.user
 
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 class UserInfoViewModel(private val repository: UserRepository): BaseViewModel() {
     val originImg = SingleLiveEvent<String>()
     val profileImg = MutableLiveData<Uri>()
+    val profileImgAnd11 = MutableLiveData<String>()
     val nickname = MutableLiveData<String>("")
     val name = MutableLiveData<String>()
     val email = MutableLiveData<String>()
@@ -45,8 +47,7 @@ class UserInfoViewModel(private val repository: UserRepository): BaseViewModel()
         if(UserManager.dateBirth != null)
             birth.postValue(UserManager.dateBirth)
         if(UserManager.profileImage != null && !UserManager.profileImage.isNullOrBlank())
-            originImg.postValue(UserManager.profileImage)
-
+            originImg.postValue(UserManager.profileImage!!)
         if(UserManager.gender != null && UserManager.gender!!.isNotBlank())
             gender.postValue(UserManager.gender)
         else
@@ -59,11 +60,38 @@ class UserInfoViewModel(private val repository: UserRepository): BaseViewModel()
                 if(UserManager.jwtToken == null || UserManager.userId == null) {
                     response.postValue(false)
                 } else {
-                    if(profileImg.value != null) {
+                    if(Build.VERSION.SDK_INT < 30 && profileImg.value != null) {
                         showLoadingDialog()
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
                             name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, if (receiveAlarm.value!!) 1 else 0,
                             if (receiveMarketing.value!!) 1 else 0, profileImg.value!!)
+
+                        if (updateResponse.isSucceed && updateResponse.contents!!.status) {
+                            UserManager.alarm = if(receiveAlarm.value!!) 1 else 0
+                            UserManager.callNumber = phone.value!!
+                            UserManager.dateBirth = birth.value!!
+                            UserManager.gender = gender.value!!
+                            UserManager.marketing = if(receiveMarketing.value!!) 1 else 0
+                            UserManager.nickName = nickname.value!!
+                            UserManager.name = name.value!!
+                            UserManager.profileImage = updateResponse.contents.image
+
+                            hideLoadingDialog()
+                            response.postValue(true)
+                        } else {
+                            hideLoadingDialog()
+                            // 404 : 해당 계정이 없음 -> 로그아웃 처리
+                            if(updateResponse.error!!.status == 404) {
+                                response.postValue(false)
+                            } else {
+                                error.postValue(updateResponse.error!!)
+                            }
+                        }
+                    } else if(Build.VERSION.SDK_INT >= 30 && profileImgAnd11.value != null) {
+                        showLoadingDialog()
+                        val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
+                                name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, if (receiveAlarm.value!!) 1 else 0,
+                                if (receiveMarketing.value!!) 1 else 0, profileImgAnd11.value!!)
 
                         if (updateResponse.isSucceed && updateResponse.contents!!.status) {
                             UserManager.alarm = if(receiveAlarm.value!!) 1 else 0
