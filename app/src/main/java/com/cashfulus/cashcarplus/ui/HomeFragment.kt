@@ -844,9 +844,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         /** 아래 광고 리스트 */
         viewModel.loadAllAdList()
         viewModel.adList.observe(binding.lifecycleOwner!!, {
-            adNum[0] = if (it[0].size % 2 == 0) it[0].size / 2 else it[0].size / 2 + 1
-            adNum[1] = if (it[1].size % 2 == 0) it[1].size / 2 else it[1].size / 2 + 1
-            adNum[2] = if (it[2].size % 2 == 0) it[2].size / 2 else it[2].size / 2 + 1
+            adNum[0] = if(it[0].size < 2) 2 else if (it[0].size % 2 == 0) it[0].size / 2 else it[0].size / 2 + 1
+            adNum[1] = if(it[1].size < 2) 2 else if (it[1].size % 2 == 0) it[1].size / 2 else it[1].size / 2 + 1
+            adNum[2] = if(it[2].size < 2) 2 else if (it[2].size % 2 == 0) it[2].size / 2 else it[2].size / 2 + 1
 
             var clRowAd: ConstraintLayout? = null
 
@@ -1009,10 +1009,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         startRegisterReceiver()
     }
 
-    inner class MyAdapter(
-            private val context: Context,
-            private val dataList: ArrayList<ArrayList<AdResponse>>
-    ) : RecyclerView.Adapter<MyAdapter.Holder>() {
+    inner class MyAdapter(private val context: Context, private val dataList: ArrayList<ArrayList<AdResponse>>) : RecyclerView.Adapter<MyAdapter.Holder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter.Holder {
             val view = LayoutInflater.from(context).inflate(R.layout.row_tmp, parent, false)
             return Holder(view)
