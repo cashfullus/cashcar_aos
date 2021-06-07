@@ -28,6 +28,9 @@ interface UserRepository {
     suspend fun postUserAddress(userId: Int, callNumber: String, detailAddress: String, mainAddress: String, name: String, token: String): ApiResponse<UserAddressUpdated>
     suspend fun updateFcm(userId: Int, fcmToken: String) : ApiResponse<Void>
 
+    suspend fun postUserAlarm(isOn: Boolean, userId: Int, token: String): ApiResponse<Void>
+    suspend fun postUserMarketing(isOn: Boolean, userId: Int, token: String): ApiResponse<Void>
+
     suspend fun loginTmp(): ApiResponse<LoginResponse>
 }
 
@@ -170,6 +173,26 @@ class UserRepositoryImpl(private val remoteUserSource: RemoteUserSource) : UserR
             ApiResponse(true, null, null)
         } else {
             ApiResponse(false, null, makeErrorResponseFromStatusCode(apiResult.code(), "/user/fcm"))
+        }
+    }
+
+    override suspend fun postUserAlarm(isOn: Boolean, userId: Int, token: String): ApiResponse<Void> {
+        val apiResult: Response<String> = remoteUserSource.postUserAlarm(if(isOn) 1 else 0, userId, "Bearer "+token) //1=True, 0=False
+
+        return if (apiResult.code() == 200) {
+            ApiResponse(true, null, null)
+        } else {
+            ApiResponse(false, null, makeErrorResponseFromStatusCode(apiResult.code(), "/user/alarm"))
+        }
+    }
+
+    override suspend fun postUserMarketing(isOn: Boolean, userId: Int, token: String): ApiResponse<Void> {
+        val apiResult: Response<String> = remoteUserSource.postMarketingAlarm(if(isOn) 1 else 0, userId, "Bearer "+token) //1=True, 0=False
+
+        return if (apiResult.code() == 200) {
+            ApiResponse(true, null, null)
+        } else {
+            ApiResponse(false, null, makeErrorResponseFromStatusCode(apiResult.code(), "/user/marketing"))
         }
     }
 

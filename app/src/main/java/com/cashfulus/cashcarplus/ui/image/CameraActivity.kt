@@ -52,7 +52,8 @@ class CameraActivity : BaseActivity() {
         }
 
         binding.btnCamera.setOnClickListener {
-            binding.cameraView.takePicture()
+            //binding.cameraView.takePicture()
+            binding.cameraView.takePictureSnapshot()
         }
 
         binding.cameraView.addCameraListener(object : CameraListener() {

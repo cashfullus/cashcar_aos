@@ -17,7 +17,6 @@
         android:id="@+id/tabMain"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:elevation="25dp"
         app:layout_constraintDimensionRatio="h,375:57"
         app:tabIndicatorColor="@color/orange"
         app:tabIconTint="@null"
@@ -28,10 +27,12 @@
         app:tabIndicator="@null"
         app:tabMaxWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
-    <!--
-        android:background="@drawable/tab_main_background"
-        app:tabIconTint="@color/tab_selector"
-    -->
+    <View
+        android:id="@+id/shadow_view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/shadow"
+        app:layout_constraintBottom_toTopOf="@+id/tabMain"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

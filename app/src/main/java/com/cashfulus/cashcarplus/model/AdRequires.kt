@@ -42,6 +42,7 @@ data class AdInformation(
         @SerializedName("thumbnail_image") val logoImage: String,
         @SerializedName("mission_status") val missionStatus: String,
         @SerializedName("mission_type") val missionType: Int,
+        @SerializedName("mission_name") val missionName: String,
         @SerializedName("title") val title: String,
         @SerializedName("user_id") val userId: Int,
         @SerializedName("ongoing_days") val ongoingDays: Int,

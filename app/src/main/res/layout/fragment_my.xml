@@ -38,7 +38,7 @@
                 android:id="@+id/cvMyProfile"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                app:cardCornerRadius="30dp"
+                app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

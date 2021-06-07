@@ -50,7 +50,6 @@ class CameraBottomDialog(imgNum: Int) : BottomSheetDialogFragment() {
                 val source = ImageDecoder.createSource(requireContext().contentResolver, Uri.fromFile(File(mCurrentPhotoPath)))
                 try {
                     val bitmap = resizeBitmap(ImageDecoder.decodeBitmap(source))
-                    //val bitmapResult = rotateBitmap(bitmap, mCurrentPhotoPath)
                     clickListener.onClick(imgNum, bitmap)
                 } catch (e: IOException) {
                     e.printStackTrace()
@@ -59,12 +58,11 @@ class CameraBottomDialog(imgNum: Int) : BottomSheetDialogFragment() {
             } else {
                 try {
                     val bitmap = resizeBitmap(MediaStore.Images.Media.getBitmap(requireContext().contentResolver, Uri.fromFile(File(mCurrentPhotoPath))))
-                    clickListener.onClick(imgNum, bitmap)
-                    /*val bitmapResult = rotateBitmap(bitmap, mCurrentPhotoPath)
+                    val bitmapResult = rotateBitmap(bitmap, mCurrentPhotoPath)
                     if(bitmapResult != null)
                         clickListener.onClick(imgNum, bitmapResult)
                     else
-                        clickListener.onClick(imgNum, bitmap)*/
+                        clickListener.onClick(imgNum, bitmap)
                 } catch (e: IOException) {
                     e.printStackTrace()
                     clickListener.onError("오류 발생 : " + e.localizedMessage)

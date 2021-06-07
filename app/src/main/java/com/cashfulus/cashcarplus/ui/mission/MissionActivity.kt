@@ -1,7 +1,10 @@
 package com.cashfulus.cashcarplus.ui.mission
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -153,11 +156,16 @@ class MissionActivity : BaseActivity() {
         })
 
         /** 최하단 주의사항 텍스트 일부 색상 설정 */
-        val cautionSpannable = SpannableString(binding.tvMissionCaution.text.toString())
+        binding.tvMissionCautionLink.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.cashcar_kakao_url))))
+        }
+        /*
+        val cautionSpannable = SpannableString("※주의사항\n미션 인증 후 검토 단계에서는 시간이 2~5일 소요될 수 있습니다.\n문의 사항이 있으면 <font color=\"#FE7B12\">1:1문의</font>에 남겨주세요\n미션을 실패할 경우에는 포인트를 받을 수 없습니다.\n중도 포기자의 경우 다음 광고 신청에 제약이 있을 수 있습니다.")
         val cautionStart = binding.tvMissionCaution.text.toString().indexOf("1:1문의")
         val cautionEnd = cautionStart + "1:1문의".length
         cautionSpannable.setSpan(ForegroundColorSpan(getColor(R.color.brand_orange1)), cautionStart, cautionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.tvMissionCaution.text = cautionSpannable
+        */
     }
 
     override fun onResume() {

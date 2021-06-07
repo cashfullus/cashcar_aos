@@ -33,7 +33,7 @@
             android:divider="@null"
             app:layout_constraintTop_toBottomOf="@+id/toolbarFaq"
             app:layout_constraintBottom_toTopOf="@+id/btnFaqGotoKakao"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="10dp"/>
 
         <Button
             android:id="@+id/btnFaqGotoKakao"
@@ -44,8 +44,8 @@
             style="@style/display_16_B"
             android:textColor="@color/grayscale_wt"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="16dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

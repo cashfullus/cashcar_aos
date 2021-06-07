@@ -22,6 +22,9 @@ interface RemoteUserSource {
     suspend fun postUserAddress(user_id: Int, userAddressRequest: UserAddress, authorization: String): Response<String>
     suspend fun updateFcm(userFcmUpdateRequest: UserFcmUpdateRequest): Response<String>
 
+    suspend fun postUserAlarm(is_on: Int, user_id: Int, authorization: String): Response<String>
+    suspend fun postMarketingAlarm(is_on: Int, user_id: Int, authorization: String): Response<String>
+
     suspend fun loginTest(loginInfo: TestAuth1): Response<String>
 }
 
@@ -35,6 +38,8 @@ class RemoteUserSourceImpl(private val service: Api) : RemoteUserSource {
     override suspend fun postUserAddress(user_id: Int, userAddressRequest: UserAddress, authorization: String) = service.postUserAddress(user_id, userAddressRequest, authorization)
     override suspend fun updateFcm(userFcmUpdateRequest: UserFcmUpdateRequest) = service.updateFcm(userFcmUpdateRequest)
     override suspend fun loginTest(loginInfo: TestAuth1) = service.loginTmp(loginInfo)
+    override suspend fun postUserAlarm(is_on: Int, user_id: Int, authorization: String) = service.postUserAlarm(is_on, user_id, authorization)
+    override suspend fun postMarketingAlarm(is_on: Int, user_id: Int, authorization: String) = service.postMarketingAlarm(is_on, user_id, authorization)
 
     override suspend fun postUserInfo(user_id: Int, nickname: String, email: String, name: String, callNumber: String, gender: String, birth: String, alarm: Int, marketing: Int, authorization: String): Response<String> {
         val nicknameForm = nickname.toRequestBody("text/plain".toMediaTypeOrNull())

@@ -98,14 +98,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             resources.displayMetrics
                     ).toInt()
 
-                    card.background =
-                            requireActivity().getDrawable(R.drawable.button_mission_no_car)
+                    card.background = requireActivity().getDrawable(R.drawable.button_mission_no_car)
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).text = "내 차량 정보 등록하기"
-                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface =
-                            ResourcesCompat.getFont(
-                                    requireActivity(),
-                                    R.font.notosanskr_bold
-                            )
+                    card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface = ResourcesCompat.getFont(requireActivity(), R.font.notosanskr_bold)
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).setTextSize(
                             TypedValue.COMPLEX_UNIT_DIP,
                             16f
@@ -346,49 +341,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(
                             it.data.data.adInformation!!.point
                     )
-                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility =
-                            View.VISIBLE
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.VISIBLE
                     if (it.data.data.adInformation!!.order == 0) {
-                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(
-                                CURRENT_SUB_MISSION_START,
-                                "추가 미션 인증"
-                        )
-                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission)
-                                .setOnClickListener {
-                                    val intent =
-                                            Intent(requireActivity(), MissionCertActivity::class.java)
+                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_SUB_MISSION_START, "추가 미션 인증")
+                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
+                                    val intent = Intent(requireActivity(), MissionCertActivity::class.java)
                                     intent.putExtra("type", "additional")
                                     intent.putExtra("title", dataResult.data.adInformation.title)
-                                    intent.putExtra(
-                                            "endDate",
-                                            dataResult.data.adInformation.missionEndDate
-                                    )
-                                    intent.putExtra(
-                                            "id",
-                                            dataResult.data.adInformation.adMissionCardUserId
-                                    )
+                                    intent.putExtra("missionname", dataResult.data.adInformation.missionName)
+                                    intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
+                                    intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
                                     startActivity(intent)
                                 }
                     } else {
-                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(
-                                CURRENT_MAIN_MISSION_START,
-                                it.data.data.adInformation!!.order.toString() + "차 미션 인증"
-                        )
-                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission)
-                                .setOnClickListener {
-                                    val intent =
-                                            Intent(requireActivity(), MissionCertActivity::class.java)
+                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_MAIN_MISSION_START, it.data.data.adInformation!!.order.toString() + "차 미션 인증")
+                        card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setOnClickListener {
+                                    val intent = Intent(requireActivity(), MissionCertActivity::class.java)
                                     intent.putExtra("type", "important")
                                     intent.putExtra("title", dataResult.data.adInformation.title)
                                     intent.putExtra("order", dataResult.data.adInformation.order)
-                                    intent.putExtra(
-                                            "endDate",
-                                            dataResult.data.adInformation.missionEndDate
-                                    )
-                                    intent.putExtra(
-                                            "id",
-                                            dataResult.data.adInformation.adMissionCardUserId
-                                    )
+                                    intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
+                                    intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
                                     startActivity(intent)
                                 }
                     }
@@ -626,6 +599,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                                 val intent = Intent(requireActivity(), MissionCertActivity::class.java)
                                 intent.putExtra("type", "additional")
                                 intent.putExtra("title", dataResult.data.adInformation.title)
+                                intent.putExtra("missionname", dataResult.data.adInformation.missionName)
                                 intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
                                 intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
                                 startActivity(intent)
@@ -886,17 +860,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     }
                     1 -> {
                         tab.customView = getTabView(position)
-                        /*tabState = "scheduled"
-                        tab1Indicator.visibility = View.GONE
-                        tab2Indicator.visibility = View.VISIBLE
-                        tab3Indicator.visibility = View.GONE*/
                     }
                     2 -> {
                         tab.customView = getTabView(position)
-                        /*tabState = "done"
-                        tab1Indicator.visibility = View.GONE
-                        tab2Indicator.visibility = View.GONE
-                        tab3Indicator.visibility = View.VISIBLE*/
                     }
                 }
             }.attach()

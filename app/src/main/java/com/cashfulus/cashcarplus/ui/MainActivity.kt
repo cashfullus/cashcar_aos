@@ -1,10 +1,15 @@
 package com.cashfulus.cashcarplus.ui
 
 import android.Manifest
+import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -39,25 +44,36 @@ class MainActivity : FragmentActivity() {
         }
 
         TabLayoutMediator(tabMain, vpMain) { tab, position ->
-            when(position) {
-                0 -> {
-                    tab.icon = ContextCompat.getDrawable(applicationContext, R.drawable.selector_tab_home)
-                    tab.text = "홈"
-                }
-                1 -> {
-                    tab.icon = ContextCompat.getDrawable(applicationContext, R.drawable.selector_tab_cashtip)
-                    tab.text = "캐시카팁"
-                }
-                2 -> {
-                    tab.icon = ContextCompat.getDrawable(applicationContext, R.drawable.selector_tab_driving)
-                    tab.text = "드라이빙"
-                }
-                3 -> {
-                    tab.icon = ContextCompat.getDrawable(applicationContext, R.drawable.selector_tab_my)
-                    tab.text = "마이캐시카"
-                }
-            }
+            tab.customView = getTabView(position)
         }.attach()
+    }
+
+    fun getTabView(position: Int) : View {
+        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.tab_main, null, false)
+        val tabIndicator = view.findViewById<ImageView>(R.id.indicatorTabMain)
+        val tabTv = view.findViewById<TextView>(R.id.tvTabMain)
+
+        when (position) {
+            0 -> {
+                tabIndicator.setImageResource(R.drawable.selector_tab_home)
+                tabTv.text = "홈"
+            }
+            1 -> {
+                tabIndicator.setImageResource(R.drawable.selector_tab_cashtip)
+                tabTv.text = "캐시카팁"
+            }
+            2 -> {
+                tabIndicator.setImageResource(R.drawable.selector_tab_driving)
+                tabTv.text = "드라이빙"
+            }
+            3 -> {
+                tabIndicator.setImageResource(R.drawable.selector_tab_my)
+                tabTv.text = "마이캐시카"
+            }
+        }
+
+        return view
     }
 }
 

@@ -15,6 +15,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+const val SUCCESS_UPDATE_USER_INFO = 1
+const val SUCCESS_UPDATE_USER_ALARM = 2
+const val SUCCESS_UPDATE_MARKETING_ALARM = 3
+const val FAILED_UPDATE_USER_INFO = 4
+const val FAILED_NO_USER_INFO = 5
+
 class UserInfoViewModel(private val repository: UserRepository): BaseViewModel() {
     val originImg = SingleLiveEvent<String>()
     val profileImg = MutableLiveData<Uri>()
@@ -25,10 +31,11 @@ class UserInfoViewModel(private val repository: UserRepository): BaseViewModel()
     val phone = MutableLiveData<String>()
     val gender = MutableLiveData<String>("")
     val birth = MutableLiveData<String>("")
+
     val receiveAlarm = MutableLiveData<Boolean>()
     val receiveMarketing = MutableLiveData<Boolean>()
 
-    val response = SingleLiveEvent<Boolean>()
+    val response = SingleLiveEvent<Int>()
     val error = MutableLiveData<ErrorResponse>()
 
     init {
@@ -58,31 +65,29 @@ class UserInfoViewModel(private val repository: UserRepository): BaseViewModel()
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
                 if(UserManager.jwtToken == null || UserManager.userId == null) {
-                    response.postValue(false)
+                    response.postValue(FAILED_NO_USER_INFO)
                 } else {
                     if(Build.VERSION.SDK_INT < 30 && profileImg.value != null) {
                         showLoadingDialog()
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
-                            name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, if (receiveAlarm.value!!) 1 else 0,
-                            if (receiveMarketing.value!!) 1 else 0, profileImg.value!!)
+                            name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, UserManager.alarm!!,
+                            UserManager.marketing!!, profileImg.value!!)
 
                         if (updateResponse.isSucceed && updateResponse.contents!!.status) {
-                            UserManager.alarm = if(receiveAlarm.value!!) 1 else 0
                             UserManager.callNumber = phone.value!!
                             UserManager.dateBirth = birth.value!!
                             UserManager.gender = gender.value!!
-                            UserManager.marketing = if(receiveMarketing.value!!) 1 else 0
                             UserManager.nickName = nickname.value!!
                             UserManager.name = name.value!!
                             UserManager.profileImage = updateResponse.contents.image
 
                             hideLoadingDialog()
-                            response.postValue(true)
+                            response.postValue(SUCCESS_UPDATE_USER_INFO)
                         } else {
                             hideLoadingDialog()
                             // 404 : 해당 계정이 없음 -> 로그아웃 처리
                             if(updateResponse.error!!.status == 404) {
-                                response.postValue(false)
+                                response.postValue(FAILED_UPDATE_USER_INFO)
                             } else {
                                 error.postValue(updateResponse.error!!)
                             }
@@ -90,26 +95,24 @@ class UserInfoViewModel(private val repository: UserRepository): BaseViewModel()
                     } else if(Build.VERSION.SDK_INT >= 30 && profileImgAnd11.value != null) {
                         showLoadingDialog()
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
-                                name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, if (receiveAlarm.value!!) 1 else 0,
-                                if (receiveMarketing.value!!) 1 else 0, profileImgAnd11.value!!)
+                                name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, UserManager.alarm!!,
+                                UserManager.marketing!!, profileImgAnd11.value!!)
 
                         if (updateResponse.isSucceed && updateResponse.contents!!.status) {
-                            UserManager.alarm = if(receiveAlarm.value!!) 1 else 0
                             UserManager.callNumber = phone.value!!
                             UserManager.dateBirth = birth.value!!
                             UserManager.gender = gender.value!!
-                            UserManager.marketing = if(receiveMarketing.value!!) 1 else 0
                             UserManager.nickName = nickname.value!!
                             UserManager.name = name.value!!
                             UserManager.profileImage = updateResponse.contents.image
 
                             hideLoadingDialog()
-                            response.postValue(true)
+                            response.postValue(SUCCESS_UPDATE_USER_INFO)
                         } else {
                             hideLoadingDialog()
                             // 404 : 해당 계정이 없음 -> 로그아웃 처리
                             if(updateResponse.error!!.status == 404) {
-                                response.postValue(false)
+                                response.postValue(FAILED_UPDATE_USER_INFO)
                             } else {
                                 error.postValue(updateResponse.error!!)
                             }
@@ -118,14 +121,12 @@ class UserInfoViewModel(private val repository: UserRepository): BaseViewModel()
                         showLoadingDialog()
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
                             name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!,
-                            if (receiveAlarm.value!!) 1 else 0, if (receiveMarketing.value!!) 1 else 0)
+                            UserManager.alarm!!, UserManager.marketing!!)
 
                         if (updateResponse.isSucceed && updateResponse.contents!!.status) {
-                            UserManager.alarm = if(receiveAlarm.value!!) 1 else 0
                             UserManager.callNumber = phone.value!!
                             UserManager.dateBirth = birth.value!!
                             UserManager.gender = gender.value!!
-                            UserManager.marketing = if(receiveMarketing.value!!) 1 else 0
                             UserManager.nickName = nickname.value!!
                             UserManager.name = name.value!!
                             if(originImg.value == null)
@@ -134,13 +135,13 @@ class UserInfoViewModel(private val repository: UserRepository): BaseViewModel()
                                 UserManager.profileImage = originImg.value!!
 
                             hideLoadingDialog()
-                            response.postValue(true)
+                            response.postValue(SUCCESS_UPDATE_USER_INFO)
                         } else {
                             hideLoadingDialog()
 
                             // 404 : 해당 계정이 없음 -> 로그아웃 처리
                             if(updateResponse.error!!.status == 404) {
-                                response.postValue(false)
+                                response.postValue(FAILED_UPDATE_USER_INFO)
                             } else {
                                 error.postValue(updateResponse.error!!)
                             }
@@ -150,6 +151,45 @@ class UserInfoViewModel(private val repository: UserRepository): BaseViewModel()
             }
         } else {
             error.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, "/user/profile"))
+        }
+    }
+
+    /** 알람 설정 관련 함수들은 Loading Dialog 띄울 필요 없음 */
+    fun updateUserAlarmInfo(isOn: Boolean) {
+        if (NetworkManager().checkNetworkState()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                if (UserManager.jwtToken == null || UserManager.userId == null) {
+                    response.postValue(FAILED_NO_USER_INFO)
+                } else {
+                    val updateResponse = repository.postUserAlarm(isOn, UserManager.userId!!, UserManager.jwtToken!!)
+
+                    if (updateResponse.isSucceed) {
+                        response.postValue(SUCCESS_UPDATE_USER_ALARM)
+                        UserManager.alarm = if(isOn) 1 else 0
+                    } else {
+                        error.postValue(updateResponse.error!!)
+                    }
+                }
+            }
+        }
+    }
+
+    fun updateMarketingAlarmInfo(isOn: Boolean) {
+        if (NetworkManager().checkNetworkState()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                if (UserManager.jwtToken == null || UserManager.userId == null) {
+                    response.postValue(FAILED_NO_USER_INFO)
+                } else {
+                    val updateResponse = repository.postUserMarketing(isOn, UserManager.userId!!, UserManager.jwtToken!!)
+
+                    if (updateResponse.isSucceed) {
+                        response.postValue(SUCCESS_UPDATE_MARKETING_ALARM)
+                        UserManager.marketing = if(isOn) 1 else 0
+                    } else {
+                        error.postValue(updateResponse.error!!)
+                    }
+                }
+            }
         }
     }
 }

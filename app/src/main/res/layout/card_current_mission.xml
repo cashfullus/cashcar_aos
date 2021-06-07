@@ -58,7 +58,7 @@
             android:id="@+id/cvCurrentMission"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:cardCornerRadius="40dp"
+            app:cardCornerRadius="24dp"
             app:cardElevation="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">

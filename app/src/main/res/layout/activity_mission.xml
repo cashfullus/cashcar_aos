@@ -90,7 +90,7 @@
                             android:id="@+id/cvMissionTitle"
                             android:layout_width="52dp"
                             android:layout_height="52dp"
-                            app:cardCornerRadius="30dp"
+                            app:cardCornerRadius="26dp"
                             app:cardElevation="0dp"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -357,15 +357,60 @@
 
 
                         <TextView
-                            android:id="@+id/tvMissionCaution"
+                            android:id="@+id/tvMissionCaution1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="※주의사항\n미션 인증 후 검토 단계에서는 시간이 2~5일 소요될 수 있습니다.\n문의 사항이 있으면 1:1문의에 남겨주세요\n미션을 실패할 경우에는 포인트를 받을 수 없습니다.\n중도 포기자의 경우 다음 광고 신청에 제약이 있을 수 있습니다."
+                            android:text="※주의사항\n미션 인증 후 검토 단계에서는 시간이 2~5일 소요될 수 있습니다."
                             style="@style/body_12_R_lh20"
                             android:textColor="@color/grayscale_600"
                             app:layout_constraintTop_toTopOf="@+id/lineMission6"
+                            app:layout_constraintBottom_toTopOf="@+id/tvMissionCaution2"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"/>
+                        <TextView
+                            android:id="@+id/tvMissionCaution2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="문의 사항이 있으면 "
+                            style="@style/body_12_R_lh20"
+                            android:textColor="@color/grayscale_600"
+                            app:layout_constraintTop_toBottomOf="@+id/tvMissionCaution1"
+                            app:layout_constraintBottom_toTopOf="@+id/tvMissionCaution3"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginStart="20dp" />
+                        <TextView
+                            android:id="@+id/tvMissionCautionLink"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1:1문의"
+                            style="@style/body_12_R_lh20"
+                            android:textColor="@color/brand_orange1"
+                            app:layout_constraintTop_toTopOf="@+id/tvMissionCaution2"
+                            app:layout_constraintStart_toEndOf="@+id/tvMissionCaution2"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="에 남겨주세요"
+                            style="@style/body_12_R_lh20"
+                            android:textColor="@color/grayscale_600"
+                            app:layout_constraintTop_toTopOf="@+id/tvMissionCaution2"
+                            app:layout_constraintStart_toEndOf="@+id/tvMissionCautionLink" />
+                        <TextView
+                            android:id="@+id/tvMissionCaution3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="미션을 실패할 경우에는 포인트를 받을 수 없습니다.\n중도 포기자의 경우 다음 광고 신청에 제약이 있을 수 있습니다."
+                            style="@style/body_12_R_lh20"
+                            android:textColor="@color/grayscale_600"
+                            app:layout_constraintTop_toBottomOf="@+id/tvMissionCaution2"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            android:layout_margin="20dp"/>
+                            android:layout_marginTop="4dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginEnd="20dp"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>

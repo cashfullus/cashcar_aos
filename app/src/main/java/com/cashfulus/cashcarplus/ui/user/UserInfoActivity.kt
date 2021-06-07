@@ -232,19 +232,55 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
 
         /** LiveData 처리 */
         viewModel.response.observe(binding.lifecycleOwner!!, {
-            if (it) {
-                showToast("유저 정보를 변경했습니다.")
-                finish()
-            } else {
-                showToast("유저 정보를 업데이트하는 도중 오류가 발생했습니다. 다시 로그인해 주세요.")
-                val intent = Intent(this@UserInfoActivity, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
+            when(it) {
+                SUCCESS_UPDATE_USER_INFO -> {
+                    showToast("유저 정보를 변경했습니다.")
+                    finish()
+                }
+                SUCCESS_UPDATE_USER_ALARM -> {
+                    if(binding.swUserInfoAlarm.isChecked)
+                        showToast("서포터즈 활동에 대한 필수 알림을 받도록 설정했습니다.")
+                    else
+                        showToast("서포터즈 활동에 대한 필수 알림을 받지 않도록 설정했습니다.")
+                }
+                SUCCESS_UPDATE_MARKETING_ALARM -> {
+                    if(binding.swUserInfoMarketing.isChecked)
+                        showToast("마케팅 정보 알림을 받도록 설정했습니다.")
+                    else
+                        showToast("마케팅 정보 알림을 받지 않도록 설정했습니다.")
+                }
+                FAILED_UPDATE_USER_INFO -> {
+                    showToast("유저 정보를 업데이트하는 도중 오류가 발생했습니다. 다시 로그인해 주세요.")
+                    val intent = Intent(this@UserInfoActivity, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                }
+                FAILED_NO_USER_INFO -> {
+                    showToast("유저 정보를 업데이트하는 도중 오류가 발생했습니다. 다시 로그인해 주세요.")
+                    val intent = Intent(this@UserInfoActivity, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                }
             }
         })
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)
+        })
+
+        viewModel.receiveAlarm.observe(binding.lifecycleOwner!!, {
+            binding.swUserInfoAlarm.isChecked = it
+
+            binding.swUserInfoAlarm.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.updateUserAlarmInfo(isChecked)
+            }
+        })
+        viewModel.receiveMarketing.observe(binding.lifecycleOwner!!, {
+            binding.swUserInfoMarketing.isChecked = it
+
+            binding.swUserInfoMarketing.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.updateMarketingAlarmInfo(isChecked)
+            }
         })
 
         /** 비밀번호 변경 */

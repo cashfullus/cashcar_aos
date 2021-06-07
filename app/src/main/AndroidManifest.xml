@@ -25,6 +25,7 @@
         android:roundIcon="@mipmap/appcion_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Cashcarplus"
+        android:largeHeap="true"
         android:usesCleartextTraffic="true">
         <activity android:name=".ui.image.CameraActivity"
             android:configChanges="orientation|screenLayout"

@@ -25,7 +25,7 @@ interface Api {
     suspend fun postUserInfo(@Query("user_id") user_id: Int, @Part("nickname") nickname: RequestBody, @Part("email") email: RequestBody, @Part("name") name: RequestBody, @Part("call_number") callNumber: RequestBody, @Part("gender") gender: RequestBody, @Part("date_of_birth") birth: RequestBody, @Part("alarm") alarm: RequestBody, @Part("marketing") marketing: RequestBody, @Part profile_image: MultipartBody.Part, @Header("Authorization") authorization: String): Response<String>
     @Multipart
     @POST("user/profile")
-    suspend fun postUserInfo(@Query("user_id") user_id: Int, @Part("nickname") nickname: RequestBody, @Part("email") email: RequestBody, @Part("name") name: RequestBody, @Part("call_number") callNumber: RequestBody, @Part("gender") gender: RequestBody, @Part("date_of_birth") birth: RequestBody, @Part("alarm") alarm: RequestBody, @Part("marketing") marketing: RequestBody, @Header("Authorization") authorization: String): Response<String>
+    suspend fun postUserInfo(@Query("user_id") usepr_id: Int, @Part("nickname") nickname: RequestBody, @Part("email") email: RequestBody, @Part("name") name: RequestBody, @Part("call_number") callNumber: RequestBody, @Part("gender") gender: RequestBody, @Part("date_of_birth") birth: RequestBody, @Part("alarm") alarm: RequestBody, @Part("marketing") marketing: RequestBody, @Header("Authorization") authorization: String): Response<String>
 
     @GET("user/alarm/history")
     suspend fun getAlarmHistory(@Query("user_id") user_id: Int, @Query("page") page: Int, @Header("Authorization") authorization: String): Response<String>
@@ -96,10 +96,15 @@ interface Api {
     @GET("user/cash-car-tip")
     suspend fun getCashcarTipPost(@Query("tip_id") tip_id: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
 
-    @GET("/user/donate/list")
+    @GET("user/donate/list")
     suspend fun getDonationList(@Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
-    @GET("/user/donate/list")
+    @GET("user/donate/list")
     suspend fun getDonationList(@Query("count") count: Int, @Query("page") page: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+
+    @POST("user/alarm") //1=True, 0=False
+    suspend fun postUserAlarm(@Query("is_on") is_on: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+    @POST("user/marketing") //1=True, 0=False
+    suspend fun postMarketingAlarm(@Query("is_on") is_on: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
 }
 
 // API 접속 과정에서 오류가 발생한 경우 Status Code. (즉 인터넷 연결이 끊기거나, 서버가 죽은 경우 등의 이유로 인해, 서버로부터 응답도 받지 못한 상태로 발생한 오류.)
