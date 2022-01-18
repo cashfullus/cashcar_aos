@@ -61,20 +61,6 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
             viewModel = this@RegisterActivity.viewModel
         }
 
-        /** 권한 확인 */
-        val permissionlistener: PermissionListener = object : PermissionListener {
-            override fun onPermissionGranted() {}
-
-            override fun onPermissionDenied(deniedPermissions: List<String>) {
-                showToast("카메라 관련 권한이 거부되었습니다.")
-            }
-        }
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
-                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
-                .check()
-
         // 로그인 방식 : kakao, email
         val isAlarmReceive = intent.getBooleanExtra("alarm", false)
         val isMarketingReceive = intent.getBooleanExtra("marketing", false)
@@ -193,7 +179,7 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
                         if(s.toString().isEmpty()) {
                             binding.etRegisterBirth.setNoError()
                         } else if(!s.toString().isValidBirth()) {
-                            binding.etRegisterBirth.setError("6글자의 날짜 형식으로 입력해주세요.")
+                            binding.etRegisterBirth.setError("8글자의 날짜 형식으로 입력해주세요.")
                             isAllValid.postValue(false)
                         } else {
                             binding.etRegisterBirth.setSuccess("생년월일 입력 완료")
@@ -225,8 +211,21 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
 
         /** 프로필 사진 변경 */
         binding.cvRegister.setOnClickListener {
-            //val profileImageDialog = ProfileImageDialog()
-            //profileImageDialog.show(supportFragmentManager, "Image")
+
+            /** 권한 확인 */
+            val permissionlistener: PermissionListener = object : PermissionListener {
+                override fun onPermissionGranted() {}
+
+                override fun onPermissionDenied(deniedPermissions: List<String>) {
+                    showToast("카메라 관련 권한이 거부되었습니다.")
+                }
+            }
+            TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
+                .check()
+
             CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAspectRatio(1, 1)
@@ -279,7 +278,7 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             val result = CropImage.getActivityResult(data)
 
-            if(Build.VERSION.SDK_INT >= 30) {
+            if(Build.VERSION.SDK_INT >= 29) {
                 val resultUri: Uri = result!!.uriContent!!
                 val resultPathString = result!!.getUriFilePath(App().context())
                 /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */

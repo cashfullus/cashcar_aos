@@ -17,3 +17,14 @@ data class DonationImagesInfo(
     @SerializedName("description") val description: String,
     @SerializedName("image") val image: String
 )
+
+data class DonationRequest(
+    @SerializedName("withdrawal_point") val point: Int,
+    @SerializedName("is_receipt") val isReceipt: Int,
+    @SerializedName("name_of_donor") val name: String
+)
+
+data class DonationResponse(
+    @SerializedName("deposit") val deposit: Boolean,
+    @SerializedName("ongoing") val ongoing: Boolean
+)

@@ -21,7 +21,7 @@ interface PopupDialogClickListener {
     fun onNegative()
 }
 
-class PopupDialog(private val msg: String, private val okMsg: String?, private val cancelMsg: String) : DialogFragment() {
+class PopupDialog(private val msg: String, private val okMsg: String?, private val cancelMsg: String?) : DialogFragment() {
     lateinit var clickListener: PopupDialogClickListener
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,9 +56,14 @@ class PopupDialog(private val msg: String, private val okMsg: String?, private v
             btnPopupOk.visibility = View.GONE
         }
 
-        btnPopupCancel.setOnClickListener {
-            clickListener.onNegative()
-            dismiss()
+        if(cancelMsg != null) {
+            btnPopupCancel.text = cancelMsg
+            btnPopupCancel.setOnClickListener {
+                clickListener.onNegative()
+                dismiss()
+            }
+        } else {
+            btnPopupCancel.visibility = View.GONE
         }
     }
 

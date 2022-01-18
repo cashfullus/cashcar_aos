@@ -13,10 +13,10 @@ import androidx.databinding.InverseBindingListener
 import com.google.android.material.button.MaterialButton
 import com.cashfulus.cashcarplus.view.UpgradedEdittext
 
-fun View.setStartMargins(leftMarginDp: Int) {
+fun View.setStartMargins(leftMarginDp: Float) {
     if (layoutParams is ViewGroup.MarginLayoutParams) {
         val params = layoutParams as ViewGroup.MarginLayoutParams
-        params.leftMargin = leftMarginDp.dpToPx(context)
+        params.leftMargin = leftMarginDp.toInt().dpToPx(context)
         requestLayout()
     }
 }

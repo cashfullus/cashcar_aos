@@ -7,6 +7,19 @@
         <attr name="enabled" format="reference|boolean" />
         <attr name="length" format="reference|integer" />
         <attr name="maxLines" format="reference|integer" />
+        <attr name="textAlignment" format="integer">
+            <!-- Default. -->
+            <enum name="inherit" value="0" />
+            <!-- Default for the root view. The gravity determines the alignment, ALIGN_NORMAL,
+                ALIGN_CENTER, or ALIGN_OPPOSITE, which are relative to each paragraph’s
+                text direction. -->
+            <enum name="gravity" value="1" />
+            <enum name="textStart" value="2" />
+            <enum name="textEnd" value="3" />
+            <enum name="center" value="4" />
+            <enum name="viewStart" value="5" />
+            <enum name="viewEnd" value="6" />
+        </attr>
         <attr name="inputType">
             <flag name="none" value="0x00000000" />
             <flag name="text" value="0x00000001" />

@@ -31,5 +31,16 @@
             app:visibleOrGone="@{viewModel.isDialogVisible}"
             tools:ignore="MissingConstraints"/>
 
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/img_suporter_smile"
+            app:layout_constraintDimensionRatio="h, 177:142"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="100dp"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

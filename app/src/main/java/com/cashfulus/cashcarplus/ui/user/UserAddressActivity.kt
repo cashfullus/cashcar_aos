@@ -159,14 +159,16 @@ class UserAddressActivity : BaseActivity() {
 
         viewModel.response.observe(binding.lifecycleOwner!!, {
             if(it) {
-                val logoutDialog = AlertDialog.Builder(this)
+                /*val logoutDialog = AlertDialog.Builder(this)
                 logoutDialog.setMessage("배송지 등록이 완료되었습니다.")
                 logoutDialog.setPositiveButton("확인") { dialog, _ ->
                     dialog.dismiss()
                 }
 
                 logoutDialog.show()
-                binding.btnAddress.text = "수정하기"
+                binding.btnAddress.text = "수정하기"*/
+                finish()
+                showToast("배송지 정보를 수정했습니다.")
             }
         })
 

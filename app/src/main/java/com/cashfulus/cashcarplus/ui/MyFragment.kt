@@ -14,11 +14,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseFragment
+import com.cashfulus.cashcarplus.data.service.LOST_USER_INFO_ERROR_CODE
 import com.cashfulus.cashcarplus.databinding.FragmentMyBinding
 import com.cashfulus.cashcarplus.ui.car.MyCarActivity
 import com.cashfulus.cashcarplus.ui.clause.ClauseListActivity
 import com.cashfulus.cashcarplus.ui.faq.FaqActivity
 import com.cashfulus.cashcarplus.ui.inquiry.InquiryActivity
+import com.cashfulus.cashcarplus.ui.login.LoginActivity
 import com.cashfulus.cashcarplus.ui.myactivities.MyActivitiesActivity
 import com.cashfulus.cashcarplus.ui.notice.NoticeListActivity
 import com.cashfulus.cashcarplus.ui.point.PointActivity
@@ -27,9 +29,12 @@ import com.cashfulus.cashcarplus.ui.user.UserInfoActivity
 import com.cashfulus.cashcarplus.util.UserManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.text.DecimalFormat
 
 class MyFragment : BaseFragment<FragmentMyBinding, MyViewModel>(R.layout.fragment_my) {
     override val viewModel: MyViewModel by viewModel { parametersOf() }
+
+    val numFormat = DecimalFormat("###,###")
 
     override fun init() {
         /** RecyclerView 셋팅 */
@@ -51,6 +56,9 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyViewModel>(R.layout.fragmen
     override fun onResume() {
         super.onResume()
 
+        /** 포인트 관련 정보를 불러옴 */
+        viewModel.loadPointInfo()
+
         /** 유저의 상세정보 기입 여부 확인 */
         Log.d("Cashcarplus", "name : "+UserManager.name+"")
         if(UserManager.name == null) {
@@ -59,11 +67,29 @@ class MyFragment : BaseFragment<FragmentMyBinding, MyViewModel>(R.layout.fragmen
             binding.tvMyEmail.text = "상세 정보를 입력해주세요."
         } else {
             // 상세 정보가 있음 : 유저 정보를 표시하고, blocking 상태 해제.
-            binding.tvMyName.text = UserManager.name
+            if(UserManager.nickName.isNullOrBlank()) //유저 사진 옆에 [이름] 정보가 아니라 [별명] 정보 띄어주기
+                binding.tvMyName.text = UserManager.name
+            else
+                binding.tvMyName.text = UserManager.nickName
             binding.tvMyEmail.text = UserManager.email
             if(!UserManager.profileImage.isNullOrBlank())
                 Glide.with(requireActivity()).load(UserManager.profileImage!!).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivMyProfile)
         }
+
+        /** 포인트 관련 정보 LiveData */
+        viewModel.pointData.observe(binding.lifecycleOwner!!, {
+            binding.tvMyPoint.text = numFormat.format(it.userPoint)
+        })
+        viewModel.error.observe(binding.lifecycleOwner!!, {
+            showToast(it.message)
+
+            if(it.status == LOST_USER_INFO_ERROR_CODE) {
+                val intent = Intent(requireActivity(), LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                requireActivity().finish()
+            }
+        })
     }
 
     inner class MenuAdapter : RecyclerView.Adapter<MenuAdapter.Holder>() {

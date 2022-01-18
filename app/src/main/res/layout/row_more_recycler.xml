@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="약관 및 정책"
-        android:textColor="@color/black"
+        android:textColor="@color/grayscale_bk"
         android:textSize="18dp"
         android:layout_marginStart="10dp"/>
     <View

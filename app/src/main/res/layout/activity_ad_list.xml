@@ -37,7 +37,7 @@
                 android:layout_gravity="center"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:textColor="@color/font_black"/>
+                android:textColor="@color/font_black_adlist"/>
         </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.tabs.TabLayout
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             app:layout_constraintTop_toBottomOf="@+id/toolbarAdList"
-            app:tabIndicatorColor="@color/orange"
+            app:tabIndicatorColor="@color/brand_orange1"
             app:tabTextColor="@color/selector_tab_text_color"
             app:tabTextAppearance="@style/TabWithOnlyTextStyle"
             android:layout_marginTop="11dp"

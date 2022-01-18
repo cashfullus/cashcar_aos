@@ -3,6 +3,7 @@ package com.cashfulus.cashcarplus.ui.car
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -15,6 +16,7 @@ import com.cashfulus.cashcarplus.databinding.ActivityAddCarBinding
 import com.cashfulus.cashcarplus.util.*
 import com.cashfulus.cashcarplus.view.NOT_SUPPORTERS_CAR
 import com.cashfulus.cashcarplus.view.ONLY_ONE_CAR
+import com.cashfulus.cashcarplus.view.ONLY_ONE_CAR_NOT_CHECKED
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -350,8 +352,22 @@ class AddCarActivity : BaseActivity() {
 
 
         /** 광고 서포터즈 Checkbox 활성화/비활성화 */
-        binding.cbCarSupportersA.isEnabled(!intent.getBooleanExtra("isNewCar", true))
-        binding.cbCarSupportersA.setCurrentState(if(intent.getBooleanExtra("isNewCar", true)) ONLY_ONE_CAR else NOT_SUPPORTERS_CAR)
+        //binding.cbCarSupportersA.isEnabled(!intent.getBooleanExtra("isNewCar", true))
+        if(intent.getBooleanExtra("isNewCar", true)) {
+            binding.cbCarSupportersA.setCurrentState(ONLY_ONE_CAR)
+            Log.d("SSIBAL", "ONLY_ONE_CAR")
+        }  else if(UserManager.hasMission) {
+            binding.cbCarSupportersA.setCurrentState(ONLY_ONE_CAR_NOT_CHECKED)
+            Log.d("SSIBAL", "ONLY_ONE_CAR_NOT_CHECKED")
+        } else {
+            binding.cbCarSupportersA.setCurrentState(NOT_SUPPORTERS_CAR)
+            Log.d("SSIBAL", "NOT_SUPPORTERS_CAR")
+        }
+        /*binding.cbCarSupportersA.setCurrentState(
+            if(intent.getBooleanExtra("isNewCar", true)) ONLY_ONE_CAR
+            else if(UserManager.hasMission) ONLY_ONE_CAR_NOT_CHECKED
+            else NOT_SUPPORTERS_CAR
+        )*/
         if(intent.getBooleanExtra("isNewCar", true))
             binding.cbCarSupportersA.visibility = View.GONE
         else

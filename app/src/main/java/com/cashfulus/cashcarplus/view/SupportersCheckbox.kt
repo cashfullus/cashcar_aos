@@ -64,7 +64,7 @@ class SupportersCheckbox : LinearLayout {
         state = typedArray.getInt(R.styleable.SupportersCheckbox_checkState, ONLY_ONE_CAR)
         when(state) {
             ONLY_ONE_CAR -> {
-                checkbox.background = context.getDrawable(R.drawable.selector_checkbox_deactive)
+                checkbox.background = context.getDrawable(R.drawable.ic_checkbox_deactive_selected)
                 checkbox.buttonTintList = context.resources.getColorStateList(android.R.color.transparent)
                 checkbox.isChecked = true
                 textview_checkbox.setTextColor(context.getColor(R.color.grayscale_500))
@@ -77,7 +77,7 @@ class SupportersCheckbox : LinearLayout {
                 textview_checkbox.isClickable = false
             }
             ONLY_ONE_CAR_NOT_CHECKED -> {
-                checkbox.background = context.getDrawable(R.drawable.selector_checkbox_deactive)
+                checkbox.background = context.getDrawable(R.drawable.ic_checkbox_deactive_unselected)
                 checkbox.buttonTintList = context.resources.getColorStateList(android.R.color.transparent)
                 checkbox.isChecked = false
                 textview_checkbox.setTextColor(context.getColor(R.color.grayscale_500))
@@ -130,7 +130,7 @@ class SupportersCheckbox : LinearLayout {
     fun setCurrentState(state: Int) {
         when(state) {
             ONLY_ONE_CAR -> {
-                checkbox.background = context.getDrawable(R.drawable.selector_checkbox_deactive)
+                checkbox.background = context.getDrawable(R.drawable.ic_checkbox_deactive_selected)
                 checkbox.buttonTintList = context.resources.getColorStateList(android.R.color.transparent)
                 checkbox.isChecked = true
                 textview_checkbox.setTextColor(context.getColor(R.color.grayscale_500))
@@ -143,7 +143,7 @@ class SupportersCheckbox : LinearLayout {
                 textview_checkbox.isClickable = false
             }
             ONLY_ONE_CAR_NOT_CHECKED -> {
-                checkbox.background = context.getDrawable(R.drawable.selector_checkbox_deactive)
+                checkbox.background = context.getDrawable(R.drawable.ic_checkbox_deactive_unselected)
                 checkbox.buttonTintList = context.resources.getColorStateList(android.R.color.transparent)
                 checkbox.isChecked = false
                 textview_checkbox.setTextColor(context.getColor(R.color.grayscale_500))

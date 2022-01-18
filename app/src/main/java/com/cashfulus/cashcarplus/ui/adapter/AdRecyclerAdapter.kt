@@ -126,7 +126,10 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
                 }
             }
             "scheduled" -> {
-                holder.tvDDay1.text = "D"+adList[position*2].timeDiff.toString()
+                if(adList[position*2].timeDiff!! > 0)
+                    holder.tvDDay1.text = "D-"+adList[position*2].timeDiff.toString()
+                else
+                    holder.tvDDay1.text = "D"+adList[position*2].timeDiff.toString()
 
                 if (position*2+1 < adList.size) {
                     // 오른쪽에도 데이터 셋팅
@@ -135,7 +138,10 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
                     Glide.with(context).load(adList[position * 2 + 1].image).into(holder.ivRow2)
                     holder.tvTitle2.text = adList[position * 2 + 1].title
                     holder.tvPoint2.text = numFormat.format(adList[position * 2 + 1].totalPoint)
-                    holder.tvDDay2.text = "D-"+adList[position*2+1].timeDiff.toString()
+                    if(adList[position*2+1].timeDiff!! > 0)
+                        holder.tvDDay2.text = "D-"+adList[position*2+1].timeDiff.toString()
+                    else
+                        holder.tvDDay2.text = "D"+adList[position*2+1].timeDiff.toString()
                 } else {
                     holder.row2.visibility = View.GONE
                 }

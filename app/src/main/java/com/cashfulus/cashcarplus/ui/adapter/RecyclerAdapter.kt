@@ -23,9 +23,9 @@ class RecyclerAdapter(private val context: Context, private val dataList: ArrayL
         holder.tvInt.setText(numFormat.format(dataList[position].intData))
 
         if(dataList[position].boolData) {
-            holder.tvStr.setTextColor(ContextCompat.getColor(context, R.color.purple_200))
+            holder.tvStr.setTextColor(ContextCompat.getColor(context, R.color.brand_green))
         } else {
-            holder.tvStr.setTextColor(ContextCompat.getColor(context, R.color.purple_500))
+            holder.tvStr.setTextColor(ContextCompat.getColor(context, R.color.brand_green3))
         }
     }
 

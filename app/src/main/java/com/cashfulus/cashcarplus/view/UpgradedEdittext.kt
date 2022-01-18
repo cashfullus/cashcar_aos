@@ -94,6 +94,11 @@ class UpgradedEdittext : ConstraintLayout {
         if(inputType != -1)
             edittext.inputType = inputType
 
+        // 텍스트 정렬
+        val textAlignment = typedArray.getInt(R.styleable.UET_textAlignment, 0)
+        if(inputType != 0)
+            edittext.textAlignment = textAlignment
+
         // 최대 글자 수
         val length = typedArray.getInt(R.styleable.UET_length, 200)
         val fArray = arrayOfNulls<InputFilter>(1)

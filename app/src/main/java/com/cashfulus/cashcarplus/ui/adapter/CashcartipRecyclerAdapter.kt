@@ -23,7 +23,7 @@ class CashcartipRecyclerAdapter(private val context: Context, private val dataLi
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        Glide.with(context).load(dataList[position].image).override(360, 225).into(holder.ivRow) // 1080x675 = 8x5
+        Glide.with(context).load(dataList[position].image).override(544, 340).into(holder.ivRow) // 1080x675 = 8x5
         holder.tvTitle.text = dataList[position].title
 
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {

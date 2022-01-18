@@ -207,6 +207,7 @@ data class AdMissionResponseData(
 )
 data class AdMissionResponse(
     @SerializedName("ad_user_information") val adUserInformation: AdUserInformation,
+    @SerializedName("day_diffs") val dayPercent: Int,
     @SerializedName("images") val images: List<ImageUrl>,
     @SerializedName("mission_information") val missionInformation: ArrayList<MissionInformation>,
 )
@@ -215,7 +216,9 @@ data class AdUserInformation(
     @SerializedName("activity_start_date") val activityStartDate: String,
     @SerializedName("thumbnail_image") val thumbnailImage: String,
     @SerializedName("title") val title: String,
-    @SerializedName("total_point") val totalPoint: Int
+    @SerializedName("total_point") val totalPoint: Int,
+    @SerializedName("day_diff") val dayDiff: Int,
+    @SerializedName("cumulative_point") val cumulativePoint: Int
 )
 data class MissionInformation(
     @SerializedName("ad_mission_card_id") val adMissionCardId: Int,
@@ -233,14 +236,12 @@ data class MissionInformation(
 /** View에 제공해야 하는 추가 데이터 목록 */
 data class AdMissionResponseForView(
     val isMissionStart: Boolean,
-    val missionLength: Int?,
-    val missionCurrentDate: Int?,
+    val dayPercent: Int,
     val adUserInformation: AdUserInformation,
     val images: List<ImageUrl>,
     val importantMissions: ArrayList<MissionImportant>,
     val additionalMissions: ArrayList<MissionAdditional>,
-    val drivings: ArrayList<Driving>,
-    val assumePoint: Int
+    val drivings: ArrayList<Driving>
 )
 
 /**  */

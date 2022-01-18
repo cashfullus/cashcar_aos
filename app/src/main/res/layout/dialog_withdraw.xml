@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_dialog_welcome"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvDialogWithdrawTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="현재 출금 진행 과정 중에 있으며\n한 번에 한 건의 출금만 가능합니다."
+        style="@style/body_16_R_lh26"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clDialogWithdraw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_dialog_withdraw_inline"
+        app:layout_constraintTop_toBottomOf="@+id/tvDialogWithdrawTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/ivDialogWithdrawImg1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_withdraw_apply_inactive"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivDialogWithdrawooo1"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="26dp"/>
+        <TextView
+            android:id="@+id/tvDialogWithdrawImg1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="출금신청"
+            style="@style/title_14_R"
+            android:textColor="@color/grayscale_600"
+            app:layout_constraintTop_toBottomOf="@+id/ivDialogWithdrawImg1"
+            app:layout_constraintStart_toStartOf="@+id/ivDialogWithdrawImg1"
+            app:layout_constraintEnd_toEndOf="@+id/ivDialogWithdrawImg1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"/>
+
+        <ImageView
+            android:id="@+id/ivDialogWithdrawooo1"
+            android:layout_width="28dp"
+            android:layout_height="4dp"
+            android:src="@drawable/ic_ooo"
+            app:layout_constraintTop_toTopOf="@+id/ivDialogWithdrawImg1"
+            app:layout_constraintBottom_toBottomOf="@+id/ivDialogWithdrawImg1"
+            app:layout_constraintStart_toEndOf="@+id/ivDialogWithdrawImg1"
+            app:layout_constraintEnd_toStartOf="@+id/ivDialogWithdrawImg2"
+            android:layout_marginHorizontal="16dp"/>
+
+        <ImageView
+            android:id="@+id/ivDialogWithdrawImg2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_withdraw_ing_active"
+            app:layout_constraintTop_toTopOf="@+id/ivDialogWithdrawImg1"
+            app:layout_constraintStart_toEndOf="@+id/ivDialogWithdrawooo1"
+            app:layout_constraintEnd_toStartOf="@+id/ivDialogWithdrawooo2"/>
+        <TextView
+            android:id="@+id/tvDialogWithdrawImg2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="출금중"
+            style="@style/title_14_R"
+            android:textColor="@color/brand_orange1"
+            app:layout_constraintTop_toBottomOf="@+id/ivDialogWithdrawImg2"
+            app:layout_constraintStart_toStartOf="@+id/ivDialogWithdrawImg2"
+            app:layout_constraintEnd_toEndOf="@+id/ivDialogWithdrawImg2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"/>
+
+        <ImageView
+            android:id="@+id/ivDialogWithdrawooo2"
+            android:layout_width="28dp"
+            android:layout_height="4dp"
+            android:src="@drawable/ic_ooo"
+            app:layout_constraintTop_toTopOf="@+id/ivDialogWithdrawImg2"
+            app:layout_constraintBottom_toBottomOf="@+id/ivDialogWithdrawImg2"
+            app:layout_constraintStart_toEndOf="@+id/ivDialogWithdrawImg2"
+            app:layout_constraintEnd_toStartOf="@+id/ivDialogWithdrawImg3"
+            android:layout_marginHorizontal="16dp"/>
+
+        <ImageView
+            android:id="@+id/ivDialogWithdrawImg3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_withdraw_success_inactive"
+            app:layout_constraintTop_toTopOf="@+id/ivDialogWithdrawImg1"
+            app:layout_constraintStart_toEndOf="@+id/ivDialogWithdrawooo2"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="26dp"/>
+        <TextView
+            android:id="@+id/tvDialogWithdrawImg3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="출금완료"
+            style="@style/title_14_R"
+            android:textColor="@color/grayscale_600"
+            app:layout_constraintTop_toBottomOf="@+id/ivDialogWithdrawImg3"
+            app:layout_constraintStart_toStartOf="@+id/ivDialogWithdrawImg3"
+            app:layout_constraintEnd_toEndOf="@+id/ivDialogWithdrawImg3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btnDialogWithdraw"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/button_form_active"
+        android:text="확인"
+        style="@style/display_16_B"
+        android:textColor="@color/grayscale_wt"
+        app:layout_constraintTop_toBottomOf="@+id/clDialogWithdraw"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

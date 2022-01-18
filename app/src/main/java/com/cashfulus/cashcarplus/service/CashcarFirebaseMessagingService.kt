@@ -109,7 +109,7 @@ class CashcarFirebaseMessagingService: FirebaseMessagingService() {
 
         // 알림에 대한 UI 정보와 작업을 지정한다.
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.mipmap.appcion) // 아이콘 설정
+                .setSmallIcon(R.mipmap.appcion_foreground) // 아이콘 설정
                 //.setContentTitle(remoteMessage.data["title"].toString())
                 .setContentText(remoteMessage.notification!!.body+"") // 메시지 내용
                 .setAutoCancel(true)
@@ -136,7 +136,7 @@ class CashcarFirebaseMessagingService: FirebaseMessagingService() {
         // 일회용 PendingIntent
         // PendingIntent : Intent 의 실행 권한을 외부의 어플리케이션에게 위임한다.
         val intent = Intent(this, SplashActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // Activity Stack 을 경로만 남긴다. A-B-C-D-B => A-B
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)//intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // Activity Stack 을 경로만 남긴다. A-B-C-D-B => A-B
         val pendingIntent = PendingIntent.getActivity(this, uniId, intent, PendingIntent.FLAG_ONE_SHOT)
 
         // 알림 채널 이름
@@ -147,8 +147,8 @@ class CashcarFirebaseMessagingService: FirebaseMessagingService() {
 
         // 알림에 대한 UI 정보와 작업을 지정한다.
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.mipmap.appcion) // 아이콘 설정
-            .setContentTitle(remoteMessage.data["title"].toString()) // 제목
+            .setSmallIcon(R.mipmap.appcion_foreground) // 아이콘 설정
+            //.setContentTitle(remoteMessage.data["title"].toString()) // 제목
             .setContentText(remoteMessage.data["body"].toString()) // 메시지 내용
             .setAutoCancel(true)
             .setSound(soundUri) // 알림 소리

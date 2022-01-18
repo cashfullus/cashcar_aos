@@ -1,12 +1,15 @@
 package com.cashfulus.cashcarplus.ui.mission
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.MissionRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.model.*
+import com.cashfulus.cashcarplus.util.GPSUtil
 import com.cashfulus.cashcarplus.util.NetworkManager
 import com.cashfulus.cashcarplus.util.UserManager
 import kotlinx.coroutines.CoroutineScope

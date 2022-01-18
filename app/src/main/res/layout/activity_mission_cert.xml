@@ -40,10 +40,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="서포터즈명"
-                    style="@style/title_14_R"
+                    style="@style/title_14_M"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"/>
                 <TextView
                     android:id="@+id/tvMissionCertTitle"
@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="미션명"
-                    style="@style/title_14_R"
+                    style="@style/title_14_M"
                     app:layout_constraintTop_toBottomOf="@+id/tvMissionCertTitle1"
                     app:layout_constraintStart_toStartOf="@+id/tvMissionCertTitle1"
                     android:layout_marginTop="20dp"/>
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="미션기한"
-                    style="@style/title_14_R"
+                    style="@style/title_14_M"
                     app:layout_constraintTop_toBottomOf="@+id/tvMissionCertTitle2"
                     app:layout_constraintStart_toStartOf="@+id/tvMissionCertTitle1"
                     android:layout_marginTop="20dp"/>
@@ -93,23 +93,36 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="16dp"/>
 
+                <View
+                    android:id="@+id/lineMissionCert0"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@color/grayscale_200"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMissionCertTitle3"
+                    android:layout_marginTop="25dp"/>
+
                 <TextView
                     android:id="@+id/tvMissionCertTitle4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="인증방법"
-                    style="@style/title_14_R"
-                    app:layout_constraintTop_toBottomOf="@+id/tvMissionCertTitle3"
+                    style="@style/title_14_M"
+                    app:layout_constraintTop_toBottomOf="@+id/lineMissionCert0"
                     app:layout_constraintStart_toStartOf="@+id/tvMissionCertTitle1"
                     android:layout_marginTop="20dp"/>
                 <TextView
                     android:id="@+id/tvMissionCertText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="1. 차량 측면과 후면의 스티커가 보이게 사진을 찍어주세요\n2. 운행 전 차량 계기판 사진을 찍고 주행거리를 입력해주세요"
-                    style="@style/body_12_R_lh20"
+                    android:text="1. 차량 뒷면, 옆면에 붙인 스티커를 찍어주세요\n2. 계기판 사진을 찍고 주행거리를 입력해주세요"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/notosanskr_regular"
+                    android:textSize="14dp"
+                    android:textColor="@color/grayscale_bk"
+                    android:lineSpacingExtra="5dp"
                     app:layout_constraintTop_toBottomOf="@+id/tvMissionCertTitle4"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginHorizontal="16dp"/>
 
                 <View
@@ -126,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="인증 사진 촬영"
-                    style="@style/title_14_R"
+                    style="@style/title_14_M"
                     app:layout_constraintTop_toBottomOf="@+id/lineMissionCert"
                     app:layout_constraintStart_toStartOf="@+id/tvMissionCertTitle1"
                     android:layout_marginTop="20dp"/>
@@ -197,7 +210,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="주행거리 입력"
-                    style="@style/title_14_R"
+                    style="@style/title_14_M"
                     app:layout_constraintTop_toBottomOf="@+id/cvMissionCert3"
                     app:layout_constraintStart_toStartOf="@+id/tvMissionCertTitle1"
                     android:layout_marginTop="20dp"/>

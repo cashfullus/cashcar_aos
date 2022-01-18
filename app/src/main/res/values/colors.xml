@@ -24,16 +24,5 @@
     <color name="system_no">#FFF03F3F</color>
 
     <!-- Below will be deleted -->
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-
-    <color name="white">#FFFFFFFF</color>
-    <color name="black">#FF000000</color>
-    <color name="font_black">#FF33364B</color>
-    <color name="orange">#FFFE7B12</color>
-    <color name="gray">#FFAFACAC</color>
-    <color name="linegray">#FFD8D8D8</color>
-
+    <color name="font_black_adlist">#FF33364B</color>
 </resources>

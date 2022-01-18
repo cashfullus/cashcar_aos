@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.data.service.API_CONNECT_ERROR_CODE
+import com.cashfulus.cashcarplus.data.service.LOST_USER_INFO_ERROR_CODE
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import java.text.SimpleDateFormat
 import java.util.*
@@ -64,6 +65,8 @@ fun makeErrorResponseFromStatusCode(status: Int, path: String): ErrorResponse {
             .context().getString(R.string.err_msg_NO_INTERNET_ERROR_CODE), path)
         API_CONNECT_ERROR_CODE -> ErrorResponse(currentDate, status, "No Internet", App()
             .context().getString(R.string.err_msg_API_CONNECT_ERROR_CODE), path)
+        LOST_USER_INFO_ERROR_CODE -> ErrorResponse(currentDate, status, "User Info Lost", App()
+                .context().getString(R.string.err_msg_USER_INFO_LOST), path)
         else -> ErrorResponse(currentDate, status, "Undefined Error", App()
             .context().getString(R.string.err_msg_else), path)
     }

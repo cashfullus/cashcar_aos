@@ -4,10 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.text.Html
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
+import android.util.DisplayMetrics
+import android.util.Log
+import android.view.Display
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
@@ -22,6 +21,7 @@ import org.koin.core.parameter.parametersOf
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.properties.Delegates
+
 
 class MissionActivity : BaseActivity() {
     private val DELAY_MS: Long = 500 // delay in milliseconds before task is to be executed
@@ -51,6 +51,15 @@ class MissionActivity : BaseActivity() {
             finish()
         }
 
+        /** ProgressBar Margin 계산 */
+        var display: Display? = windowManager.defaultDisplay
+        val outMetrics = DisplayMetrics()
+        display!!.getMetrics(outMetrics)
+        val density = resources.displayMetrics.density
+        val dpWidth = outMetrics.widthPixels / density
+        val progressWidth = dpWidth-64f
+        val initMarginStart = 24f
+
         /** LiveData 셋팅 */
         viewModel.response.observe(binding.lifecycleOwner!!, {
             // 최상단 슬라이드 이미지 설정
@@ -74,8 +83,13 @@ class MissionActivity : BaseActivity() {
                 }
             }, DELAY_MS, PERIOD_MS)
             // 최상단 슬라이드 자체 슬라이딩 시 포지션 초기화 작업
-            binding.vpMission.setOnPageChangeListener(object: ViewPager.OnPageChangeListener {
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+            binding.vpMission.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                }
 
                 override fun onPageSelected(position: Int) {
                     currentPage = position
@@ -86,18 +100,25 @@ class MissionActivity : BaseActivity() {
 
             binding.tvMissionTitle.text = it.adUserInformation.title
             binding.tvMissionPoint.text = numFormat.format(it.adUserInformation.totalPoint)
-            Glide.with(this@MissionActivity).load(it.adUserInformation.thumbnailImage).into(binding.ivMissionTitle)
+            Glide.with(this@MissionActivity).load(it.adUserInformation.thumbnailImage)
+                .into(binding.ivMissionTitle)
 
-            if(it.isMissionStart) {
+            if (it.isMissionStart) {
                 binding.tvMissionDateCurrent.visibility = View.VISIBLE
 
-                binding.tvMissionDateStart.text = it.adUserInformation.activityStartDate.substring(0,10).replace("-",".") //2021.03.28
-                binding.tvMissionDateEnd.text = it.adUserInformation.activityEndDate.substring(0,10).replace("-",".")
-                binding.pbMissionDate.max = it.missionLength!!
-                binding.pbMissionDate.progress = it.missionCurrentDate!!
-                binding.tvMissionDateCurrent.text = it.missionCurrentDate!!.toString()+"일"
+                binding.tvMissionDateStart.text = it.adUserInformation.activityStartDate.substring(
+                    0,
+                    10
+                ).replace("-", ".") //2021.03.28
+                binding.tvMissionDateEnd.text = it.adUserInformation.activityEndDate.substring(
+                    0,
+                    10
+                ).replace("-", ".")
+                binding.pbMissionDate.max = 100
+                binding.pbMissionDate.progress = it.dayPercent
+                binding.tvMissionDateCurrent.text = it.adUserInformation.dayDiff.toString() + "일"
 
-                binding.tvMissionDateCurrent.setStartMargins(20+(binding.pbMissionDate.width / it.missionLength!! * it.missionCurrentDate!!))
+                binding.tvMissionDateCurrent.setStartMargins((progressWidth / 100f * it.dayPercent.toFloat())-initMarginStart)
             } else {
                 binding.tvMissionDateCurrent.visibility = View.GONE
 
@@ -107,12 +128,16 @@ class MissionActivity : BaseActivity() {
                 binding.pbMissionDate.progress = 0
             }
 
-            if(it.importantMissions.size > 0) {
+            if (it.importantMissions.size > 0) {
                 binding.tvMissionTitle2.visibility = View.VISIBLE
                 binding.rvMissionImportant.visibility = View.VISIBLE
                 binding.lineMission3.visibility = View.VISIBLE
 
-                binding.rvMissionImportant.adapter = MissionImportantRecyclerAdapter(this@MissionActivity, it.importantMissions, it.adUserInformation.title)
+                binding.rvMissionImportant.adapter = MissionImportantRecyclerAdapter(
+                    this@MissionActivity,
+                    it.importantMissions,
+                    it.adUserInformation.title
+                )
                 binding.rvMissionImportant.layoutManager = LinearLayoutManager(this@MissionActivity)
             } else {
                 binding.tvMissionTitle2.visibility = View.GONE
@@ -120,14 +145,19 @@ class MissionActivity : BaseActivity() {
                 binding.lineMission3.visibility = View.GONE
             }
 
-            if(it.additionalMissions.size > 0) {
+            if (it.additionalMissions.size > 0) {
                 binding.tvMissionTitle3.visibility = View.VISIBLE
                 binding.tvMissionSubtitle3.visibility = View.VISIBLE
                 binding.rvMissionAdditional.visibility = View.VISIBLE
                 binding.lineMission4.visibility = View.VISIBLE
 
-                binding.rvMissionAdditional.adapter = MissionAdditionalRecyclerAdapter(this@MissionActivity, it.additionalMissions, it.adUserInformation.title)
-                binding.rvMissionAdditional.layoutManager = LinearLayoutManager(this@MissionActivity)
+                binding.rvMissionAdditional.adapter = MissionAdditionalRecyclerAdapter(
+                    this@MissionActivity,
+                    it.additionalMissions,
+                    it.adUserInformation.title
+                )
+                binding.rvMissionAdditional.layoutManager =
+                    LinearLayoutManager(this@MissionActivity)
             } else {
                 binding.tvMissionTitle3.visibility = View.GONE
                 binding.tvMissionSubtitle3.visibility = View.GONE
@@ -135,12 +165,16 @@ class MissionActivity : BaseActivity() {
                 binding.lineMission4.visibility = View.GONE
             }
 
-            if(it.drivings.size > 0) {
+            if (it.drivings.size > 0) {
                 binding.tvMissionTitle4.visibility = View.VISIBLE
                 binding.rvMissionDriving.visibility = View.VISIBLE
                 binding.lineMission5.visibility = View.VISIBLE
 
-                binding.rvMissionDriving.adapter = DrivingRecyclerAdapter(this@MissionActivity, it.drivings, it.adUserInformation.title)
+                binding.rvMissionDriving.adapter = DrivingRecyclerAdapter(
+                    this@MissionActivity,
+                    it.drivings,
+                    it.adUserInformation.title
+                )
                 binding.rvMissionDriving.layoutManager = LinearLayoutManager(this@MissionActivity)
             } else {
                 binding.tvMissionTitle4.visibility = View.GONE
@@ -148,7 +182,8 @@ class MissionActivity : BaseActivity() {
                 binding.lineMission5.visibility = View.GONE
             }
 
-            binding.tvMissionAssumePoint.text = numFormat.format(it.assumePoint)
+            binding.tvMissionAssumePoint.text =
+                numFormat.format(it.adUserInformation.cumulativePoint)
         })
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
@@ -157,7 +192,12 @@ class MissionActivity : BaseActivity() {
 
         /** 최하단 주의사항 텍스트 일부 색상 설정 */
         binding.tvMissionCautionLink.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.cashcar_kakao_url))))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.cashcar_kakao_url))
+                )
+            )
         }
         /*
         val cautionSpannable = SpannableString("※주의사항\n미션 인증 후 검토 단계에서는 시간이 2~5일 소요될 수 있습니다.\n문의 사항이 있으면 <font color=\"#FE7B12\">1:1문의</font>에 남겨주세요\n미션을 실패할 경우에는 포인트를 받을 수 없습니다.\n중도 포기자의 경우 다음 광고 신청에 제약이 있을 수 있습니다.")

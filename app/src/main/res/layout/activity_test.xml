@@ -16,28 +16,73 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btnTest"
+        <TextView
+            android:id="@+id/testTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="팝업!!!!"
+            android:text="TEST"
+            android:textColor="@color/grayscale_bk"
+            android:textSize="20dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            android:id="@+id/spTest"
-            android:text="상태값"
-            android:gravity="center_vertical"
+        <com.cashfulus.cashcarplus.view.UpgradedScrollView
+            android:id="@+id/usvHome"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/input_form_enable"
-            style="@style/title_14_R"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="4dp"
-            android:layout_marginHorizontal="16dp"
-            android:paddingHorizontal="16dp"/>
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/testTextView"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/srlHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp">
+
+                    <LinearLayout
+                        android:id="@+id/llHomeCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <include
+                            android:id="@+id/cardNoneMission"
+                            layout="@layout/card_none_mission"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <include
+                            android:id="@+id/cardCurrentMission"
+                            layout="@layout/card_current_mission"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tlHomeAd"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    app:tabIndicatorColor="@null"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2000dp"
+                    android:background="@drawable/test"/>
+
+                <Button
+                    android:id="@+id/btnTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TEST" />
+            </LinearLayout>
+        </com.cashfulus.cashcarplus.view.UpgradedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -42,7 +42,7 @@
                     android:id="@+id/vpAdInfo"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="h, 4:3"
+                    app:layout_constraintDimensionRatio="h, 360:254"
                     app:layout_constraintTop_toTopOf="parent"/>
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tlAdInfo"
@@ -53,26 +53,26 @@
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp"
                     app:tabPaddingEnd="4dp"
-                    app:layout_constraintBottom_toTopOf="@+id/glAdImgSlider"
+                    app:layout_constraintBottom_toBottomOf="@+id/vpAdInfo"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginBottom="12dp"/>
+                    android:layout_marginBottom="36dp"/>
 
                 <!-- Guideline 대용 -->
-                <View
+                <!--<View
                     android:id="@+id/glAdImgSlider"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:background="@android:color/transparent"
                     app:layout_constraintBottom_toBottomOf="@+id/vpAdInfo"
-                    android:layout_marginBottom="24dp"/>
+                    android:layout_marginBottom="24dp"/>-->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clAdInfoContents"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_ad_info"
-                    app:layout_constraintTop_toBottomOf="@+id/glAdImgSlider">
+                    app:layout_constraintTop_toBottomOf="@+id/vpAdInfo">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/glAdInfo"

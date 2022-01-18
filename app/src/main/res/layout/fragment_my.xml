@@ -105,16 +105,17 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tvMyPoint"
                 android:layout_marginEnd="5dp"/>
+
             <TextView
                 android:id="@+id/tvMyPoint"
+                style="@style/display_16_B"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="30,000"
-                style="@style/display_16_B"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="20dp"
+                android:text="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="20dp"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

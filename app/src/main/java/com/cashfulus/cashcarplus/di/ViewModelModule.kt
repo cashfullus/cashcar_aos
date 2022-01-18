@@ -24,6 +24,7 @@ import com.cashfulus.cashcarplus.ui.notice.NoticeListViewModel
 import com.cashfulus.cashcarplus.ui.point.PointViewModel
 import com.cashfulus.cashcarplus.ui.user.UserAddressViewModel
 import com.cashfulus.cashcarplus.ui.user.UserInfoViewModel
+import com.cashfulus.cashcarplus.ui.withdraw.WithdrawViewModel
 
 val viewModelModule = module {
     viewModel { SplashViewModel(repository = get(), versionRepo = get()) }
@@ -32,7 +33,7 @@ val viewModelModule = module {
     viewModel { NoticeListViewModel(repository = get()) }
     viewModel { AdListViewModel(missionRepository = get()) }
     viewModel { LoginViewModel(repository = get()) }
-    viewModel { MyViewModel() }
+    viewModel { MyViewModel(repository = get()) }
     viewModel { UserInfoViewModel(repository = get()) }
     viewModel { MyCarViewModel(repository = get()) }
     viewModel { CarInfoViewModel(repository = get()) }
@@ -50,10 +51,11 @@ val viewModelModule = module {
     viewModel { CashcartipViewModel(repository = get()) }
     viewModel { com.cashfulus.cashcarplus.ui.cashcartip.CashcartipViewModel(repository = get()) }
     viewModel { DrivingViewModel() }
-    viewModel { PointViewModel() }
+    viewModel { PointViewModel(repository = get()) }
     viewModel { MyActivitiesViewModel() }
     viewModel { DonationListViewModel(repository = get()) }
     viewModel { DonationRegisterViewModel(repository = get()) }
+    viewModel { WithdrawViewModel(repository = get()) }
     // viewModel { (activity: Activity) -> SignupViewModel(repository = get(), activity = activity) }
     //viewModel { ChannelInfoViewModel(channelId = "dfd", repository = get()) }
     //viewModel { SocketViewModel() }

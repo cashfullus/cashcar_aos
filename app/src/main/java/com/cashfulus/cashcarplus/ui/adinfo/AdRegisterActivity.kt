@@ -387,7 +387,7 @@ class AdRegisterActivity : BaseActivity(), PopupDialogClickListener {
             }
         })
         binding.btnAdRegister.setOnClickListener {
-            val dialog = PopupDialog("정말 신청하시겠습니까?", "확인", "취소")
+            val dialog = PopupDialog("정말 신청하시겠습니까?", "신청하기", "나중에 할래요")
             dialog.show(supportFragmentManager, "AdRegister")
         }
     }
@@ -396,5 +396,5 @@ class AdRegisterActivity : BaseActivity(), PopupDialogClickListener {
     override fun onPositive() {
         viewModel.registerAd(intent.getIntExtra("adId", -1), vehicleId!!)
     }
-        override fun onNegative() {}
+    override fun onNegative() {}
 }

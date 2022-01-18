@@ -67,7 +67,7 @@ class UserInfoViewModel(private val repository: UserRepository): BaseViewModel()
                 if(UserManager.jwtToken == null || UserManager.userId == null) {
                     response.postValue(FAILED_NO_USER_INFO)
                 } else {
-                    if(Build.VERSION.SDK_INT < 30 && profileImg.value != null) {
+                    if(Build.VERSION.SDK_INT < 29 && profileImg.value != null) {
                         showLoadingDialog()
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
                             name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, UserManager.alarm!!,
@@ -92,7 +92,7 @@ class UserInfoViewModel(private val repository: UserRepository): BaseViewModel()
                                 error.postValue(updateResponse.error!!)
                             }
                         }
-                    } else if(Build.VERSION.SDK_INT >= 30 && profileImgAnd11.value != null) {
+                    } else if(Build.VERSION.SDK_INT >= 29 && profileImgAnd11.value != null) {
                         showLoadingDialog()
                         val updateResponse = repository.updateUserInfo(UserManager.jwtToken!!, UserManager.userId!!, nickname.value!!, email.value!!,
                                 name.value!!, phone.value!!.replace("-", ""), gender.value!!, birth.value!!, UserManager.alarm!!,

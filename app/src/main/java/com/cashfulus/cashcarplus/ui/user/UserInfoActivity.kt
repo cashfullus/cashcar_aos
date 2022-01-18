@@ -169,7 +169,7 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                     override fun afterTextChanged(s: Editable?) {
                         if (!s.toString().isValidBirth()) {
-                            binding.etUserInfoBirth.setError("6글자의 날짜 형식으로 입력해주세요.")
+                            binding.etUserInfoBirth.setError("8글자의 날짜 형식으로 입력해주세요.")
                             isAllValid.postValue(false)
                         } else {
                             binding.etUserInfoBirth.setSuccess("생년월일 입력 완료")
@@ -213,7 +213,7 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
                 TedPermission.with(this)
                         .setPermissionListener(permissionlistener)
                         .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
-                        .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)// Manifest.permission.MANAGE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
+                        .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)// Manifest.permission.MANAGE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
                         .check()
             } else {
                 TedPermission.with(this)
@@ -301,7 +301,7 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             val result = CropImage.getActivityResult(data)
 
-            if(Build.VERSION.SDK_INT >= 30) {
+            if(Build.VERSION.SDK_INT >= 29) {
                 val resultUri: Uri = result!!.uriContent!!
                 val resultPathString = result!!.getUriFilePath(App().context())
                 /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */

@@ -40,12 +40,7 @@ class UpgradedScrollView : ScrollView, ViewTreeObserver.OnGlobalLayoutListener {
     // 만약 이 로직을 생성자나 onAttachToWindow등에 넣어두면 올바르게 저장되지 않는다.
     override fun onGlobalLayout() {
         mHeaderInitPosition = header?.top?.toFloat() ?: 0f
-        Log.d("Cashcarplus", "run : "+mHeaderInitPosition.toString())
-    }
-
-    fun setInitPosition(pos: Float) {
-        mHeaderInitPosition = pos
-        Log.d("Cashcarplus", "run : "+mHeaderInitPosition.toString())
+        Log.d("Cashcarplus", "onGlobalLayout : "+mHeaderInitPosition.toString())
     }
 
     // onScrollChanged를 오버라이드해서 어느시점에 헤더를 천장에 붙일지, 다시 땔지 등을 구현한다.

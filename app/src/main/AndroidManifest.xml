@@ -5,10 +5,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="29"/>
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- android:maxSdkVersion="29" -->
     <uses-permission android:name="android.permission.CAMERA" /> <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
+    <!--
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -20,20 +22,17 @@
     <application
         android:name=".base.App"
         android:allowBackup="true"
-        android:icon="@mipmap/appcion"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/appcion_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Cashcarplus"
-        android:largeHeap="true"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.image.CameraActivity"
-            android:configChanges="orientation|screenLayout"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.withdraw.WithdrawActivity"></activity>
         <activity
-            android:name=".ui.donation.DonationPrivacyActivity"
-            android:configChanges="orientation|screenSize"
+            android:name=".ui.image.CameraActivity"
+            android:configChanges="orientation|screenLayout"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity

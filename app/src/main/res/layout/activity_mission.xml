@@ -58,26 +58,26 @@
                         app:tabGravity="center"
                         app:tabIndicatorHeight="0dp"
                         app:tabPaddingEnd="4dp"
-                        app:layout_constraintBottom_toTopOf="@+id/glMissionSlider"
+                        app:layout_constraintBottom_toBottomOf="@+id/vpMission"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginBottom="11dp"/>
+                        android:layout_marginBottom="35dp"/>
 
                     <!-- Guideline 대용 -->
-                    <View
+                    <!--<View
                         android:id="@+id/glMissionSlider"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:background="@android:color/transparent"
                         app:layout_constraintBottom_toBottomOf="@+id/vpMission"
-                        android:layout_marginBottom="24dp"/>
+                        android:layout_marginBottom="24dp"/>-->
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/clMissionContents"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_ad_info"
-                        app:layout_constraintTop_toBottomOf="@+id/glMissionSlider">
+                        app:layout_constraintTop_toBottomOf="@+id/vpMission">
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/glMission"
@@ -152,16 +152,27 @@
                             android:layout_marginTop="20dp"
                             android:layout_marginStart="16dp"/>
                         <TextView
+                            android:id="@+id/tvMissionCaption1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="· 1차 인증 후부터 활동 기간이 시작됩니다."
+                            style="@style/caption_12_R"
+                            android:textColor="@color/grayscale_600"
+                            app:layout_constraintTop_toBottomOf="@+id/tvMissionTitle1"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginHorizontal="16dp"/>
+
+                        <TextView
                             android:id="@+id/tvMissionTitle1_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="시작일"
                             style="@style/title_12_R"
                             android:textColor="@color/grayscale_600"
-                            app:layout_constraintTop_toBottomOf="@+id/tvMissionTitle1"
+                            app:layout_constraintTop_toBottomOf="@+id/tvMissionCaption1"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="@+id/glMission"
-                            android:layout_marginTop="13dp"/>
+                            android:layout_marginTop="20dp"/>
                         <TextView
                             android:id="@+id/tvMissionTitle1_2"
                             android:layout_width="wrap_content"
@@ -206,11 +217,12 @@
                         <TextView
                             android:id="@+id/tvMissionDateCurrent"
                             style="@style/display_16_R"
-                            android:layout_width="wrap_content"
+                            android:layout_width="48dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:textAlignment="center"
                             android:text="21일"
-                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintStart_toStartOf="@+id/pbMissionDate"
                             app:layout_constraintTop_toBottomOf="@+id/pbMissionDate" />
 
                         <View
@@ -218,9 +230,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="20dp"
                             android:background="@color/grayscale_200"
                             app:layout_constraintTop_toBottomOf="@+id/tvMissionDateCurrent"
-                            android:layout_marginTop="55dp"/>
+                            tools:layout_editor_absoluteX="16dp" />
 
 
                         <TextView
@@ -264,7 +277,7 @@
                             android:id="@+id/tvMissionSubtitle3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="추가 미션은 미션을 인증하지 않아도 서포터즈 활동에 문제가 생기지 않습니다."
+                            android:text="· 추가 미션은 미션을 인증하지 않아도 서포터즈 활동에 문제가 발생하지 않습니다."
                             style="@style/caption_12_R"
                             android:textColor="@color/grayscale_600"
                             app:layout_constraintTop_toBottomOf="@+id/tvMissionTitle3"

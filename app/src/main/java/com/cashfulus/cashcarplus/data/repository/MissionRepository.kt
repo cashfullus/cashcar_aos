@@ -102,7 +102,7 @@ class MissionRepositoryImpl(private val remoteMissionSource: RemoteMissionSource
             } else if(!result.data.adInformation) {
                 return ApiResponse(false, null, makeCustomErrorResponse(apiResult.code(), "잘못된 서포터즈 정보입니다.", "/ad/apply"))
             } else if(!result.data.alreadyApply) {
-                return ApiResponse(false, null, makeCustomErrorResponse(apiResult.code(), "이미 신청하신 서포터즈입니다.", "/ad/apply"))
+                return ApiResponse(false, null, makeCustomErrorResponse(apiResult.code(), "신청했던 광고는 재신청 할 수 없습니다.", "/ad/apply"))
             } else if(!result.data.userInformation) {
                 return ApiResponse(false, null, makeCustomErrorResponse(apiResult.code(), "유저 정보가 잘못되었습니다. 입력하지 않은 곳이 있는지 확인해주세요.", "/ad/apply"))
             } else if(!result.data.rejectApply) {

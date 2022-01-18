@@ -24,7 +24,6 @@
             app:leftButtonImg="@drawable/ic_btn_back"
             app:layout_collapseMode="pin"
             app:title="포인트"
-            app:rightButtonImg="@drawable/ic_btn_share"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,14 +48,14 @@
                 android:id="@+id/tvPointAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="30,000 P"
-                android:fontFamily="@font/notosanskr_bold"
-                android:textSize="28dp"
-                android:textColor="@color/grayscale_wt"
-                app:layout_constraintTop_toBottomOf="@+id/ivPointTextLogo"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="18dp"
-                android:layout_marginEnd="20dp"/>
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/notosanskr_bold"
+                android:text="0 P"
+                android:textColor="@color/grayscale_wt"
+                android:textSize="28dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivPointTextLogo" />
 
             <View
                 android:id="@+id/linePoint1"
@@ -80,16 +79,17 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="16dp"/>
+
             <TextView
                 android:id="@+id/tvPointExpected"
+                style="title_14_R"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5,000 P"
-                style="title_14_R"
+                android:layout_marginEnd="24dp"
+                android:text="0 P"
                 android:textColor="@color/brand_orange3"
-                app:layout_constraintTop_toTopOf="@+id/tvPointTitleExpected"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="24dp"/>
+                app:layout_constraintTop_toTopOf="@+id/tvPointTitleExpected" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
@@ -150,22 +150,34 @@
             app:layout_constraintTop_toBottomOf="@+id/btnPointWithdraw"
             android:layout_marginTop="6dp"/>
 
-        <Spinner
+        <TextView
             android:id="@+id/spPointHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/point_history"
+            android:text="최근 이용 내역"
+            style="@style/title_14_M"
             app:layout_constraintTop_toBottomOf="@+id/linePoint2"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="16dp"
             android:layout_marginStart="20dp"/>
 
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/ic_arrow_below"
+            app:layout_constraintBottom_toBottomOf="@+id/spPointHistory"
+            app:layout_constraintStart_toEndOf="@+id/spPointHistory"
+            app:layout_constraintTop_toTopOf="@+id/spPointHistory" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPointHistory"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/spPointHistory"
-            android:layout_marginTop="20dp"/>
+            app:layout_constraintBottom_toTopOf="@+id/btnPointHistory"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"/>
 
         <Button
             android:id="@+id/btnPointHistory"

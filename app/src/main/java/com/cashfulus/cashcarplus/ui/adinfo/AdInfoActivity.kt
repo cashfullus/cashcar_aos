@@ -145,15 +145,15 @@ class AdInfoActivity : BaseActivity() {
 
             /** 최상단 우측 공유 버튼 */
             binding.toolbarAdInfo.setRightOnClick {
-                /*val intent = Intent(Intent.ACTION_SEND)
+                val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
                 val shareMsg = "[Cashcar]서포터즈 : "+viewModel.response.value!!.title
                 intent.putExtra(Intent.EXTRA_TEXT, shareMsg)
 
                 val chooser = Intent.createChooser(intent, "친구에게 공유하기");
-                startActivity(chooser)*/
+                startActivity(chooser)
 
-                val defaultFeed = FeedTemplate(
+                /*val defaultFeed = FeedTemplate(
                     content = Content(
                         title = "캐시카 플러스",
                         description = data.title,
@@ -191,7 +191,7 @@ class AdInfoActivity : BaseActivity() {
                         Log.w("Cashcarplus", "Warning Msg: ${linkResult.warningMsg}")
                         Log.w("Cashcarplus", "Argument Msg: ${linkResult.argumentMsg}")
                     }
-                }
+                }*/
             }
         })
 

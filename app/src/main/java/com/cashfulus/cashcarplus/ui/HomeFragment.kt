@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.base.BaseFragment
+import com.cashfulus.cashcarplus.base.TestActivity
 import com.cashfulus.cashcarplus.databinding.FragmentHomeBinding
 import com.cashfulus.cashcarplus.model.AdResponse
 import com.cashfulus.cashcarplus.ui.adapter.AdRecyclerAdapter
@@ -144,7 +145,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             R.drawable.button_mission_no_mission
                     )
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).text =
-                            "현재 진행 중인 서포터즈 활동이 없습니다"
+                            "서포터즈 활동에 참여해 보세요 :)"
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface =
                             ResourcesCompat.getFont(
                                     requireActivity(),
@@ -269,7 +270,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             R.drawable.button_mission_no_mission
                     )
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).text =
-                            "현재 진행 중인 서포터즈 활동이 없습니다"
+                            "서포터즈 활동에 참여해 보세요 :)"
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface =
                             ResourcesCompat.getFont(
                                     requireActivity(),
@@ -537,8 +538,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                         val listener = object : MissionDialogClickListener {
                             override fun onPositiveClick() {
                                 viewModel.messageRead(it.data.data.message.reasonId) //loadData()도 이 함수 안에 있다.
-                                val intent = Intent(requireActivity(), MissionActivity::class.java)
-                                intent.putExtra("id", viewModel.UserApplyId)
+                                val intent = Intent(requireActivity(), MissionCertActivity::class.java)
+                                intent.putExtra("type", "important")
+                                intent.putExtra("title", dataResult.data.adInformation.title)
+                                intent.putExtra("order", dataResult.data.adInformation.order)
+                                intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
+                                intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
                                 startActivity(intent)
                             }
 
@@ -619,8 +624,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                         val listener = object : MissionDialogClickListener {
                             override fun onPositiveClick() {
                                 viewModel.messageRead(it.data.data.message.reasonId) //loadData()도 이 함수 안에 있다.
-                                val intent = Intent(requireActivity(), MissionActivity::class.java)
-                                intent.putExtra("id", viewModel.UserApplyId)
+                                val intent = Intent(requireActivity(), MissionCertActivity::class.java)
+                                intent.putExtra("type", "additional")
+                                intent.putExtra("title", dataResult.data.adInformation.title)
+                                intent.putExtra("missionname", dataResult.data.adInformation.missionName)
+                                intent.putExtra("endDate", dataResult.data.adInformation.missionEndDate)
+                                intent.putExtra("id", dataResult.data.adInformation.adMissionCardUserId)
                                 startActivity(intent)
                             }
 
@@ -629,10 +638,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             }
                         }
 
+                        var btnString = "재인증하기"
+                        if(dataResult.data.adInformation.title.contains("미션 인증에 실패하였습니다")) {
+                            btnString = "확인"
+                        }
+
                         val dialog = MissionDialog(
                                 it.data.data.message.title,
                                 it.data.data.message.reason,
-                                "재인증하기"
+                                btnString
                         )
                         dialog.listener = listener
                         dialog.show(parentFragmentManager, "MissionDialog")
@@ -689,7 +703,40 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     pbMission.progress = it.data.data.adInformation!!.ongoingDayPercent
                 }
                 HOME_STATE_SUCCESS -> {
-                    UserManager.hasMission = false
+                    UserManager.hasMission = true
+                    binding.cardNoneMission.visibility = View.GONE
+                    binding.cardCurrentMission.visibility = View.VISIBLE
+                    val card = binding.cardCurrentMission
+                    binding.srlHome.layoutParams.height = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            152f,
+                            resources.displayMetrics
+                    ).toInt()
+
+                    card.findViewById<ConstraintLayout>(R.id.clCurrentMissionNotReady).visibility = View.GONE
+                    Glide.with(requireActivity()).load(it.data.data.adInformation!!.logoImage).into(card.findViewById(R.id.ivCurrentMission))
+                    card.findViewById<TextView>(R.id.tvCurrentMissionTitle).text = it.data.data.adInformation!!.title
+                    card.findViewById<TextView>(R.id.tvCurrentMissionDate).text =
+                            it.data.data.adInformation!!.ongoingDays.toString() + "일"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionSuccess).text =
+                            it.data.data.adInformation!!.defaultMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionAdditional).text =
+                            it.data.data.adInformation!!.additionalMissionSuccessCount.toString() + "회"
+                    card.findViewById<TextView>(R.id.tvCurrentMissionPoint).text = numFormat.format(it.data.data.adInformation!!.point)
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).visibility = View.GONE
+                    card.findViewById<CurrentMissionButton>(R.id.btnCurrentMission).setState(CURRENT_ALL_MISSION_EMPTY, "")
+                    card.setOnClickListener {
+                        val intent = Intent(requireActivity(), MissionActivity::class.java)
+                        intent.putExtra("id", viewModel.UserApplyId)
+                        startActivity(intent)
+                    }
+
+                    val pbMission = card.findViewById<ProgressBar>(R.id.pbRowMission)
+                    pbMission.max = 100
+                    pbMission.progress = it.data.data.adInformation!!.ongoingDayPercent
+
+                    /** 기존에는 성공 시 '서포터즈 활동에 참여해 보세요 :)'를 띄움. */
+                    /*UserManager.hasMission = false
                     binding.cardNoneMission.visibility = View.VISIBLE
                     binding.cardCurrentMission.visibility = View.GONE
                     val card = binding.cardNoneMission
@@ -704,7 +751,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             R.drawable.button_mission_no_mission
                     )
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).text =
-                            "현재 진행 중인 서포터즈 활동이 없습니다"
+                            "서포터즈 활동에 참여해 보세요 :)"
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface =
                             ResourcesCompat.getFont(
                                     requireActivity(),
@@ -721,14 +768,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             )
                     )
 
-                    card.setOnClickListener {}
+                    card.setOnClickListener {}*/
 
                     // 팝업을 아직 보지 않은 상태라면 띄움.
                     if (it.data.data.message.isRead == 0) {
                         val listener = object : MissionDialogClickListener {
                             override fun onPositiveClick() {
                                 viewModel.messageRead(it.data.data.message.reasonId) //loadData()도 이 함수 안에 있다.
-                                showToast("최종 포인트 미구현 상태")
                             }
 
                             override fun onNegativeClick() {
@@ -783,7 +829,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                             R.drawable.button_mission_no_mission
                     )
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).text =
-                            "현재 진행 중인 서포터즈 활동이 없습니다"
+                            "서포터즈 활동에 참여해 보세요 :)"
                     card.findViewById<TextView>(R.id.tvCurrentMissionNone).typeface =
                             ResourcesCompat.getFont(
                                     requireActivity(),
@@ -826,8 +872,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
             /** Sticky ScrollView 관련 처리 */
             binding.usvHome.run {
                 header = binding.tlHomeAd
-                setInitPosition(binding.tlHomeAd.top.toFloat())
-                Log.d("Cashcarplus", "run : " + binding.tlHomeAd.top.toString())
+                binding.usvHome.onGlobalLayout()
 
                 stickListener = { _ ->
                     binding.btnHomePageUp.visibility = View.VISIBLE
@@ -995,7 +1040,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     }
 
     override fun onPause() {
-        super.onPause();
+        super.onPause()
         pauseRegisterReceiver()
     }
 

@@ -46,5 +46,6 @@ fun rotateBitmap(bitmap: Bitmap, imgPath: String): Bitmap? {
 }
 
 fun resizeBitmap(origin: Bitmap): Bitmap {
+
      return Bitmap.createScaledBitmap(origin, (origin.width*0.3).toInt(), (origin.height*0.3).toInt(), true)
 }

@@ -37,5 +37,18 @@
             app:visibleOrGone="@{viewModel.isDialogVisible}"
             tools:ignore="MissingConstraints"/>
 
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/ivMyCarNone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="h, 148:116"
+            android:src="@drawable/img_car_register"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="100dp"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

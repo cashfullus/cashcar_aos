@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="h,375:57"
-        app:tabIndicatorColor="@color/orange"
+        app:tabIndicatorColor="@color/brand_orange1"
         app:tabIconTint="@null"
         app:tabTextColor="@color/selector_tabmain_text_color"
         app:tabTextAppearance="@style/TabMainStyle"

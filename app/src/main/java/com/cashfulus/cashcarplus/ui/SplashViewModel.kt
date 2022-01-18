@@ -34,12 +34,10 @@ class SplashViewModel(private val repository: UserRepository, private val versio
 
                 try {
                     val pInfo = App().context().packageManager.getPackageInfo(App().context().packageName, PackageManager.GET_META_DATA)
-                    val versionCurrent = pInfo.versionName
+                    val versionCurrent = (pInfo.versionName[0].toInt()-48)*10000 + (pInfo.versionName[2].toInt()-48)*100 + (pInfo.versionName[4].toInt()-48)
 
                     if(versionRecent.isSucceed) {
-                        val versionRecentStr = versionRecent.contents!!.version.toString()[0]+"."+versionRecent.contents!!.version.toString()[2]+"."+versionRecent.contents!!.version.toString()[4]
-
-                        if(versionCurrent == versionRecentStr)
+                        if(versionRecent.contents!!.version <= versionCurrent)
                             loginToServer(email, type)
                         else
                             error.postValue(makeCustomErrorResponse(VERSION_ERROR_CODE, "새 버전으로 업데이트해주세요.", ""))
@@ -62,12 +60,10 @@ class SplashViewModel(private val repository: UserRepository, private val versio
 
                 try {
                     val pInfo = App().context().packageManager.getPackageInfo(App().context().packageName, PackageManager.GET_META_DATA)
-                    val versionCurrent = pInfo.versionName
+                    val versionCurrent = (pInfo.versionName[0].toInt()-48)*10000 + (pInfo.versionName[2].toInt()-48)*100 + (pInfo.versionName[4].toInt()-48)
 
                     if(versionRecent.isSucceed) {
-                        val versionRecentStr = versionRecent.contents!!.version.toString()[0]+"."+versionRecent.contents!!.version.toString()[2]+"."+versionRecent.contents!!.version.toString()[4]
-
-                        if(versionCurrent == versionRecentStr)
+                        if(versionRecent.contents!!.version <= versionCurrent)
                             getUserInfo(userId, token)
                         else
                             error.postValue(makeCustomErrorResponse(VERSION_ERROR_CODE, "새 버전으로 업데이트해주세요.", ""))

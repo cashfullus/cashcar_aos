@@ -2,6 +2,7 @@ package com.cashfulus.cashcarplus.ui.car
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -54,6 +55,8 @@ class MyCarActivity : BaseActivity(), PopupDialogClickListener {
         /** LiveData 셋팅 */
         viewModel.response.observe(binding.lifecycleOwner!!, {
             adapter.setData(it)
+            binding.ivMyCarNone.visibility = View.GONE
+            binding.rvMyCar.visibility = View.VISIBLE
 
             // 새로 추가하는 차량은 광고 서포터즈 차량이 아니어도 됨.
             if (it.size >= 3) {
@@ -71,7 +74,8 @@ class MyCarActivity : BaseActivity(), PopupDialogClickListener {
 
         viewModel.empty.observe(binding.lifecycleOwner!!, {
             adapter.setData(null)
-            showToast("등록된 차량이 없습니다.")
+            binding.ivMyCarNone.visibility = View.VISIBLE
+            binding.rvMyCar.visibility = View.GONE
 
             // 새로 추가하는 차량은 광고 서포터즈 차량이어야 함.
             binding.toolbarMyCar.setRightOnClick {

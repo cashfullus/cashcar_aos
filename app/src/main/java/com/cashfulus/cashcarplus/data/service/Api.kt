@@ -75,6 +75,12 @@ interface Api {
     @Multipart
     @POST("ad/mission")
     suspend fun postMissions(@Part side_image: MultipartBody.Part, @Part back_image: MultipartBody.Part, @Query("ad_mission_card_user_id") mission_id: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+    /*@Multipart
+    @POST("ad/mission")
+    suspend fun postMissions(@Part side_image: MultipartBody.Part, @Part back_image: MultipartBody.Part, @Part instrument_panel_image: MultipartBody.Part, @Part("travelled_distance") travelled_distance: RequestBody, @Part("latitude") latitude: RequestBody, @Part("longitude") longitude: RequestBody, @Query("ad_mission_card_user_id") mission_id: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+    @Multipart
+    @POST("ad/mission")
+    suspend fun postMissions(@Part side_image: MultipartBody.Part, @Part back_image: MultipartBody.Part, @Part("latitude") latitude: RequestBody, @Part("longitude") longitude: RequestBody, @Query("ad_mission_card_user_id") mission_id: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>*/
 
     @POST("inquiry")
     suspend fun sendInquiry(@Body inquiry: InquiryRequest, @Header("Authorization") authorization: String): Response<String>
@@ -96,15 +102,29 @@ interface Api {
     @GET("user/cash-car-tip")
     suspend fun getCashcarTipPost(@Query("tip_id") tip_id: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
 
+    @GET("/user/information/point")
+    suspend fun getPointInfo(@Query("page") page: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+    @GET("/user/information/point")
+    suspend fun getPointInfo(@Query("q") q: String, @Query("page") page: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+    @GET("/user/withdrawal/point")
+    suspend fun getBankInfo(@Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+    @POST("/user/withdrawal/point")
+    suspend fun registerWithdraw(@Body withdrawRequest: WithdrawRequest, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+
     @GET("user/donate/list")
     suspend fun getDonationList(@Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
     @GET("user/donate/list")
     suspend fun getDonationList(@Query("count") count: Int, @Query("page") page: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
 
+    @POST("/user/withdrawal/donate")
+    suspend fun registerDonation(@Body donationRequest: DonationRequest, @Query("donation_organization_id") donation_organization_id: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+
     @POST("user/alarm") //1=True, 0=False
     suspend fun postUserAlarm(@Query("is_on") is_on: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
     @POST("user/marketing") //1=True, 0=False
     suspend fun postMarketingAlarm(@Query("is_on") is_on: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+
+
 }
 
 // API 접속 과정에서 오류가 발생한 경우 Status Code. (즉 인터넷 연결이 끊기거나, 서버가 죽은 경우 등의 이유로 인해, 서버로부터 응답도 받지 못한 상태로 발생한 오류.)
@@ -113,3 +133,5 @@ const val API_CONNECT_ERROR_CODE = 999
 const val NO_INTERNET_ERROR_CODE = 1395
 // 버전 오류
 const val VERSION_ERROR_CODE = -1
+// 유저 정보 유실
+const val LOST_USER_INFO_ERROR_CODE = 93015

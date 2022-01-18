@@ -56,19 +56,19 @@
             app:layout_constraintTop_toBottomOf="@+id/tvDonationRTitle1"
             app:layout_constraintStart_toStartOf="@+id/tvDonationRTitle1"
             android:layout_marginTop="30dp"/>
-        <EditText
+
+        <com.cashfulus.cashcarplus.view.UpgradedEdittext
             android:id="@+id/etDonationPoint"
             android:layout_width="160dp"
-            android:layout_height="44dp"
-            android:text="30,000"
-            android:gravity="end|center_vertical"
-            style="@style/input_form"
-            android:maxLines="1"
-            app:layout_constraintTop_toTopOf="@+id/tvDonationRTitle2"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            app:text="@={viewModel.point}"
+            app:inputType="numberSigned"
+            app:textAlignment="textEnd"
+            app:maxLines="1"
             app:layout_constraintBottom_toBottomOf="@+id/tvDonationRTitle2"
             app:layout_constraintEnd_toStartOf="@+id/tvDonationPointP"
-            android:paddingEnd="16dp"
-            android:layout_marginEnd="6dp"/>
+            app:layout_constraintTop_toTopOf="@+id/tvDonationRTitle2" />
         <TextView
             android:id="@+id/tvDonationPointP"
             android:layout_width="wrap_content"
@@ -89,7 +89,7 @@
             android:textColor="@color/brand_orange1"
             app:layout_constraintTop_toBottomOf="@+id/tvDonationRTitle2"
             app:layout_constraintStart_toStartOf="@+id/tvDonationRTitle1"
-            android:layout_marginTop="24dp"/>
+            android:layout_marginTop="28dp"/>
         <TextView
             android:id="@+id/btnDonationRAllPoint"
             android:layout_width="wrap_content"
@@ -115,13 +115,13 @@
 
         <TextView
             android:id="@+id/tvDonationRTitle4"
+            style="@style/title_14_R"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="기부 안내"
-            style="@style/title_14_R"
-            app:layout_constraintTop_toBottomOf="@+id/lineDonationR1"
+            android:layout_marginTop="20dp"
+            android:text="기부 신청 정보"
             app:layout_constraintStart_toStartOf="@+id/tvDonationRTitle1"
-            android:layout_marginTop="20dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/lineDonationR1" />
 
         <TextView
             android:id="@+id/tvDonationRTitle5"
@@ -133,27 +133,14 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="16dp"
             android:layout_marginStart="32dp"/>
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spDonationRName"
+        <com.cashfulus.cashcarplus.view.UpgradedEdittext
+            android:id="@+id/etDonationRName"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/input_form_enable"
-            android:spinnerMode="dialog"
-            android:entries="@array/tmp"
-            style="@style/title_14_R"
+            android:layout_height="wrap_content"
+            app:enabled="false"
             app:layout_constraintTop_toBottomOf="@+id/tvDonationRTitle5"
             android:layout_marginTop="4dp"
-            android:layout_marginHorizontal="16dp"
-            android:paddingHorizontal="16dp"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="center"
-            android:src="@drawable/ic_spinner_triangle"
-            app:layout_constraintEnd_toEndOf="@+id/spDonationRName"
-            app:layout_constraintTop_toTopOf="@+id/spDonationRName"
-            app:layout_constraintBottom_toBottomOf="@+id/spDonationRName"
-            android:layout_marginEnd="19dp"/>
+            android:layout_marginHorizontal="16dp"/>
 
         <TextView
             android:id="@+id/tvDonationRTitle6"
@@ -161,7 +148,7 @@
             android:layout_height="wrap_content"
             android:text="기부자명"
             style="@style/title_12_R"
-            app:layout_constraintTop_toBottomOf="@+id/spDonationRName"
+            app:layout_constraintTop_toBottomOf="@+id/etDonationRName"
             app:layout_constraintStart_toStartOf="@+id/tvDonationRTitle5"
             android:layout_marginTop="20dp"/>
         <com.cashfulus.cashcarplus.view.UpgradedEdittext
@@ -169,6 +156,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
+            app:text="@={viewModel.name}"
             app:layout_constraintTop_toBottomOf="@+id/tvDonationRTitle6"
             android:layout_marginTop="4dp"/>
 
@@ -178,7 +166,7 @@
             android:layout_height="24dp"
             android:background="@drawable/selector_checkbox"
             android:button="@android:color/transparent"
-            android:checked="false"
+            android:checked="@={viewModel.needReceipt}"
             app:layout_constraintTop_toBottomOf="@+id/etDonationUserName"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="20dp"
