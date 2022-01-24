@@ -35,6 +35,10 @@
     <string name="url_provide_policy">https://app.api.service.cashcarplus.com:50193/agree/provide-policy</string>
     <string name="url_terms_of_service">https://app.api.service.cashcarplus.com:50193/agree/terms_of_service</string>
 
+    <!-- Facebook SDK -->
+    <string name="facebook_app_id">198265415521211</string>
+    <string name="fb_login_protocol_scheme">fb198265415521211</string>
+
     <!-- String Format -->
 
     <!-- TODO: Remove or change this placeholder text -->

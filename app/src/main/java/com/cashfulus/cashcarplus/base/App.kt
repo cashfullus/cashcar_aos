@@ -8,6 +8,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
 class App : Application() {
     companion object {
@@ -22,7 +23,8 @@ class App : Application() {
         // 앱 실행 시 Koin 설정, 의존성 주입.
         startKoin {
             // 안드로이드 로그 기능 사용
-            androidLogger()
+            // 참고 : https://stackoverflow.com/questions/63393507/java-lang-nosuchmethoderror-no-virtual-method-elapsednowd-in-class-lkotlin-ti
+            androidLogger(Level.NONE)
             // Android Context 넘겨줌
             androidContext(this@App)
             // assets/koin.properties 파일에서 프로퍼티를 가져옴.
