@@ -39,6 +39,9 @@
     <string name="facebook_app_id">198265415521211</string>
     <string name="fb_login_protocol_scheme">fb198265415521211</string>
 
+    <!-- Kakao AD SDK -->
+    <string name="kakao_ad_track_id" translatable="false">4333154356022915451</string>
+
     <!-- String Format -->
 
     <!-- TODO: Remove or change this placeholder text -->

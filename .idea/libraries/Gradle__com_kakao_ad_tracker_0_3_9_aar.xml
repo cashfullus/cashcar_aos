@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.kakao.ad:tracker:0.3.9@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f3f390dbd26bef5c416b9a35830a0f5d/jetified-tracker-0.3.9/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f3f390dbd26bef5c416b9a35830a0f5d/jetified-tracker-0.3.9/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f3f390dbd26bef5c416b9a35830a0f5d/jetified-tracker-0.3.9/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

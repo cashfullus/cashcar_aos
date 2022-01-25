@@ -239,6 +239,10 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
+
+        <meta-data
+            android:name="com.kakao.ad.tracker.TRACK_ID"
+            android:value="@string/kakao_ad_track_id" />
     </application>
 
 </manifest>

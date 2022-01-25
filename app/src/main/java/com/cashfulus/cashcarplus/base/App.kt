@@ -2,8 +2,10 @@ package com.cashfulus.cashcarplus.base
 
 import android.app.Application
 import android.content.Context
+import com.cashfulus.cashcarplus.R
 import com.kakao.sdk.common.KakaoSdk
 import com.cashfulus.cashcarplus.di.*
+import com.kakao.ad.tracker.KakaoAdTracker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
@@ -19,6 +21,11 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        // Kakao AD SDK 초기화
+        if (!KakaoAdTracker.isInitialized) {
+            KakaoAdTracker.init(applicationContext, getString(R.string.kakao_ad_track_id))
+        }
 
         // 앱 실행 시 Koin 설정, 의존성 주입.
         startKoin {

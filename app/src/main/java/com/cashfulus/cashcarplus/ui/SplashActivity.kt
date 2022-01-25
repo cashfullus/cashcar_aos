@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
@@ -17,6 +16,8 @@ import com.cashfulus.cashcarplus.databinding.ActivitySplashBinding
 import com.cashfulus.cashcarplus.ui.howtouse.HowToUseActivity
 import com.cashfulus.cashcarplus.ui.login.LoginActivity
 import com.cashfulus.cashcarplus.util.UserManager
+import com.kakao.ad.common.json.AppLaunch
+import com.kakao.ad.tracker.send
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -29,6 +30,10 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 앱실행 이벤트 전송
+        val event = AppLaunch()
+        event.send()
 
         // Restore instance state
         if (savedInstanceState != null)

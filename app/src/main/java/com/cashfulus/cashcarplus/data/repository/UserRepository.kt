@@ -9,6 +9,8 @@ import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.data.remote.RemoteUserSource
 import com.cashfulus.cashcarplus.model.*
 import com.cashfulus.cashcarplus.util.TestAuth1
+import com.kakao.ad.common.json.CompleteRegistration
+import com.kakao.ad.tracker.send
 import retrofit2.Response
 import java.io.*
 import java.text.SimpleDateFormat
@@ -75,6 +77,11 @@ class UserRepositoryImpl(private val remoteUserSource: RemoteUserSource) : UserR
         val apiResult: Response<String> = remoteUserSource.registerApi(RegisterRequest(fcmToken, email, alarmInt, marketingInt, loginType))
 
         if (apiResult.code() == 201) {
+            // 회원가입 이벤트 전송
+            val event = CompleteRegistration()
+            event.tag = "CompleteRegistration" // 분류
+            event.send()
+
             return ApiResponse(true, Gson().fromJson(apiResult.body()!!, RegisterResponse::class.java), null)
         } else if(apiResult.code() == 409) { // 중복된 회원가입 시도(이메일 중복확인)
             return ApiResponse(false, null, makeCustomErrorResponse(409, "같은 이메일로 가입된 계정이 존재합니다.", "/register"))
@@ -91,6 +98,11 @@ class UserRepositoryImpl(private val remoteUserSource: RemoteUserSource) : UserR
         val apiResult: Response<String> = remoteUserSource.registerPWApi(RegisterPWRequest(fcmToken, email, password, alarmInt, marketingInt, loginType))
 
         if (apiResult.code() == 201) {
+            // 회원가입 이벤트 전송
+            val event = CompleteRegistration()
+            event.tag = "register" // 분류
+            event.send()
+
             return ApiResponse(true, Gson().fromJson(apiResult.body()!!, RegisterResponse::class.java), null)
         } else if(apiResult.code() == 409) { // 중복된 회원가입 시도(이메일 중복확인)
             return ApiResponse(false, null, makeCustomErrorResponse(409, "같은 이메일로 가입된 계정이 존재합니다.", "/register"))

@@ -7,6 +7,8 @@ import com.kakao.sdk.common.util.KakaoJson.fromJson
 import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.data.remote.RemoteMissionSource
 import com.cashfulus.cashcarplus.model.*
+import com.kakao.ad.common.json.SignUp
+import com.kakao.ad.tracker.send
 import retrofit2.Response
 import java.io.*
 import java.text.SimpleDateFormat
@@ -91,6 +93,11 @@ class MissionRepositoryImpl(private val remoteMissionSource: RemoteMissionSource
         val apiResult: Response<String> = remoteMissionSource.applyAd(ApplyRequest(mainAddress, detailAddress, callNumber, name), userId, adId, vehicleId,"Bearer "+token)
 
         if (apiResult.code() == 200) {
+            // 광고신청 이벤트 전송
+            val event = SignUp()
+            event.tag = "SignUp"
+            event.send()
+
             return ApiResponse(true, Gson().fromJson(apiResult.body()!!, ApplyResponseData::class.java), null)
         } else if (apiResult.code() == 404) {
             val result = Gson().fromJson(apiResult.errorBody()!!.string(), ApplyResponseData::class.java)

@@ -109,6 +109,10 @@ dependencies {
     implementation "com.kakao.sdk:v2-user:2.5.0"
     implementation "com.kakao.sdk:v2-talk:2.5.0"
     implementation "com.kakao.sdk:v2-link:2.5.0"
+    // 카카오 AD
+    implementation "com.google.android.gms:play-services-ads-identifier:18.0.1"
+    implementation "com.android.installreferrer:installreferrer:2.2"
+    implementation "com.kakao.ad:tracker:0.3.9"
 
     // Image Cropper
     implementation 'com.github.CanHub:Android-Image-Cropper:3.1.1'
