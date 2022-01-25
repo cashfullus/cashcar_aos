@@ -31,9 +31,7 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 앱실행 이벤트 전송
-        val event = AppLaunch()
-        event.send()
+        // 앱실행 이벤트 전송 : 필요없음(자동으로 실행됨)
 
         // Restore instance state
         if (savedInstanceState != null)
