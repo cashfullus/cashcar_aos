@@ -3,6 +3,7 @@ package com.cashfulus.cashcarplus.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseFragment
@@ -28,7 +29,8 @@ class AdListFragment : BaseFragment<FragmentAdListBinding, AdListViewModel>(R.la
 
     override fun init() {
         binding.rvAdList.layoutManager = NoScrollLayoutManager(requireActivity())
-        //binding.rvAdList.isNestedScrollingEnabled = true
+//        binding.rvAdList.layoutManager = GridLayoutManager(requireActivity(), 2)
+//        binding.rvAdList.isNestedScrollingEnabled = true
 
         viewModel.loadAdList(tabState!!)
         viewModel.adList.observe(binding.lifecycleOwner!!, {

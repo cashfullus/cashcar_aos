@@ -2,6 +2,7 @@ package com.cashfulus.cashcarplus.ui.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.model.AdResponse
 import com.cashfulus.cashcarplus.ui.adinfo.AdInfoActivity
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class AdRecyclerAdapter(private val context: Context, private val newList: ArrayList<AdResponse>, private val newTabState: String) : RecyclerView.Adapter<AdRecyclerAdapter.Holder>() {
     private var adList = newList//ArrayList<AdResponse>()
@@ -97,11 +100,33 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
                 holder.tvPerson1.text = adList[position * 2].recruitingCount.toString() + "/" + adList[position * 2].maxRecruitingCount.toString()
                 holder.tvEndDate1.text = adList[position * 2].recruitEndDate!!.substring(5, 7) + "." + adList[position * 2].recruitEndDate!!.substring(8, 10) + " 마감" //2021-05-22 23:59:59 -> 05.22 마감
 
+                if(!(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2].recruitEndDate!!) && (adList[position * 2].recruitingCount!! < adList[position * 2].maxRecruitingCount!!))) {
+                    holder.tvRegion1.visibility = View.VISIBLE
+                    holder.tvPerson1.visibility = View.INVISIBLE
+                    holder.ivAdPerson1.visibility = View.INVISIBLE
+                    holder.tvEndDate1.visibility = View.INVISIBLE
+                    holder.tvDDay1.visibility = View.GONE
+                    holder.tvEnd1.visibility = View.VISIBLE
+                    holder.vBack1.visibility = View.VISIBLE
+                }
+
+//                if(Date() > SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2].recruitEndDate!!) || (adList[position * 2].recruitingCount!! == adList[position * 2].maxRecruitingCount!!)) {
+//                    holder.tvRegion1.visibility = View.VISIBLE
+//                    holder.tvPerson1.visibility = View.INVISIBLE
+//                    holder.ivAdPerson1.visibility = View.INVISIBLE
+//                    holder.tvEndDate1.visibility = View.INVISIBLE
+//                    holder.tvDDay1.visibility = View.GONE
+//                    holder.tvEnd1.visibility = View.VISIBLE
+//                    holder.vBack1.visibility = View.VISIBLE
+//                }
+
                 holder.row1.setOnClickListener {
-                    val intent = Intent(context, AdInfoActivity::class.java)
-                    intent.putExtra("id", adList[position * 2].adId)
-                    intent.putExtra("canRegister", true)
-                    context.startActivity(intent)
+                    if(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2].recruitEndDate!!) && (adList[position * 2].recruitingCount!! < adList[position * 2].maxRecruitingCount!!)) {
+                        val intent = Intent(context, AdInfoActivity::class.java)
+                        intent.putExtra("id", adList[position * 2].adId)
+                        intent.putExtra("canRegister", true)
+                        context.startActivity(intent)
+                    }
                 }
 
                 if (position * 2 + 1 < adList.size) {
@@ -113,13 +138,35 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
                     holder.tvPoint2.text = numFormat.format(adList[position * 2 + 1].totalPoint)
                     holder.tvRegion2.text = adList[position * 2 + 1].area
                     holder.tvPerson2.text = adList[position * 2 + 1].recruitingCount.toString() + "/" + adList[position * 2 + 1].maxRecruitingCount.toString()
-                    holder.tvEndDate2.text = adList[position * 2].recruitEndDate!!.substring(5, 7) + "." + adList[position * 2].recruitEndDate!!.substring(8, 10) + " 마감" //2021-05-22 23:59:59 -> 05.22 마감
+                    holder.tvEndDate2.text = adList[position * 2 + 1].recruitEndDate!!.substring(5, 7) + "." + adList[position * 2 + 1].recruitEndDate!!.substring(8, 10) + " 마감" //2021-05-22 23:59:59 -> 05.22 마감
+
+                    if(!(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2 + 1].recruitEndDate!!) && (adList[position * 2 + 1].recruitingCount!! < adList[position * 2 + 1].maxRecruitingCount!!))) {
+                        holder.tvRegion2.visibility = View.VISIBLE
+                        holder.tvPerson2.visibility = View.INVISIBLE
+                        holder.ivAdPerson2.visibility = View.INVISIBLE
+                        holder.tvEndDate2.visibility = View.INVISIBLE
+                        holder.tvDDay2.visibility = View.GONE
+                        holder.tvEnd2.visibility = View.VISIBLE
+                        holder.vBack2.visibility = View.VISIBLE
+                    }
+
+//                    if(Date() > SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2 + 1].recruitEndDate!!) || (adList[position * 2 + 1].recruitingCount!! == adList[position * 2 + 1].maxRecruitingCount!!)) {
+//                        holder.tvRegion2.visibility = View.VISIBLE
+//                        holder.tvPerson2.visibility = View.INVISIBLE
+//                        holder.ivAdPerson2.visibility = View.INVISIBLE
+//                        holder.tvEndDate2.visibility = View.INVISIBLE
+//                        holder.tvDDay2.visibility = View.GONE
+//                        holder.tvEnd2.visibility = View.VISIBLE
+//                        holder.vBack2.visibility = View.VISIBLE
+//                    }
 
                     holder.row2.setOnClickListener {
-                        val intent = Intent(context, AdInfoActivity::class.java)
-                        intent.putExtra("id", adList[position * 2 + 1].adId)
-                        intent.putExtra("canRegister", true)
-                        context.startActivity(intent)
+                        if(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2 + 1].recruitEndDate!!) && (adList[position * 2 + 1].recruitingCount!! < adList[position * 2 + 1].maxRecruitingCount!!)) {
+                            val intent = Intent(context, AdInfoActivity::class.java)
+                            intent.putExtra("id", adList[position * 2 + 1].adId)
+                            intent.putExtra("canRegister", true)
+                            context.startActivity(intent)
+                        }
                     }
                 } else {
                     holder.row2.visibility = View.GONE
@@ -184,21 +231,26 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val row1: ConstraintLayout = itemView.findViewById(R.id.clRowAdStart)
         val ivRow1: ImageView = itemView.findViewById(R.id.ivRowAd1)
+        val ivAdPerson1 : ImageView = itemView.findViewById(R.id.ivRowAd1Person)
         val tvTitle1: TextView = itemView.findViewById(R.id.tvRowAdTitle1)
         val tvPoint1: TextView = itemView.findViewById(R.id.tvRowAdPoint1)
         val tvRegion1: TextView = itemView.findViewById(R.id.tvRowAdRegion1)
         val tvPerson1: TextView = itemView.findViewById(R.id.tvRowAdPerson1)
         val tvEndDate1: TextView = itemView.findViewById(R.id.tvRowAdEndDate1)
         val tvDDay1: TextView = itemView.findViewById(R.id.tvRowAdDDay1)
-
+        val tvEnd1: TextView = itemView.findViewById(R.id.tvRowAdEnd1)
+        val vBack1: View = itemView.findViewById(R.id.tvRowAdEnd1Back)
 
         val row2: ConstraintLayout = itemView.findViewById(R.id.clRowAdEnd)
         val ivRow2: ImageView = itemView.findViewById(R.id.ivRowAd2)
+        val ivAdPerson2 : ImageView = itemView.findViewById(R.id.ivRowAd2Person)
         val tvTitle2: TextView = itemView.findViewById(R.id.tvRowAdTitle2)
         val tvPoint2: TextView = itemView.findViewById(R.id.tvRowAdPoint2)
         val tvRegion2: TextView = itemView.findViewById(R.id.tvRowAdRegion2)
         val tvPerson2: TextView = itemView.findViewById(R.id.tvRowAdPerson2)
         val tvEndDate2: TextView = itemView.findViewById(R.id.tvRowAdEndDate2)
         val tvDDay2: TextView = itemView.findViewById(R.id.tvRowAdDDay2)
+        val tvEnd2: TextView = itemView.findViewById(R.id.tvRowAdEnd2)
+        val vBack2: View = itemView.findViewById(R.id.tvRowAdEnd2Back)
     }
 }

@@ -19,12 +19,13 @@ import com.cashfulus.cashcarplus.view.ONLY_ONE_CAR
 import com.cashfulus.cashcarplus.view.ONLY_ONE_CAR_NOT_CHECKED
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.util.*
 
 class AddCarActivity : BaseActivity() {
     private val binding by binding<ActivityAddCarBinding>(R.layout.activity_add_car)
     private val viewModel: AddCarViewModel by viewModel { parametersOf() }
 
-    private val CURRENT_YEAR = 2021
+    private val CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR)
 
     // 각 UpgradedEditText가 Focus된 적이 있는지 체크.
     var isModelFocused = false

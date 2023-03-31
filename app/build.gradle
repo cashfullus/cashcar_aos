@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     buildToolsVersion "29.0.2"
 
     packagingOptions {
@@ -21,9 +21,9 @@ android {
     defaultConfig {
         applicationId "com.cashfulus.cashcarplus"
         minSdkVersion 24
-        targetSdkVersion 30
-        versionCode 12
-        versionName "1.0.6"
+        targetSdkVersion 32
+        versionCode 13
+        versionName "1.0.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

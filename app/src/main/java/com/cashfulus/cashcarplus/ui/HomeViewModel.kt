@@ -161,7 +161,11 @@ class HomeViewModel(private val missionRepository: MissionRepository): BaseViewM
 
                         if(response3.isSucceed) {
                             val result = ArrayList<ArrayList<AdResponse>>()
-                            result.add(response1.contents!!.data)
+                            var all = ArrayList<AdResponse>()
+                            all.addAll(response1.contents!!.data)
+                            all.addAll(response3.contents!!.data)
+                            result.add(all)
+//                            result.add(response1.contents!!.data)
                             result.add(response2.contents!!.data)
                             result.add(response3.contents!!.data)
                             hideLoadingDialog()

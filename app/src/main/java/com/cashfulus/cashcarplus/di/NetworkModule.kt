@@ -1,5 +1,6 @@
 package com.cashfulus.cashcarplus.di
 
+import com.cashfulus.cashcarplus.BuildConfig
 import com.cashfulus.cashcarplus.data.service.Api
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,7 +14,11 @@ import java.util.concurrent.TimeUnit
 private const val CONNECT_TIMEOUT = 50L
 private const val WRITE_TIMEOUT = 50L
 private const val READ_TIMEOUT = 50L
-private const val BASE_URL = "https://app.api.service.cashcarplus.com:50193/"
+private val BASE_URL = /*if (BuildConfig.DEBUG) {
+    "https://dev-api.cashfullus.com/"
+} else {*/
+    "https://app.api.service.cashcarplus.com:50193/"
+/*}*/
 
 val networkModule = module {
 
@@ -32,9 +37,9 @@ val networkModule = module {
 
     single {
         Retrofit.Builder().client(get()).baseUrl(BASE_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build() //.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build() //.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
     }
 
 
