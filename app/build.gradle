@@ -22,8 +22,8 @@ android {
         applicationId "com.cashfulus.cashcarplus"
         minSdkVersion 24
         targetSdkVersion 32
-        versionCode 13
-        versionName "1.0.7"
+        versionCode 15
+        versionName "1.0.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -103,7 +103,6 @@ dependencies {
     implementation 'androidx.browser:browser:1.2.0'
     implementation 'com.google.android.gms:play-services-auth:20.0.1'
     implementation 'com.google.firebase:firebase-messaging-ktx'
-    implementation 'android.arch.work:work-runtime-ktx:1.0.1'
 
     // 카카오 로그인
     implementation "com.kakao.sdk:v2-user:2.5.0"

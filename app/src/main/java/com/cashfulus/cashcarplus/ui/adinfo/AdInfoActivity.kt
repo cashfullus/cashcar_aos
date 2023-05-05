@@ -1,9 +1,16 @@
 package com.cashfulus.cashcarplus.ui.adinfo
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -72,9 +79,12 @@ class AdInfoActivity : BaseActivity() {
         }
 
         /** LiveData 관련 설정 */
-        viewModel.response.observe(binding.lifecycleOwner!!, {
+        viewModel.response.observe(binding.lifecycleOwner!!) {
             val data = it
-            val adId = it.ad_id; val image = it.thumbnail_image; val title = it.title; val point = it.total_point
+            val adId = it.ad_id;
+            val image = it.thumbnail_image;
+            val title = it.title;
+            val point = it.total_point
 
             // 최상단 슬라이드 이미지 설정
             val adapter = ImageSliderAdapter(this@AdInfoActivity, it.images)
@@ -97,8 +107,13 @@ class AdInfoActivity : BaseActivity() {
                 }
             }, DELAY_MS, PERIOD_MS)
             // 최상단 슬라이드 자체 슬라이딩 시 포지션 초기화 작업
-            binding.vpAdInfo.setOnPageChangeListener(object: ViewPager.OnPageChangeListener {
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+            binding.vpAdInfo.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                }
 
                 override fun onPageSelected(position: Int) {
                     currentPage = position
@@ -110,28 +125,67 @@ class AdInfoActivity : BaseActivity() {
             Glide.with(this@AdInfoActivity).load(it.thumbnail_image).into(binding.ivAdInfoTitle)
             binding.tvAdInfoAdTitle.text = it.title
             binding.tvAdInfoPoint.text = numFormat.format(it.total_point)
-            binding.tvAdInfoCurrentPeople.text = numFormat.format(it.recruiting_count)+"명 신청"
+            binding.tvAdInfoCurrentPeople.text = numFormat.format(it.recruiting_count) + "명 신청"
 
-            binding.tvAdInfoMinDistance.text = if(it.min_distance == 0) "무관" else numFormat.format(it.min_distance)+" km"
+            binding.tvAdInfoMinDistance.text =
+                if (it.min_distance == 0) "무관" else numFormat.format(it.min_distance) + " km"
 
-            if(it.gender == 0 && it.min_age_group == 0 && it.max_age_group == 0)
+            if (it.gender == 0 && it.min_age_group == 0 && it.max_age_group == 0)
                 binding.tvAdInfoGender.text = "무관"
             else {
                 binding.tvAdInfoGender.text =
-                        (if(it.gender == 0) "" else if(it.gender == 1) "남성 " else "여성 ") + (if(it.min_age_group == 0) "" else it.min_age_group.toString()+ "세 이상 ") + (if(it.max_age_group == 0) "" else it.max_age_group.toString()+ "세 이하")
+                    (if (it.gender == 0) "" else if (it.gender == 1) "남성 " else "여성 ") + (if (it.min_age_group == 0) "" else it.min_age_group.toString() + "세 이상 ") + (if (it.max_age_group == 0) "" else it.max_age_group.toString() + "세 이하")
             }
 
-            binding.tvAdInfoDate.text = it.recruit_start_date.substring(0,10).replace('-', '.') + " - " + it.recruit_end_date.substring(0,10).replace('-', '.')
-            binding.tvAdInfoDuration.text = it.activity_period.toString()+"일 (1차 미션 시작일부터)"
-            binding.tvAdInfoPeopleNum.text = it.max_recruiting_count.toString()+"명"
+            binding.tvAdInfoDate.text = it.recruit_start_date.substring(0, 10)
+                .replace('-', '.') + " - " + it.recruit_end_date.substring(0, 10).replace('-', '.')
+            binding.tvAdInfoDuration.text = it.activity_period.toString() + "일 (1차 미션 시작일부터)"
+            binding.tvAdInfoPeopleNum.text = it.max_recruiting_count.toString() + "명"
             binding.tvAdInfoRegion.text = it.area
 
             binding.tvAdInfoContents.text = it.description
 
+            val text = it.description
+
+            val regex = Regex("(https://|www.)[a-zA-Z0-9./?=_-]+\\.(com|kr|net|org)")
+
+            val url = regex.find(text)?.value
+            url?.let {
+                val spannableString = SpannableString(text)
+                val startIndex = text.indexOf(url)
+                val endIndex = startIndex + url.length
+
+                val clickableSpan = object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        // Perform the desired action when the hyperlink is clicked
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        startActivity(intent)
+                    }
+
+                    override fun updateDrawState(ds: TextPaint) {
+                        super.updateDrawState(ds)
+                        // Set the style of the hyperlink text
+                        ds.isUnderlineText = true
+                    }
+                }
+
+                spannableString.setSpan(
+                    clickableSpan,
+                    startIndex,
+                    endIndex,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                binding.tvAdInfoContents.text = spannableString
+                binding.tvAdInfoContents.movementMethod = LinkMovementMethod.getInstance()
+            }
+
             Glide.with(this@AdInfoActivity).load(it.side_image).into(binding.ivAdInfoDesign1)
-            binding.tvAdInfoSize1.text = it.side_width.toString() + " x " + it.side_length.toString() + " cm"
+            binding.tvAdInfoSize1.text =
+                it.side_width.toString() + " x " + it.side_length.toString() + " cm"
             Glide.with(this@AdInfoActivity).load(it.back_image).into(binding.ivAdInfoDesign2)
-            binding.tvAdInfoSize2.text = it.back_width.toString() + " x " + it.back_length.toString() + " cm"
+            binding.tvAdInfoSize2.text =
+                it.back_width.toString() + " x " + it.back_length.toString() + " cm"
 
             /** 신청하기 버튼 */
             binding.btnAdInfo.setOnClickListener {
@@ -171,7 +225,10 @@ class AdInfoActivity : BaseActivity() {
                         Button(
                             "앱으로 보기",
                             Link(
-                                androidExecutionParams = mapOf("key1" to "value1", "key2" to "value2"),
+                                androidExecutionParams = mapOf(
+                                    "key1" to "value1",
+                                    "key2" to "value2"
+                                ),
                                 iosExecutionParams = mapOf("key1" to "value1", "key2" to "value2")
                             )
                         )
@@ -179,11 +236,13 @@ class AdInfoActivity : BaseActivity() {
                 )
 
                 // 피드 메시지 보내기
-                LinkClient.instance.defaultTemplate(this@AdInfoActivity, defaultFeed) { linkResult, error ->
+                LinkClient.instance.defaultTemplate(
+                    this@AdInfoActivity,
+                    defaultFeed
+                ) { linkResult, error ->
                     if (error != null) {
                         Log.e("Cashcarplus", "카카오링크 보내기 실패", error)
-                    }
-                    else if (linkResult != null) {
+                    } else if (linkResult != null) {
                         Log.d("Cashcarplus", "카카오링크 보내기 성공 ${linkResult.intent}")
                         startActivity(linkResult.intent)
 
@@ -193,7 +252,7 @@ class AdInfoActivity : BaseActivity() {
                     }
                 }
             }
-        })
+        }
 
         viewModel.error.observe(binding.lifecycleOwner!!, {
             showToast(it.message)

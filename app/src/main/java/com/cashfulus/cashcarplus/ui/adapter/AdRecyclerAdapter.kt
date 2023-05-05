@@ -110,16 +110,6 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
                     holder.vBack1.visibility = View.VISIBLE
                 }
 
-//                if(Date() > SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2].recruitEndDate!!) || (adList[position * 2].recruitingCount!! == adList[position * 2].maxRecruitingCount!!)) {
-//                    holder.tvRegion1.visibility = View.VISIBLE
-//                    holder.tvPerson1.visibility = View.INVISIBLE
-//                    holder.ivAdPerson1.visibility = View.INVISIBLE
-//                    holder.tvEndDate1.visibility = View.INVISIBLE
-//                    holder.tvDDay1.visibility = View.GONE
-//                    holder.tvEnd1.visibility = View.VISIBLE
-//                    holder.vBack1.visibility = View.VISIBLE
-//                }
-
                 holder.row1.setOnClickListener {
                     if(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2].recruitEndDate!!) && (adList[position * 2].recruitingCount!! < adList[position * 2].maxRecruitingCount!!)) {
                         val intent = Intent(context, AdInfoActivity::class.java)
@@ -149,16 +139,6 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
                         holder.tvEnd2.visibility = View.VISIBLE
                         holder.vBack2.visibility = View.VISIBLE
                     }
-
-//                    if(Date() > SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2 + 1].recruitEndDate!!) || (adList[position * 2 + 1].recruitingCount!! == adList[position * 2 + 1].maxRecruitingCount!!)) {
-//                        holder.tvRegion2.visibility = View.VISIBLE
-//                        holder.tvPerson2.visibility = View.INVISIBLE
-//                        holder.ivAdPerson2.visibility = View.INVISIBLE
-//                        holder.tvEndDate2.visibility = View.INVISIBLE
-//                        holder.tvDDay2.visibility = View.GONE
-//                        holder.tvEnd2.visibility = View.VISIBLE
-//                        holder.vBack2.visibility = View.VISIBLE
-//                    }
 
                     holder.row2.setOnClickListener {
                         if(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2 + 1].recruitEndDate!!) && (adList[position * 2 + 1].recruitingCount!! < adList[position * 2 + 1].maxRecruitingCount!!)) {
