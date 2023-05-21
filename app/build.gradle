@@ -22,8 +22,8 @@ android {
         applicationId "com.cashfulus.cashcarplus"
         minSdkVersion 24
         targetSdkVersion 32
-        versionCode 15
-        versionName "1.0.8"
+        versionCode 16
+        versionName "1.0.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

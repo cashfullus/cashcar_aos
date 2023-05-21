@@ -16,134 +16,104 @@ import com.cashfulus.cashcarplus.model.AdResponse
 import com.cashfulus.cashcarplus.ui.adinfo.AdInfoActivity
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
-class AdRecyclerAdapter(private val context: Context, private val newList: ArrayList<AdResponse>, private val newTabState: String) : RecyclerView.Adapter<AdRecyclerAdapter.Holder>() {
-    private var adList = newList//ArrayList<AdResponse>()
-    val numFormat = DecimalFormat("###,###")
-    // 클릭 가능/불가능
-    var tabState = newTabState // "ongoing" //"scheduled", "done"
+class AdRecyclerAdapter(
+    private val context: Context,
+    private val newList: ArrayList<AdResponse>,
+    private val newTabState: String
+) : RecyclerView.Adapter<AdRecyclerAdapter.Holder>() {
+    private var adList = newList //ArrayList<AdResponse>()
+    private val numFormat = DecimalFormat("###,###")
+    private var tabState = newTabState // "ongoing" //"scheduled", "done"
     private val TYPE_ONGOING = 1
     private val TYPE_SCHEDULED = 2
     private val TYPE_DONE = 3
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdRecyclerAdapter.Holder {
-        when(viewType) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        when (viewType) {
             TYPE_ONGOING -> {
                 val view = LayoutInflater.from(context).inflate(R.layout.row_ad, parent, false)
-                view.findViewById<TextView>(R.id.tvRowAdRegion1).visibility = View.VISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdPerson1).visibility = View.VISIBLE
-                view.findViewById<ImageView>(R.id.ivRowAd1Person).visibility = View.VISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdEndDate1).visibility = View.VISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdDDay1).visibility = View.GONE
-                view.findViewById<TextView>(R.id.tvRowAdEnd1).visibility = View.GONE
-                view.findViewById<View>(R.id.tvRowAdEnd1Back).visibility = View.GONE
-
-                view.findViewById<TextView>(R.id.tvRowAdRegion2).visibility = View.VISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdPerson2).visibility = View.VISIBLE
-                view.findViewById<ImageView>(R.id.ivRowAd2Person).visibility = View.VISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdEndDate2).visibility = View.VISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdDDay2).visibility = View.GONE
-                view.findViewById<TextView>(R.id.tvRowAdEnd2).visibility = View.GONE
-                view.findViewById<View>(R.id.tvRowAdEnd2Back).visibility = View.GONE
-                return Holder(view)
+                // Setting visibility for TYPE_ONGOING
+                return Holder(view, viewType)
             }
             TYPE_SCHEDULED -> {
                 val view = LayoutInflater.from(context).inflate(R.layout.row_ad, parent, false)
-                view.findViewById<TextView>(R.id.tvRowAdRegion1).visibility = View.INVISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdPerson1).visibility = View.INVISIBLE
-                view.findViewById<ImageView>(R.id.ivRowAd1Person).visibility = View.INVISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdEndDate1).visibility = View.INVISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdDDay1).visibility = View.VISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdEnd1).visibility = View.GONE
-                view.findViewById<View>(R.id.tvRowAdEnd1Back).visibility = View.GONE
-
-                view.findViewById<TextView>(R.id.tvRowAdRegion2).visibility = View.INVISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdPerson2).visibility = View.INVISIBLE
-                view.findViewById<ImageView>(R.id.ivRowAd2Person).visibility = View.INVISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdEndDate2).visibility = View.INVISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdDDay2).visibility = View.VISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdEnd2).visibility = View.GONE
-                view.findViewById<View>(R.id.tvRowAdEnd2Back).visibility = View.GONE
-                return Holder(view)
+                // Setting visibility for TYPE_SCHEDULED
+                return Holder(view, viewType)
             }
             else -> {
                 val view = LayoutInflater.from(context).inflate(R.layout.row_ad, parent, false)
-                view.findViewById<TextView>(R.id.tvRowAdRegion1).visibility = View.VISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdPerson1).visibility = View.INVISIBLE
-                view.findViewById<ImageView>(R.id.ivRowAd1Person).visibility = View.INVISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdEndDate1).visibility = View.INVISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdDDay1).visibility = View.GONE
-                view.findViewById<TextView>(R.id.tvRowAdEnd1).visibility = View.VISIBLE
-                view.findViewById<View>(R.id.tvRowAdEnd1Back).visibility = View.VISIBLE
-
-                view.findViewById<TextView>(R.id.tvRowAdRegion2).visibility = View.VISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdPerson2).visibility = View.INVISIBLE
-                view.findViewById<ImageView>(R.id.ivRowAd2Person).visibility = View.INVISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdEndDate2).visibility = View.INVISIBLE
-                view.findViewById<TextView>(R.id.tvRowAdDDay2).visibility = View.GONE
-                view.findViewById<TextView>(R.id.tvRowAdEnd2).visibility = View.VISIBLE
-                view.findViewById<View>(R.id.tvRowAdEnd2Back).visibility = View.VISIBLE
-                return Holder(view)
+                // Setting visibility for TYPE_DONE
+                return Holder(view, viewType)
             }
         }
     }
 
-    override fun onBindViewHolder(holder: AdRecyclerAdapter.Holder, position: Int) {
-        Glide.with(context).load(adList[position * 2].image).into(holder.ivRow1)
-        holder.tvTitle1.text = adList[position * 2].title
-        holder.tvPoint1.text = numFormat.format(adList[position * 2].totalPoint)
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        val adPosition = position * 2
 
-        when(tabState) {
+        // Setting data for the first row
+        Glide.with(context).load(adList[adPosition].image).into(holder.ivRow1)
+        holder.tvTitle1.text = adList[adPosition].title
+        holder.tvPoint1.text = numFormat.format(adList[adPosition].totalPoint)
+
+        when (tabState) {
             "ongoing" -> {
-                holder.tvRegion1.text = adList[position * 2].area
-                holder.tvPerson1.text = adList[position * 2].recruitingCount.toString() + "/" + adList[position * 2].maxRecruitingCount.toString()
-                holder.tvEndDate1.text = adList[position * 2].recruitEndDate!!.substring(5, 7) + "." + adList[position * 2].recruitEndDate!!.substring(8, 10) + " 마감" //2021-05-22 23:59:59 -> 05.22 마감
+                holder.tvRegion1.text = adList[adPosition].area
+                holder.tvPerson1.text =
+                    "${adList[adPosition].recruitingCount}/${adList[adPosition].maxRecruitingCount}"
+                holder.tvEndDate1.text = "${adList[adPosition].recruitEndDate!!.substring(5, 7)}.${adList[adPosition].recruitEndDate!!.substring(8, 10)} 마감"
 
-                if(!(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2].recruitEndDate!!) && (adList[position * 2].recruitingCount!! < adList[position * 2].maxRecruitingCount!!))) {
-                    holder.tvRegion1.visibility = View.VISIBLE
-                    holder.tvPerson1.visibility = View.INVISIBLE
-                    holder.ivAdPerson1.visibility = View.INVISIBLE
-                    holder.tvEndDate1.visibility = View.INVISIBLE
-                    holder.tvDDay1.visibility = View.GONE
-                    holder.tvEnd1.visibility = View.VISIBLE
-                    holder.vBack1.visibility = View.VISIBLE
-                }
+                val recruitingCount: Int = adList[adPosition].recruitingCount ?: 0
+                val maxRecruitingCount: Int = adList[adPosition].maxRecruitingCount ?: 0
+                val recruitEndDate: String? = adList[adPosition].recruitEndDate
 
-                holder.row1.setOnClickListener {
-                    if(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2].recruitEndDate!!) && (adList[position * 2].recruitingCount!! < adList[position * 2].maxRecruitingCount!!)) {
+                val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                val endDate = formatter.parse(recruitEndDate)
+
+                val currentDate: Calendar = Calendar.getInstance()
+
+                if (maxRecruitingCount > 0 && (recruitingCount >= maxRecruitingCount || endDate.before(currentDate.time))) {
+                    // 마감 인원이 다 찼거나 날짜가 지난 경우
+                    // 뷰를 보여주는 작업 추가
+                    holder.setOngoingTypeCondition(false)
+                } else {
+                    // 아직 마감 인원이 다 차지 않았고, 날짜가 지나지 않은 경우
+                    // 뷰를 숨기는 작업 추가
+                    holder.setOngoingTypeCondition(true)
+                    holder.row1.setOnClickListener {
                         val intent = Intent(context, AdInfoActivity::class.java)
-                        intent.putExtra("id", adList[position * 2].adId)
+                        intent.putExtra("id", adList[adPosition].adId)
                         intent.putExtra("canRegister", true)
                         context.startActivity(intent)
                     }
                 }
 
-                if (position * 2 + 1 < adList.size) {
-                    // 오른쪽에도 데이터 셋팅
+                // Checking if there is data for the second row
+                if (adPosition + 1 < adList.size) {
                     holder.row2.visibility = View.VISIBLE
 
-                    Glide.with(context).load(adList[position * 2 + 1].image).into(holder.ivRow2)
-                    holder.tvTitle2.text = adList[position * 2 + 1].title
-                    holder.tvPoint2.text = numFormat.format(adList[position * 2 + 1].totalPoint)
-                    holder.tvRegion2.text = adList[position * 2 + 1].area
-                    holder.tvPerson2.text = adList[position * 2 + 1].recruitingCount.toString() + "/" + adList[position * 2 + 1].maxRecruitingCount.toString()
-                    holder.tvEndDate2.text = adList[position * 2 + 1].recruitEndDate!!.substring(5, 7) + "." + adList[position * 2 + 1].recruitEndDate!!.substring(8, 10) + " 마감" //2021-05-22 23:59:59 -> 05.22 마감
+                    // Setting data for the second row
+                    Glide.with(context).load(adList[adPosition + 1].image).into(holder.ivRow2)
+                    holder.tvTitle2.text = adList[adPosition + 1].title
+                    holder.tvPoint2.text = numFormat.format(adList[adPosition + 1].totalPoint)
+                    holder.tvRegion2.text = adList[adPosition + 1].area
+                    holder.tvPerson2.text =
+                        "${adList[adPosition + 1].recruitingCount}/${adList[adPosition + 1].maxRecruitingCount}"
+                    holder.tvEndDate2.text = "${adList[adPosition + 1].recruitEndDate!!.substring(5, 7)}.${adList[adPosition + 1].recruitEndDate!!.substring(8, 10)} 마감"
 
-                    if(!(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2 + 1].recruitEndDate!!) && (adList[position * 2 + 1].recruitingCount!! < adList[position * 2 + 1].maxRecruitingCount!!))) {
-                        holder.tvRegion2.visibility = View.VISIBLE
-                        holder.tvPerson2.visibility = View.INVISIBLE
-                        holder.ivAdPerson2.visibility = View.INVISIBLE
-                        holder.tvEndDate2.visibility = View.INVISIBLE
-                        holder.tvDDay2.visibility = View.GONE
-                        holder.tvEnd2.visibility = View.VISIBLE
-                        holder.vBack2.visibility = View.VISIBLE
-                    }
-
-                    holder.row2.setOnClickListener {
-                        if(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[position * 2 + 1].recruitEndDate!!) && (adList[position * 2 + 1].recruitingCount!! < adList[position * 2 + 1].maxRecruitingCount!!)) {
+                    // Checking condition for TYPE_ONGOING (second row)
+                    if (!(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[adPosition + 1].recruitEndDate!!) && (adList[adPosition + 1].recruitingCount!! < adList[adPosition + 1].maxRecruitingCount!!))) {
+                        holder.setOngoingTypeCondition(false, secondRow = true)
+                    } else {
+                        holder.setOngoingTypeCondition(true, secondRow = true)
+                        holder.row2.setOnClickListener {
                             val intent = Intent(context, AdInfoActivity::class.java)
-                            intent.putExtra("id", adList[position * 2 + 1].adId)
+                            intent.putExtra("id", adList[adPosition + 1].adId)
                             intent.putExtra("canRegister", true)
                             context.startActivity(intent)
                         }
@@ -153,37 +123,42 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
                 }
             }
             "scheduled" -> {
-                if(adList[position*2].timeDiff!! > 0)
-                    holder.tvDDay1.text = "D-"+adList[position*2].timeDiff.toString()
-                else
-                    holder.tvDDay1.text = "D"+adList[position*2].timeDiff.toString()
+                // Setting data for TYPE_SCHEDULED
+                holder.tvDDay1.text = if (adList[adPosition].timeDiff!! > 0) {
+                    "D-${adList[adPosition].timeDiff}"
+                } else {
+                    "D${adList[adPosition].timeDiff}"
+                }
 
-                if (position*2+1 < adList.size) {
-                    // 오른쪽에도 데이터 셋팅
+                // Checking if there is data for the second row
+                if (adPosition + 1 < adList.size) {
                     holder.row2.visibility = View.VISIBLE
 
-                    Glide.with(context).load(adList[position * 2 + 1].image).into(holder.ivRow2)
-                    holder.tvTitle2.text = adList[position * 2 + 1].title
-                    holder.tvPoint2.text = numFormat.format(adList[position * 2 + 1].totalPoint)
-                    if(adList[position*2+1].timeDiff!! > 0)
-                        holder.tvDDay2.text = "D-"+adList[position*2+1].timeDiff.toString()
-                    else
-                        holder.tvDDay2.text = "D"+adList[position*2+1].timeDiff.toString()
+                    // Setting data for the second row
+                    Glide.with(context).load(adList[adPosition + 1].image).into(holder.ivRow2)
+                    holder.tvTitle2.text = adList[adPosition + 1].title
+                    holder.tvPoint2.text = numFormat.format(adList[adPosition + 1].totalPoint)
+                    holder.tvDDay2.text = if (adList[adPosition + 1].timeDiff!! > 0) {
+                        "D-${adList[adPosition + 1].timeDiff}"
+                    } else {
+                        "D${adList[adPosition + 1].timeDiff}"
+                    }
                 } else {
                     holder.row2.visibility = View.GONE
                 }
             }
             "done" -> {
-                holder.tvRegion1.text = adList[position * 2].area
+                holder.tvRegion1.text = adList[adPosition].area
 
-                if (position*2+1 < adList.size) {
-                    // 오른쪽에도 데이터 셋팅
+                // Checking if there is data for the second row
+                if (adPosition + 1 < adList.size) {
                     holder.row2.visibility = View.VISIBLE
 
-                    Glide.with(context).load(adList[position * 2 + 1].image).into(holder.ivRow2)
-                    holder.tvTitle2.text = adList[position * 2 + 1].title
-                    holder.tvPoint2.text = numFormat.format(adList[position * 2 + 1].totalPoint)
-                    holder.tvRegion2.text = adList[position * 2 + 1].area
+                    // Setting data for the second row
+                    Glide.with(context).load(adList[adPosition + 1].image).into(holder.ivRow2)
+                    holder.tvTitle2.text = adList[adPosition + 1].title
+                    holder.tvPoint2.text = numFormat.format(adList[adPosition + 1].totalPoint)
+                    holder.tvRegion2.text = adList[adPosition + 1].area
                 } else {
                     holder.row2.visibility = View.GONE
                 }
@@ -196,10 +171,7 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
     }
 
     override fun getItemCount(): Int {
-        return if(adList.size%2==0)
-            adList.size/2
-        else
-            adList.size/2+1
+        return if (adList.size % 2 == 0) adList.size / 2 else adList.size / 2 + 1
     }
 
     fun refresh(newList: ArrayList<AdResponse>, newTabState: String) {
@@ -208,10 +180,10 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
         notifyDataSetChanged()
     }
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View, viewType: Int) : RecyclerView.ViewHolder(itemView) {
+        // ViewHolder variables
         val row1: ConstraintLayout = itemView.findViewById(R.id.clRowAdStart)
         val ivRow1: ImageView = itemView.findViewById(R.id.ivRowAd1)
-        val ivAdPerson1 : ImageView = itemView.findViewById(R.id.ivRowAd1Person)
         val tvTitle1: TextView = itemView.findViewById(R.id.tvRowAdTitle1)
         val tvPoint1: TextView = itemView.findViewById(R.id.tvRowAdPoint1)
         val tvRegion1: TextView = itemView.findViewById(R.id.tvRowAdRegion1)
@@ -223,7 +195,6 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
 
         val row2: ConstraintLayout = itemView.findViewById(R.id.clRowAdEnd)
         val ivRow2: ImageView = itemView.findViewById(R.id.ivRowAd2)
-        val ivAdPerson2 : ImageView = itemView.findViewById(R.id.ivRowAd2Person)
         val tvTitle2: TextView = itemView.findViewById(R.id.tvRowAdTitle2)
         val tvPoint2: TextView = itemView.findViewById(R.id.tvRowAdPoint2)
         val tvRegion2: TextView = itemView.findViewById(R.id.tvRowAdRegion2)
@@ -232,5 +203,106 @@ class AdRecyclerAdapter(private val context: Context, private val newList: Array
         val tvDDay2: TextView = itemView.findViewById(R.id.tvRowAdDDay2)
         val tvEnd2: TextView = itemView.findViewById(R.id.tvRowAdEnd2)
         val vBack2: View = itemView.findViewById(R.id.tvRowAdEnd2Back)
+
+        init {
+            // Setting visibility based on viewType
+            when (viewType) {
+                TYPE_ONGOING -> {
+                    // Setting visibility for TYPE_ONGOING
+                    tvRegion1.visibility = View.VISIBLE
+                    tvPerson1.visibility = View.VISIBLE
+                    ivRow1.visibility = View.VISIBLE
+                    tvEndDate1.visibility = View.VISIBLE
+                    tvDDay1.visibility = View.GONE
+                    tvEnd1.visibility = View.GONE
+                    vBack1.visibility = View.GONE
+
+                    tvRegion2.visibility = View.VISIBLE
+                    tvPerson2.visibility = View.VISIBLE
+                    ivRow2.visibility = View.VISIBLE
+                    tvEndDate2.visibility = View.VISIBLE
+                    tvDDay2.visibility = View.GONE
+                    tvEnd2.visibility = View.GONE
+                    vBack2.visibility = View.GONE
+                }
+                TYPE_SCHEDULED -> {
+                    // Setting visibility for TYPE_SCHEDULED
+                    tvRegion1.visibility = View.INVISIBLE
+                    tvPerson1.visibility = View.INVISIBLE
+                    ivRow1.visibility = View.INVISIBLE
+                    tvEndDate1.visibility = View.INVISIBLE
+                    tvDDay1.visibility = View.VISIBLE
+                    tvEnd1.visibility = View.GONE
+                    vBack1.visibility = View.GONE
+
+                    tvRegion2.visibility = View.INVISIBLE
+                    tvPerson2.visibility = View.INVISIBLE
+                    ivRow2.visibility = View.INVISIBLE
+                    tvEndDate2.visibility = View.INVISIBLE
+                    tvDDay2.visibility = View.VISIBLE
+                    tvEnd2.visibility = View.GONE
+                    vBack2.visibility = View.GONE
+                }
+                else -> {
+                    // Setting visibility for TYPE_DONE
+                    tvRegion1.visibility = View.VISIBLE
+                    tvPerson1.visibility = View.INVISIBLE
+                    ivRow1.visibility = View.VISIBLE
+                    tvEndDate1.visibility = View.VISIBLE
+                    tvDDay1.visibility = View.GONE
+                    tvEnd1.visibility = View.VISIBLE
+                    vBack1.visibility = View.VISIBLE
+
+                    tvRegion2.visibility = View.VISIBLE
+                    tvPerson2.visibility = View.INVISIBLE
+                    ivRow2.visibility = View.VISIBLE
+                    tvEndDate2.visibility = View.VISIBLE
+                    tvDDay2.visibility = View.GONE
+                    tvEnd2.visibility = View.VISIBLE
+                    vBack2.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        fun setOngoingTypeCondition(condition: Boolean, secondRow: Boolean = false) {
+            if (secondRow) {
+                if (!condition) {
+                    tvRegion2.visibility = View.VISIBLE
+                    tvPerson2.visibility = View.INVISIBLE
+                    ivRow2.visibility = View.VISIBLE
+                    tvEndDate2.visibility = View.VISIBLE
+                    tvDDay2.visibility = View.GONE
+                    tvEnd2.visibility = View.VISIBLE
+                    vBack2.visibility = View.VISIBLE
+                } else {
+                    tvRegion2.visibility = View.VISIBLE
+                    tvPerson2.visibility = View.VISIBLE
+                    ivRow2.visibility = View.VISIBLE
+                    tvEndDate2.visibility = View.VISIBLE
+                    tvDDay2.visibility = View.GONE
+                    tvEnd2.visibility = View.GONE
+                    vBack2.visibility = View.GONE
+                }
+            } else {
+                if (!condition) {
+                    tvRegion1.visibility = View.VISIBLE
+                    tvPerson1.visibility = View.INVISIBLE
+                    ivRow1.visibility = View.VISIBLE
+                    tvEndDate1.visibility = View.VISIBLE
+                    tvDDay1.visibility = View.GONE
+                    tvEnd1.visibility = View.VISIBLE
+                    vBack1.visibility = View.VISIBLE
+                } else {
+                    tvRegion1.visibility = View.VISIBLE
+                    tvPerson1.visibility = View.VISIBLE
+                    ivRow1.visibility = View.VISIBLE
+                    tvEndDate1.visibility = View.VISIBLE
+                    tvDDay1.visibility = View.GONE
+                    tvEnd1.visibility = View.GONE
+                    vBack1.visibility = View.GONE
+                }
+            }
+        }
     }
 }
+

@@ -41,7 +41,6 @@ class App : Application() {
             modules(networkModule, remoteSourceModule, repositoryModule, viewModelModule)
         }
 
-//        KakaoSdk.init(this, "c4a351e2bdeb2dd3bf4e4822fc9aca19")
         KakaoSdk.init(this, "a30e091716f0380da05030eeb5eb324c")
     }
 

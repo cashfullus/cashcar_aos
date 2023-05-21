@@ -145,41 +145,6 @@ class AdInfoActivity : BaseActivity() {
 
             binding.tvAdInfoContents.text = it.description
 
-            val text = it.description
-
-            val regex = Regex("(https://|www.)[a-zA-Z0-9./?=_-]+\\.(com|kr|net|org)")
-
-            val url = regex.find(text)?.value
-            url?.let {
-                val spannableString = SpannableString(text)
-                val startIndex = text.indexOf(url)
-                val endIndex = startIndex + url.length
-
-                val clickableSpan = object : ClickableSpan() {
-                    override fun onClick(widget: View) {
-                        // Perform the desired action when the hyperlink is clicked
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        startActivity(intent)
-                    }
-
-                    override fun updateDrawState(ds: TextPaint) {
-                        super.updateDrawState(ds)
-                        // Set the style of the hyperlink text
-                        ds.isUnderlineText = true
-                    }
-                }
-
-                spannableString.setSpan(
-                    clickableSpan,
-                    startIndex,
-                    endIndex,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-
-                binding.tvAdInfoContents.text = spannableString
-                binding.tvAdInfoContents.movementMethod = LinkMovementMethod.getInstance()
-            }
-
             Glide.with(this@AdInfoActivity).load(it.side_image).into(binding.ivAdInfoDesign1)
             binding.tvAdInfoSize1.text =
                 it.side_width.toString() + " x " + it.side_length.toString() + " cm"
