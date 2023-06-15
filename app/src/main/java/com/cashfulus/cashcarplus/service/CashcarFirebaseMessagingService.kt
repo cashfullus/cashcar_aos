@@ -73,20 +73,25 @@ class CashcarFirebaseMessagingService: FirebaseMessagingService() {
      */
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "From: " + remoteMessage!!.from)
+        Log.d(TAG, "remoteMessage notification : ${remoteMessage.notification}")
+        Log.d(TAG, "remoteMessage data : ${remoteMessage.data}")
+        when {
+            remoteMessage.data.isNotEmpty() -> {
+                Log.i("바디: ", remoteMessage.data["body"].toString())
+                Log.i("타이틀: ", remoteMessage.data["title"].toString())
+                sendNotificationWithData(remoteMessage)
+            }
+            remoteMessage.notification != null -> {
+                val intent = Intent()
+                intent.action = "com.package.notification"
+                sendBroadcast(intent)
 
-        if(remoteMessage.notification != null) {
-            val intent = Intent()
-            intent.action = "com.package.notification"
-            sendBroadcast(intent)
-
-            sendNotificationForeground(remoteMessage)
-        } else if(remoteMessage.data.isNotEmpty()){
-            Log.i("바디: ", remoteMessage.data["body"].toString())
-            Log.i("타이틀: ", remoteMessage.data["title"].toString())
-            sendNotificationWithData(remoteMessage)
-        } else {
-            Log.i("수신에러: ", "data가 비어있습니다. 메시지를 수신하지 못했습니다.")
-            Log.i("data값: ", remoteMessage.data.toString())
+                sendNotificationForeground(remoteMessage)
+            }
+            else -> {
+                Log.i("수신에러: ", "data가 비어있습니다. 메시지를 수신하지 못했습니다.")
+                Log.i("data값: ", remoteMessage.data.toString())
+            }
         }
     }
 

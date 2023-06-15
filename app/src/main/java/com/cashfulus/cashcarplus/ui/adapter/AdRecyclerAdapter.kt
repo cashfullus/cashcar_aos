@@ -68,12 +68,16 @@ class AdRecyclerAdapter(
                     "${adList[adPosition].recruitingCount}/${adList[adPosition].maxRecruitingCount}"
                 holder.tvEndDate1.text = "${adList[adPosition].recruitEndDate!!.substring(5, 7)}.${adList[adPosition].recruitEndDate!!.substring(8, 10)} 마감"
 
-                val recruitingCount: Int = adList[adPosition].recruitingCount ?: 0
                 val maxRecruitingCount: Int = adList[adPosition].maxRecruitingCount ?: 0
+                val recruitingCount: Int = adList[adPosition].recruitingCount ?: 0
                 val recruitEndDate: String? = adList[adPosition].recruitEndDate
+                val maxRecruitingCount1: Int = adList[adPosition + 1].maxRecruitingCount ?: 0
+                val recruitingCount1: Int = adList[adPosition + 1].recruitingCount ?: 0
+                val recruitEndDate1: String? = adList[adPosition + 1].recruitEndDate
 
                 val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
                 val endDate = formatter.parse(recruitEndDate)
+                val endDate1 = formatter.parse(recruitEndDate1)
 
                 val currentDate: Calendar = Calendar.getInstance()
 
@@ -107,7 +111,7 @@ class AdRecyclerAdapter(
                     holder.tvEndDate2.text = "${adList[adPosition + 1].recruitEndDate!!.substring(5, 7)}.${adList[adPosition + 1].recruitEndDate!!.substring(8, 10)} 마감"
 
                     // Checking condition for TYPE_ONGOING (second row)
-                    if (!(Date() < SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(adList[adPosition + 1].recruitEndDate!!) && (adList[adPosition + 1].recruitingCount!! < adList[adPosition + 1].maxRecruitingCount!!))) {
+                    if (maxRecruitingCount1 > 0 && (recruitingCount1 >= maxRecruitingCount1 || endDate1.before(currentDate.time))) {
                         holder.setOngoingTypeCondition(false, secondRow = true)
                     } else {
                         holder.setOngoingTypeCondition(true, secondRow = true)
