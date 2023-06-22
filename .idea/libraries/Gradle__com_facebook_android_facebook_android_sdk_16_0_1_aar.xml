@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.facebook.android:facebook-android-sdk:16.0.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4642515bdef03861b77a47768ee7bfaf/jetified-facebook-android-sdk-16.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4642515bdef03861b77a47768ee7bfaf/jetified-facebook-android-sdk-16.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d251b2a7bc0a0ca3dabe09edd4837509/jetified-facebook-android-sdk-16.0.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d251b2a7bc0a0ca3dabe09edd4837509/jetified-facebook-android-sdk-16.0.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-android-sdk/16.0.1/c427f250591b524c41d377c702bd714ccaf35516/facebook-android-sdk-16.0.1-javadoc.jar!/" />

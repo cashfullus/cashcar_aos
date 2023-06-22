@@ -5,9 +5,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
@@ -17,11 +14,6 @@ import com.google.firebase.messaging.RemoteMessage
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.ui.MainActivity
 import com.cashfulus.cashcarplus.ui.SplashActivity
-import java.io.IOException
-import java.io.InputStream
-import java.net.HttpURLConnection
-import java.net.URL
-
 
 // (https://medium.com/harrythegreat/android-fcm-data%EC%99%80-notification-36a5285cfae5)
 // 주제별 구독은 맨 첨에 처리 안 하면 인식되지 않음
