@@ -23,6 +23,9 @@
     <color name="system_success">#FF429EF3</color>
     <color name="system_no">#FFF03F3F</color>
 
+    <color name="gray_79">#797979</color>
+    <color name="gray_83">#838383</color>
+
     <!-- Below will be deleted -->
     <color name="font_black_adlist">#FF33364B</color>
 </resources>

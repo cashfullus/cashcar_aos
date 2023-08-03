@@ -460,6 +460,18 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle9" />
 
                     <TextView
+                        android:id="@+id/tvSideInfo"
+                        style="@style/title_12_R_79"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="측면 광고는 차량 4개의 도어 중\n어느 면이든 부착하셔도 상관없습니다."
+                        android:gravity="center"
+                        app:layout_constraintEnd_toEndOf="@+id/ivAdInfoLocation1"
+                        app:layout_constraintStart_toStartOf="@+id/ivAdInfoLocation1"
+                        app:layout_constraintTop_toBottomOf="@+id/ivAdInfoLocation1" />
+
+                    <TextView
                         android:id="@+id/tvAdInfoTitle10"
                         style="@style/title_14_R"
                         android:layout_width="wrap_content"
@@ -469,7 +481,7 @@
                         android:textColor="@color/grayscale_500"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/ivAdInfoLocation1" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvSideInfo" />
 
                     <ImageView
                         android:id="@+id/ivAdInfoLocation2"
