@@ -68,7 +68,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         }
 
         /** ViewModel 갱신 시 처리 */
-        viewModel.currentMission.observe(binding.lifecycleOwner!!, {
+        viewModel.currentMission.observe(binding.lifecycleOwner!!) {
             // 응답 데이터(it이 안 먹는 부분이 있기 때문에 사용)
             val dataResult = it.data
 
@@ -211,8 +211,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                         val popupDialog = CancelMissionPopupDialog(
                             "서포터즈 신청을 취소할 시 추후 패널티를 받을 수 있습니다.\n정말 신청을 취소하시겠습니까?",
                             "확인",
-                            "취소",
-                            { viewModel.deleteMyMission() })
+                            "취소"
+                        ) { viewModel.deleteMyMission() }
                         popupDialog.show(parentFragmentManager, "CancelSupporters")
                     }
                 }
@@ -938,11 +938,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
             // 미션 상태 변경 시 최상단으로 스크롤.
             binding.usvHome.smoothScrollTo(0, 0)
-        })
+        }
 
         /** 아래 광고 리스트 */
         viewModel.loadAllAdList()
-        viewModel.adList.observe(binding.lifecycleOwner!!, {
+        viewModel.adList.observe(binding.lifecycleOwner!!) {
             if (it.size != 0) {
                 adNum[0] =
                     if (it[0].size < 2) 2 else if (it[0].size % 2 == 0) it[0].size / 2 else it[0].size / 2 + 1
@@ -1006,22 +1006,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     }
                 })
             }
-        })
+        }
 
         /** 광고 아래로 스크롤 시 맨 위로 올리는 버튼 */
         binding.btnHomePageUp.setOnClickListener {
             binding.usvHome.smoothScrollTo(0, 0)
         }
 
-        viewModel.error.observe(binding.lifecycleOwner!!, {
+        viewModel.error.observe(binding.lifecycleOwner!!) {
             binding.srlHome.isRefreshing = false
             showToast(it.message)
-        })
+        }
 
-        viewModel.missionDeleted.observe(binding.lifecycleOwner!!, {
+        viewModel.missionDeleted.observe(binding.lifecycleOwner!!) {
             // 미션 데이터 삭제 성공함 -> 전체 데이터를 다시 로딩함.
             viewModel.loadData()
-        })
+        }
 
         /** 미션 카드 부분 Refresh */
         binding.srlHome.setOnRefreshListener {

@@ -316,16 +316,34 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginStart="16dp"/>
 
-                    <TextView
-                        android:id="@+id/tvAdInfoContents"
-                        style="@style/body_14_R_lh24"
+<!--                    <TextView-->
+<!--                        android:id="@+id/tvAdInfoContents"-->
+<!--                        style="@style/body_14_R_lh24"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginHorizontal="16dp"-->
+<!--                        android:layout_marginTop="16dp"-->
+<!--                        android:autoLink="web"-->
+<!--                        android:text="광고 내용이 들어갑니다 광고 내용이 들어갑니다.광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle11" />-->
+
+                    <WebView
+                        android:id="@+id/wbAdInfoContents"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="16dp"
-                        android:autoLink="web"
-                        android:text="광고 내용이 들어갑니다 광고 내용이 들어갑니다.광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다광고 내용이 들어갑니다 광고 내용이 들어갑니다"
-                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle11" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoTitle11"
+                        tools:ignore="WebViewLayout" />
+
+<!--                    <View-->
+<!--                        android:id="@+id/lineAdInfo3"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="1dp"-->
+<!--                        android:layout_marginHorizontal="16dp"-->
+<!--                        android:layout_marginTop="20dp"-->
+<!--                        android:background="@color/grayscale_200"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoContents" />-->
 
                     <View
                         android:id="@+id/lineAdInfo3"
@@ -334,7 +352,7 @@
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="20dp"
                         android:background="@color/grayscale_200"
-                        app:layout_constraintTop_toBottomOf="@+id/tvAdInfoContents" />
+                        app:layout_constraintTop_toBottomOf="@+id/wbAdInfoContents" />
 
                     <TextView
                         android:id="@+id/tvAdInfoTitle5"

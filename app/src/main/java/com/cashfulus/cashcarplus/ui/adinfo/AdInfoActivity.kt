@@ -143,7 +143,8 @@ class AdInfoActivity : BaseActivity() {
             binding.tvAdInfoPeopleNum.text = it.max_recruiting_count.toString() + "명"
             binding.tvAdInfoRegion.text = it.area
 
-            binding.tvAdInfoContents.text = it.description
+//            binding.tvAdInfoContents.text = it.description
+            binding.wbAdInfoContents.loadData(it.description,"text/html", "UTF-8")
 
             Glide.with(this@AdInfoActivity).load(it.side_image).into(binding.ivAdInfoDesign1)
             binding.tvAdInfoSize1.text =

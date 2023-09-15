@@ -97,8 +97,8 @@ class AdResponse() : Parcelable {
         }
     }
 
-    override fun writeToParcel(dest: Parcel?, flags: Int) {
-        dest?.run {
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.run {
             writeInt(this@AdResponse.adId!!)
             writeString(this@AdResponse.area)
             writeInt(this@AdResponse.maxRecruitingCount!!)

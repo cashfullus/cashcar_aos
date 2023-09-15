@@ -46,11 +46,11 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cbd58714515717b3dcbf4d72e397d00b/jetified-tedpermission-2.2.3-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/da744c25bdc060d68a23e97c594f67b4/jetified-Android-Image-Cropper-3.1.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0f2c181f446971dc532bb01a02672392/jetified-StickyScrollView-1.0.2-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/472046cd45ca50ef3bb38383711d9acb/jetified-facebook-android-sdk-16.0.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fd78ecfc49102772b42cde719886772a/jetified-facebook-login-16.0.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1c71a35071f170f34e2f77aca49be0dd/jetified-facebook-gamingservices-16.0.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4c8294e8e0d41dd8d141e96364a98f90/jetified-facebook-share-16.0.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dbf20226a69d0b5decf8877eb51619f2/jetified-facebook-common-16.0.1-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1ec89931830cc58f67b1c2016739a039/jetified-facebook-android-sdk-16.2.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3fab70591cae4eb451e7fd021806a9b3/jetified-facebook-login-16.2.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/60ef9bb60a78e7b030143fb2354e390d/jetified-facebook-gamingservices-16.2.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b307f44705dabb66cf9e06a83692eb97/jetified-facebook-share-16.2.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/696581662c4e9c1e61611d9696426c3f/jetified-facebook-common-16.2.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d1a76c25d22a8fa982503b478bdd75ea/appcompat-1.3.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/768b22fd22d5b494edf2c8b89d44482d/legacy-support-v4-1.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/78b1214d5460fdff5855a1d0a7257fa8/jetified-glide-4.11.0-api.jar</arg>
@@ -91,10 +91,10 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dd21022441707206292960e18353116d/jetified-play-services-basement-18.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/07652514062d3baa2ce83756686393dc/fragment-1.3.4-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/19a0734ef33f8292762ebb343c0e6448/jetified-activity-1.3.0-alpha07-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f4c0ad908a6f32120bf8b7df61d69b3c/jetified-facebook-applinks-16.0.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4414977a14af4663259d4ec43ae3e121/jetified-facebook-messenger-16.0.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/82b7d0e0f93855e8dc956c2ef495256b/jetified-facebook-core-16.0.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c0b6566eaa101c682be807f919e50846/jetified-facebook-bolts-16.0.1-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/67454aa78fe31fc2b0ac3de149b3f8d5/jetified-facebook-applinks-16.2.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/568ef5e3f2bb5eefa9cd1180754d5b4b/jetified-facebook-messenger-16.2.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c08051f2f0f603526e227c2bf300fcc4/jetified-facebook-core-16.2.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/022ff636c5b972fcb592ceecf725bff5/jetified-facebook-bolts-16.2.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/722e907c972ac8d984c547a159bf4e5c/jetified-core-ktx-1.3.2-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8e9f6af94fec0e5b6632445aceca0439/legacy-support-core-ui-1.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/adf7b67a7713a12049f409f4ff07e291/coordinatorlayout-1.1.0-api.jar</arg>
@@ -185,7 +185,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c9cd058517082bbd5e7612596735b001/jetified-installreferrer-2.2-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/220c4bc98ffbeebfec90e1bd4e0c1d8b/jetified-jsr305-2.0.1.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3fbbc311615c8875bc1a102b0c5a2505/jetified-core-3.3.3.jar</arg>
-                <arg>$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-32/android.jar</arg>
+                <arg>$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-33/android.jar</arg>
                 <arg>$USER_HOME$/AppData/Local/Android/Sdk/build-tools/29.0.2/core-lambda-stubs.jar</arg>
               </args>
             </stringArg>
@@ -251,7 +251,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/res" type="java-resource" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 32 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 33, extension level 3 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: androidx.databinding:databinding-common:4.1.3" level="project" />
     <orderEntry type="module-library">
@@ -310,11 +310,11 @@
     <orderEntry type="library" name="Gradle: gun0912.ted:tedpermission:2.2.3@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.CanHub:Android-Image-Cropper:3.1.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.amarjain07:StickyScrollView:1.0.2@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-android-sdk:16.0.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-login:16.0.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-gamingservices:16.0.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-share:16.0.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-common:16.0.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-android-sdk:16.2.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-login:16.2.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-gamingservices:16.2.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-share:16.2.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-common:16.2.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat:1.3.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.legacy:legacy-support-v4:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:glide:4.11.0@aar" level="project" />
@@ -355,10 +355,10 @@
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-basement:18.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.fragment:fragment:1.3.4@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.activity:activity:1.3.0-alpha07@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-applinks:16.0.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-messenger:16.0.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-core:16.0.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-bolts:16.0.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-applinks:16.2.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-messenger:16.2.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-core:16.2.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.facebook.android:facebook-bolts:16.2.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.core:core-ktx:1.3.2@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.legacy:legacy-support-core-ui:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.coordinatorlayout:coordinatorlayout:1.1.0@aar" level="project" />
