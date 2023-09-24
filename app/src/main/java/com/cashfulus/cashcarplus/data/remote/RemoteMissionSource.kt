@@ -14,6 +14,7 @@ import java.io.File
 interface RemoteMissionSource {
     suspend fun getAdList(category: String, page: Int, authorization: String): Response<String>
     suspend fun getAd(ad_id: Int, authorization: String): Response<String>
+    suspend fun getAd(ad_id: Int, authorization: String, version: String): Response<String>
     suspend fun getMyMission(user_id: Int, authorization: String): Response<String>
     suspend fun deleteMyMission(ad_user_apply_id: Int, user_id: Int, authorization: String): Response<String>
     suspend fun applyAd(applyRequest: ApplyRequest, userId: Int, adId: Int, vehicle_id: Int, authorization: String): Response<String>
@@ -30,6 +31,7 @@ interface RemoteMissionSource {
 class RemoteMissionSourceImpl(private val service: Api) : RemoteMissionSource {
     override suspend fun getAdList(category: String, page: Int, authorization: String) = service.getAdList(category, page, authorization)
     override suspend fun getAd(ad_id: Int, authorization: String) = service.getAd(ad_id, authorization)
+    override suspend fun getAd(ad_id: Int, authorization: String, version: String) = service.getAd(ad_id, authorization, version)
     override suspend fun getMyMission(user_id: Int, authorization: String) = service.getMyMission(user_id, authorization)
     override suspend fun deleteMyMission(ad_user_apply_id: Int, user_id: Int, authorization: String) = service.deleteMyMission(ad_user_apply_id, user_id, authorization)
     override suspend fun applyAd(applyRequest: ApplyRequest, userId: Int, adId: Int, vehicle_id: Int, authorization: String) = service.applyAd(applyRequest, userId, adId, vehicle_id, authorization)

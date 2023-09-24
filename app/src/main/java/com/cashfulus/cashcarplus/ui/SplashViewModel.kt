@@ -129,7 +129,7 @@ class SplashViewModel(private val repository: UserRepository, private val versio
                         UserManager.nickName = loginResponse.contents!!.data.nick_name
                     if(loginResponse.contents!!.data.name.isNotBlank())
                         UserManager.name = loginResponse.contents!!.data.name
-                    if(loginResponse.contents!!.data.profileImage.isNotBlank())
+                    if(!loginResponse.contents!!.data.profileImage.isNullOrBlank())
                         UserManager.profileImage = loginResponse.contents!!.data.profileImage
                     if(loginResponse.contents!!.data.email.isNotBlank())
                         UserManager.email = loginResponse.contents!!.data.email

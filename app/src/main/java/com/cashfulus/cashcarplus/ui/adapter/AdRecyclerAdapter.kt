@@ -128,6 +128,8 @@ class AdRecyclerAdapter(
             }
             "scheduled" -> {
                 // Setting data for TYPE_SCHEDULED
+                holder.ivRow1.visibility = View.VISIBLE
+                holder.ivRow2.visibility = View.VISIBLE
                 holder.tvDDay1.text = if (adList[adPosition].timeDiff!! > 0) {
                     "D-${adList[adPosition].timeDiff}"
                 } else {
@@ -153,6 +155,7 @@ class AdRecyclerAdapter(
             }
             "done" -> {
                 holder.tvRegion1.text = adList[adPosition].area
+                holder.tvEndDate1.text = "${adList[adPosition].recruitEndDate!!.substring(5, 7)}.${adList[adPosition].recruitEndDate!!.substring(8, 10)} 마감"
 
                 // Checking if there is data for the second row
                 if (adPosition + 1 < adList.size) {
@@ -163,6 +166,7 @@ class AdRecyclerAdapter(
                     holder.tvTitle2.text = adList[adPosition + 1].title
                     holder.tvPoint2.text = numFormat.format(adList[adPosition + 1].totalPoint)
                     holder.tvRegion2.text = adList[adPosition + 1].area
+                    holder.tvEndDate2.text = "${adList[adPosition + 1].recruitEndDate!!.substring(5, 7)}.${adList[adPosition + 1].recruitEndDate!!.substring(8, 10)} 마감"
                 } else {
                     holder.row2.visibility = View.GONE
                 }

@@ -70,7 +70,7 @@ data class UserInfoResponseData(
     @SerializedName("nick_name") val nick_name: String,
     @SerializedName("user_id") val user_id: Int,
     @SerializedName("name") val name: String,
-    @SerializedName("profile_image") val profileImage: String
+    @SerializedName("profile_image") val profileImage: String?
 )
 
 data class UserFcmUpdateRequest(

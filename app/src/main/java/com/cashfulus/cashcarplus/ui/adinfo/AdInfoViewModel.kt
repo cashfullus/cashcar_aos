@@ -21,7 +21,7 @@ class AdInfoViewModel(private val missionRepository: MissionRepository): BaseVie
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
                 showLoadingDialog()
-                val result = missionRepository.getAd(adId, UserManager.jwtToken!!)
+                val result = missionRepository.getAd(adId, UserManager.jwtToken!!, "1")
 
                 if(result.isSucceed) {
                     hideLoadingDialog()

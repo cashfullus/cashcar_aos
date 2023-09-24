@@ -976,6 +976,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     )
                 )
 
+                // 얘가 스크롤 끝 부분 감지못하게 하는 부분
                 binding.vpHomeAd.registerOnPageChangeCallback(object :
                     ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {

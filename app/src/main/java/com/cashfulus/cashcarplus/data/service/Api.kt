@@ -55,6 +55,9 @@ interface Api {
     suspend fun getAdList(@Query("category") category: String, @Query("page") page: Int, @Header("Authorization") authorization: String): Response<String>
     @GET("ad")
     suspend fun getAd(@Query("ad_id") ad_id: Int, @Header("Authorization") authorization: String): Response<String>
+    // NEW
+    @GET("ad")
+    suspend fun getAd(@Query("ad_id") ad_id: Int, @Header("Authorization") authorization: String, @Header("X-APPLICATION-VERSION") version: String): Response<String>
     @GET("ad/apply")
     suspend fun applyAdGet(@Query("user_id") user_id: Int, @Query("ad_id") ad_id: Int, @Header("Authorization") authorization: String): Response<String>
     @POST("ad/apply")
