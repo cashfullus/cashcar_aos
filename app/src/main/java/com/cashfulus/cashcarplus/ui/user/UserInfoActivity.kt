@@ -201,27 +201,50 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
             //val profileImageDialog = ProfileImageDialog()
             //profileImageDialog.show(supportFragmentManager, "Image")
             /** 권한 확인 */
+            /** 권한 확인 */
             val permissionlistener: PermissionListener = object : PermissionListener {
                 override fun onPermissionGranted() {}
 
                 override fun onPermissionDenied(deniedPermissions: List<String>) {
                     showToast("카메라 관련 권한이 거부되었습니다.")
+                    finish()
                 }
             }
 
-            if(Build.VERSION.SDK_INT >= 30) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 TedPermission.with(this)
-                        .setPermissionListener(permissionlistener)
-                        .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
-                        .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)// Manifest.permission.MANAGE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
-                        .check()
+                    .setPermissionListener(permissionlistener)
+                    .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+                    .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.READ_MEDIA_IMAGES) //, Manifest.permission.READ_PHONE_STATE
+                    .check()
             } else {
                 TedPermission.with(this)
-                        .setPermissionListener(permissionlistener)
-                        .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
-                        .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
-                        .check()
+                    .setPermissionListener(permissionlistener)
+                    .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+                    .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
+                    .check()
             }
+//            val permissionlistener: PermissionListener = object : PermissionListener {
+//                override fun onPermissionGranted() {}
+//
+//                override fun onPermissionDenied(deniedPermissions: List<String>) {
+//                    showToast("카메라 관련 권한이 거부되었습니다.")
+//                }
+//            }
+//
+//            if(Build.VERSION.SDK_INT >= 30) {
+//                TedPermission.with(this)
+//                        .setPermissionListener(permissionlistener)
+//                        .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+//                        .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)// Manifest.permission.MANAGE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
+//                        .check()
+//            } else {
+//                TedPermission.with(this)
+//                        .setPermissionListener(permissionlistener)
+//                        .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+//                        .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
+//                        .check()
+//            }
 
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)

@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -62,11 +63,26 @@ class MissionCertActivity : BaseActivity(), CameraBottomDialogClickListener {
                 finish()
             }
         }
-        TedPermission.with(this)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.READ_MEDIA_IMAGES) //, Manifest.permission.READ_PHONE_STATE
+                .check()
+        } else {
+            TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
                 .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
                 .check()
+        }
+
+//        TedPermission.with(this)
+//                .setPermissionListener(permissionlistener)
+//                .setDeniedMessage("필수 권한 거부 시 앱 이용이 어려울 수 있습니다.\n\n[설정] > [권한]에서 필수 권한을 허용할 수 있습니다.")
+//                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
+//                .check()
 
         /*val permissionlistener2: PermissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
