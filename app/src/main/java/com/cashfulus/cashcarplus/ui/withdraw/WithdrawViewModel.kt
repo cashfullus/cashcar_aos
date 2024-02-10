@@ -19,6 +19,8 @@ class WithdrawViewModel(private val repository: PointRepository) : BaseViewModel
     val point = MutableLiveData<String>()
     val bank = MutableLiveData<String>()
     val account = MutableLiveData<String>()
+    val accountResident = MutableLiveData<String>()
+    val accountResidentBack = MutableLiveData<String>()
     val name = MutableLiveData<String>(UserManager.name!!)
     val isMain = MutableLiveData<Boolean>(false)
 
@@ -50,7 +52,7 @@ class WithdrawViewModel(private val repository: PointRepository) : BaseViewModel
         if(NetworkManager().checkNetworkState()) {
             CoroutineScope(Dispatchers.IO).launch {
                 if(UserManager.userId != null && UserManager.jwtToken != null) {
-                    val apiRespose = repository.registerWithdraw(name.value!!, bank.value!!, account.value!!,
+                    val apiRespose = repository.registerWithdraw(name.value!!, bank.value!!, account.value!!, accountResident.value!!, accountResidentBack.value!!,
                             if(isMain.value!!) 1 else 0, point.value!!.toInt(), UserManager.userId!!, UserManager.jwtToken!!)
 
                     if (apiRespose.isSucceed)

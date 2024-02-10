@@ -14,11 +14,11 @@ import java.util.concurrent.TimeUnit
 private const val CONNECT_TIMEOUT = 50L
 private const val WRITE_TIMEOUT = 50L
 private const val READ_TIMEOUT = 50L
-private val BASE_URL = if (BuildConfig.DEBUG) {
+private val BASE_URL = /*if (BuildConfig.DEBUG) {
     "https://dev-api.cashfullus.com/"
-} else {
+} else {*/
     "https://app.api.service.cashcarplus.com:50193/"
-}
+//}
 
 val networkModule = module {
 

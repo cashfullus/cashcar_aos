@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.content.res.ResourcesCompat
@@ -20,8 +19,6 @@ import com.cashfulus.cashcarplus.ui.dialog.PopupDialog
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialogClickListener
 import com.cashfulus.cashcarplus.ui.login.CluaseWebviewActivity
 import com.cashfulus.cashcarplus.ui.login.LoginActivity
-import com.cashfulus.cashcarplus.util.GENDER_FEMALE
-import com.cashfulus.cashcarplus.util.GENDER_MALE
 import com.cashfulus.cashcarplus.util.UserManager
 import com.cashfulus.cashcarplus.util.isValidAccount
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,6 +31,8 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
 
     var isPointFocused: Boolean = false
     var isAccountFocused: Boolean = false
+    var isResidentFocused: Boolean = false
+    var isResidentBackFocused: Boolean = false
     val isAllValid = MutableLiveData<Boolean>(false)
 
     var allPoint = 0
@@ -125,6 +124,50 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
             }
         }
 
+        binding.etWithdrawResident.getEditText().onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && !isResidentFocused) {
+                isResidentFocused = true
+                binding.etWithdrawResident.getEditText().addTextChangedListener(object: TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                    override fun afterTextChanged(s: Editable?) {
+                        if(!isValidResidentNumber(binding.etWithdrawResident.getEditText().text.toString())) {
+                            binding.etWithdrawResident.setErrorWithoutMsg()
+                            isAllValid.postValue(false)
+                        } else {
+                            binding.etWithdrawResident.setSuccessWithoutMsg()
+
+                            if (!binding.etWithdrawResident.hasError && viewModel.bank.value != null && viewModel.name.value != null
+                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResidentBack.value != null)
+                                isAllValid.postValue(true)
+                        }
+                    }
+                })
+            }
+        }
+
+        binding.etWithdrawResidentBack.getEditText().onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && !isResidentBackFocused) {
+                isResidentBackFocused = true
+                binding.etWithdrawResidentBack.getEditText().addTextChangedListener(object: TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                    override fun afterTextChanged(s: Editable?) {
+                        if(viewModel.accountResident.value != binding.etWithdrawResidentBack.getEditText().text.toString()) {
+                            binding.etWithdrawResidentBack.setErrorWithoutMsg()
+                            isAllValid.postValue(false)
+                        } else {
+                            binding.etWithdrawResidentBack.setSuccessWithoutMsg()
+
+                            if (!binding.etWithdrawResidentBack.hasError && viewModel.bank.value != null && viewModel.name.value != null
+                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResidentBack.value != null)
+                                isAllValid.postValue(true)
+                        }
+                    }
+                })
+            }
+        }
+
         binding.cbWithdrawClause.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
                 if(!binding.etWithdrawPoint.hasError && !binding.etWithdrawAccount.hasError && viewModel.bank.value != null && viewModel.name.value != null)
@@ -149,31 +192,33 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
         }
 
         /** '출금 신청하기' 버튼 */
-        isAllValid.observe(binding.lifecycleOwner!!, {
+        isAllValid.observe(binding.lifecycleOwner!!) {
             binding.btnWithdraw.isSelected = it
             binding.btnWithdraw.isEnabled = it
             binding.btnWithdraw.isFocusable = it
             binding.btnWithdraw.isClickable = it
 
-            if(it) {
+            if (it) {
                 binding.btnWithdraw.setTextColor(getColor(R.color.grayscale_wt))
-                binding.btnWithdraw.typeface = ResourcesCompat.getFont(this@WithdrawActivity, R.font.notosanskr_bold)
+                binding.btnWithdraw.typeface =
+                    ResourcesCompat.getFont(this@WithdrawActivity, R.font.notosanskr_bold)
             } else {
                 binding.btnWithdraw.setTextColor(getColor(R.color.grayscale_400))
-                binding.btnWithdraw.typeface = ResourcesCompat.getFont(this@WithdrawActivity, R.font.notosanskr_medium)
+                binding.btnWithdraw.typeface =
+                    ResourcesCompat.getFont(this@WithdrawActivity, R.font.notosanskr_medium)
             }
-        })
+        }
         binding.btnWithdraw.setOnClickListener {
             val dialog = PopupDialog("출금을 신청한 후에는 금액의 변경 또는\n" + "취소가 불가능합니다. ", "확인", "취소")
             dialog.show(supportFragmentManager, "Withdraw")
         }
 
         /** LiveData 처리 */
-        viewModel.bankData.observe(binding.lifecycleOwner!!, {
+        viewModel.bankData.observe(binding.lifecycleOwner!!) {
             allPoint = it.deposit
             binding.tvWithdrawAllPoint.text = numFormat.format(allPoint) + " P"
 
-            if(it.accountBank != "" && it.account != "") {
+            if (it.accountBank != "" && it.account != "") {
                 binding.etWithdrawAccount.hasError = false
 
                 viewModel.bank.postValue(it.accountBank)
@@ -252,31 +297,104 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                     }
                 }
             }
-        })
+        }
 
-        viewModel.isSucceed.observe(binding.lifecycleOwner!!, {
-            if(it) {
+        viewModel.isSucceed.observe(binding.lifecycleOwner!!) {
+            if (it) {
                 setResult(RESULT_OK)
                 finish()
             }
-        })
+        }
 
-        viewModel.error.observe(binding.lifecycleOwner!!, {
+        viewModel.error.observe(binding.lifecycleOwner!!) {
             showToast(it.message)
 
-            if(it.status == LOST_USER_INFO_ERROR_CODE) {
+            if (it.status == LOST_USER_INFO_ERROR_CODE) {
                 val intent = Intent(this@WithdrawActivity, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
                 this@WithdrawActivity.finish()
-            } else if(it.status == NO_INTERNET_ERROR_CODE) {
+            } else if (it.status == NO_INTERNET_ERROR_CODE) {
                 finish()
             }
-        })
+        }
     }
 
     override fun onPositive() {
         viewModel.registerWithdraw()
+    }
+
+    fun isValidResidentNumber(residentNumber: String): Boolean {
+        val regex = Regex("""^\d{6}-\d{7}$""")
+
+        if (!regex.matches(residentNumber)) {
+            return false
+        }
+
+        val cleanedResidentNumber = residentNumber.replace("-", "")
+
+        // 총 길이 확인
+        if (cleanedResidentNumber.length != 13) {
+            return false
+        }
+
+        val birthDate = cleanedResidentNumber.substring(0, 6)
+        val personalCode = cleanedResidentNumber.substring(6, 13)
+
+        // 생년월일 유효성 검사
+        if (!isValidDate(birthDate)) {
+            return false
+        }
+
+        // 성별 유효성 검사
+        val genderDigit = cleanedResidentNumber[6].toString().toInt()
+        if (genderDigit !in listOf(1, 2, 3, 4)) {
+            return false
+        }
+
+        // 검증 숫자 확인
+        val checkDigit = cleanedResidentNumber[12].toString().toInt()
+        if (!isValidCheckDigit(cleanedResidentNumber.substring(0, 12), checkDigit)) {
+            return false
+        }
+
+        return true
+    }
+
+    fun isValidDate(birthDate: String): Boolean {
+        val year = birthDate.substring(0, 2).toInt()
+        val month = birthDate.substring(2, 4).toInt()
+        val day = birthDate.substring(4, 6).toInt()
+
+        // 간단한 윤년 검사 (1900년부터 2099년까지만 고려)
+        val isLeapYear = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
+
+        if (month < 1 || month > 12 || day < 1 || day > 31) {
+            return false
+        }
+
+        if (month == 4 || month == 6 || month == 9 || month == 11) {
+            return day <= 30
+        } else if (month == 2) {
+            return if (isLeapYear) day <= 29 else day <= 28
+        }
+
+        return true
+    }
+
+    // 검증 숫자 확인
+    fun isValidCheckDigit(baseNumber: String, checkDigit: Int): Boolean {
+        val weights = intArrayOf(2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5)
+        var sum = 0
+
+        for (i in 0 until baseNumber.length) {
+            sum += baseNumber[i].toString().toInt() * weights[i]
+        }
+
+        val remainder = sum % 11
+        val result = if (remainder == 0) 1 else 11 - remainder
+
+        return result == checkDigit
     }
 
     override fun onNegative() {}

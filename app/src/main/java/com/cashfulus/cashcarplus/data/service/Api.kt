@@ -109,6 +109,8 @@ interface Api {
     suspend fun getPointInfo(@Query("page") page: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
     @GET("/user/information/point")
     suspend fun getPointInfo(@Query("q") q: String, @Query("page") page: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
+//    @GET("/user/withdrawal/point")
+//    suspend fun getBankInfo(@Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
     @GET("/user/withdrawal/point")
     suspend fun getBankInfo(@Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
     @POST("/user/withdrawal/point")
