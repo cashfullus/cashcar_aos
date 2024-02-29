@@ -23,6 +23,8 @@ data class BankInfo(
     @SerializedName("account_bank") val accountBank: String,
     @SerializedName("account_number") val account: String,
     @SerializedName("account_resident_registration") val account_resident_registration : String,
+    @SerializedName("main_address") val main_address : String,
+    @SerializedName("detail_address") val detail_address : String,
     @SerializedName("deposit") val deposit: Int,
     @SerializedName("name") val name: String,
     @SerializedName("ongoing") val ongoing: String,
@@ -36,6 +38,8 @@ data class WithdrawRequest(
     @SerializedName("account_number") val accountNumber: String,
     @SerializedName("account_resident_registration") val account_resident_registration : String,
     @SerializedName("account_resident_registration_back") val account_resident_registration_back : String,
+    @SerializedName("main_address") val main_address : String,
+    @SerializedName("detail_address") val detail_address : String,
     @SerializedName("is_main") val isMain: Int,
     @SerializedName("withdrawal_point") val point: Int
 )

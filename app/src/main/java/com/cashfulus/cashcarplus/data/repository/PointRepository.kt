@@ -10,7 +10,7 @@ interface PointRepository {
     suspend fun getPointInfoAll(page: Int, userId: Int, token: String): ApiResponse<PointResponse>
     suspend fun getPointInfoCategory(category: String, page: Int, userId: Int, token: String): ApiResponse<PointResponse> // 'donate', 'positive', 'negative'
     suspend fun getBankInfo(userId: Int, token: String): ApiResponse<BankInfo>
-    suspend fun registerWithdraw(name: String, accountBank: String, accountNumber: String, accountResidentRegistration:String, accountResidentRegistrationBack: String, isMain: Int, point: Int, userId: Int, token: String): ApiResponse<WithdrawResponse>
+    suspend fun registerWithdraw(name: String, accountBank: String, accountNumber: String, accountResidentRegistration:String, accountResidentRegistrationBack: String, mainAddress: String, detailAddress: String, isMain: Int, point: Int, userId: Int, token: String): ApiResponse<WithdrawResponse>
 }
 
 class PointRepositoryImpl(private val remotePointSource: RemotePointSource) : PointRepository {
@@ -46,8 +46,8 @@ class PointRepositoryImpl(private val remotePointSource: RemotePointSource) : Po
         }
     }
 
-    override suspend fun registerWithdraw(name: String, accountBank: String, accountNumber: String, accountResidentRegistration:String, accountResidentRegistrationBack: String, isMain: Int, point: Int, userId: Int, token: String): ApiResponse<WithdrawResponse> {
-        val apiResult: Response<String> = remotePointSource.registerWithdraw(WithdrawRequest(name, accountBank, accountNumber, accountResidentRegistration, accountResidentRegistrationBack, isMain, point), userId, "Bearer "+token)
+    override suspend fun registerWithdraw(name: String, accountBank: String, accountNumber: String, accountResidentRegistration:String, accountResidentRegistrationBack: String, mainAddress: String, detailAddress: String, isMain: Int, point: Int, userId: Int, token: String): ApiResponse<WithdrawResponse> {
+        val apiResult: Response<String> = remotePointSource.registerWithdraw(WithdrawRequest(name, accountBank, accountNumber, accountResidentRegistration, accountResidentRegistrationBack, mainAddress, detailAddress, isMain, point), userId, "Bearer "+token)
 
         return if (apiResult.code() == 200) {
             ApiResponse(true, Gson().fromJson(apiResult.body()!!, WithdrawResponse::class.java), null)

@@ -6,6 +6,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
@@ -15,6 +17,7 @@ import com.cashfulus.cashcarplus.data.service.LOST_USER_INFO_ERROR_CODE
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.databinding.ActivityWithdrawBinding
 import com.cashfulus.cashcarplus.ui.adapter.SpinnerWithHintAdapter
+import com.cashfulus.cashcarplus.ui.adinfo.AddressActivity
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialog
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialogClickListener
 import com.cashfulus.cashcarplus.ui.login.CluaseWebviewActivity
@@ -33,6 +36,8 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
     var isAccountFocused: Boolean = false
     var isResidentFocused: Boolean = false
     var isResidentBackFocused: Boolean = false
+    var isMainAddressValid = false
+    var isDetailAddressFocused = false
     val isAllValid = MutableLiveData<Boolean>(false)
 
     var allPoint = 0
@@ -138,7 +143,8 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                             binding.etWithdrawResident.setSuccessWithoutMsg()
 
                             if (!binding.etWithdrawResident.hasError && viewModel.bank.value != null && viewModel.name.value != null
-                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResidentBack.value != null)
+                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResidentBack.value != null
+                                && viewModel.mainAddress.value != null && viewModel.detailAddress.value != null)
                                 isAllValid.postValue(true)
                         }
                     }
@@ -160,7 +166,47 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                             binding.etWithdrawResidentBack.setSuccessWithoutMsg()
 
                             if (!binding.etWithdrawResidentBack.hasError && viewModel.bank.value != null && viewModel.name.value != null
-                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResidentBack.value != null)
+                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResidentBack.value != null
+                                && viewModel.mainAddress.value != null && viewModel.detailAddress.value != null)
+                                isAllValid.postValue(true)
+                        }
+                    }
+                })
+            }
+        }
+
+        /** 주소 검색 버튼 */
+        binding.etWithdrawDetailAddress.isEnabled = false
+        val requestActivity: ActivityResultLauncher<Intent> = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { activityResult ->
+            if(activityResult.resultCode == RESULT_OK) {
+                isMainAddressValid = true
+                binding.tvAddressAddress1.text = activityResult.data!!.getStringExtra("address")
+                viewModel.mainAddress.postValue(activityResult.data!!.getStringExtra("address"))
+                binding.etWithdrawDetailAddress.isEnabled = true
+            }
+        }
+        binding.etWithdrawMainAddress.setOnClickListener {
+            val intent = Intent(this, AddressActivity::class.java)
+            requestActivity.launch(intent)
+        }
+
+        binding.etWithdrawDetailAddress.getEditText().onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && !isDetailAddressFocused) {
+                isDetailAddressFocused = true
+                binding.etWithdrawDetailAddress.getEditText().addTextChangedListener(object: TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                    override fun afterTextChanged(s: Editable?) {
+                        if(binding.etWithdrawDetailAddress.getEditText().text.length < 2) {
+                            binding.etWithdrawDetailAddress.setError("상세 주소를 입력해주세요.")
+                            isAllValid.postValue(false)
+                        } else {
+                            binding.etWithdrawDetailAddress.setSuccess("주소 입력 완료")
+                            if (!binding.etWithdrawResidentBack.hasError && viewModel.bank.value != null && viewModel.name.value != null
+                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResidentBack.value != null
+                                && viewModel.mainAddress.value != null && viewModel.detailAddress.value != null)
                                 isAllValid.postValue(true)
                         }
                     }
@@ -320,10 +366,6 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
         }
     }
 
-    override fun onPositive() {
-        viewModel.registerWithdraw()
-    }
-
     fun isValidResidentNumber(residentNumber: String): Boolean {
         val regex = Regex("""^\d{6}-\d{7}$""")
 
@@ -395,6 +437,10 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
         val result = if (remainder == 0) 1 else 11 - remainder
 
         return result == checkDigit
+    }
+
+    override fun onPositive() {
+        viewModel.registerWithdraw()
     }
 
     override fun onNegative() {}
