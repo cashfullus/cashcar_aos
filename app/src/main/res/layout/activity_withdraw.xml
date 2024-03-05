@@ -246,7 +246,7 @@
                     app:inputType="phone"
                     app:length="14"
                     app:maxLines="1"
-                    app:hint="810101-0000000"
+                    app:hint="주민등록번호를 입력해주세요"
                     app:layout_constraintTop_toBottomOf="@+id/tvWithdrawTitle8"
                     app:text="@={viewModel.accountResident}" />
 
@@ -289,7 +289,7 @@
                     app:inputType="phone"
                     app:length="14"
                     app:maxLines="1"
-                    app:hint="810101-0000000"
+                    app:hint="주민등록번호를 입력해주세요"
                     app:layout_constraintTop_toBottomOf="@+id/tvWithdrawTitle9"
                     app:text="@={viewModel.accountResidentBack}" />
 
