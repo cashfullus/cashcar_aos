@@ -136,14 +136,25 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                     override fun afterTextChanged(s: Editable?) {
-                        if(!isValidResidentNumber(binding.etWithdrawResident.getEditText().text.toString())) {
+                        val input = s.toString()
+                        if (input.length > 6 && input[6] != '-') {
+                            val formattedText = StringBuilder(input).apply {
+                                insert(6, "-")
+                            }.toString()
+                            binding.etWithdrawResident.getEditText().removeTextChangedListener(this)
+                            binding.etWithdrawResident.getEditText().setText(formattedText)
+                            binding.etWithdrawResident.getEditText().setSelection(formattedText.length)
+                            binding.etWithdrawResident.getEditText().addTextChangedListener(this)
+                        }
+                        if(binding.etWithdrawResident.getEditText().text.toString().length < 14) {
                             binding.etWithdrawResident.setErrorWithoutMsg()
                             isAllValid.postValue(false)
                         } else {
                             binding.etWithdrawResident.setSuccessWithoutMsg()
 
                             if (!binding.etWithdrawResident.hasError && viewModel.bank.value != null && viewModel.name.value != null
-                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResidentBack.value != null
+                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResident.value!!.length <14
+                                && viewModel.accountResidentBack.value != null && viewModel.accountResidentBack.value!!.length <14
                                 && viewModel.mainAddress.value != null && viewModel.detailAddress.value != null)
                                 isAllValid.postValue(true)
                         }
@@ -159,6 +170,16 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                     override fun afterTextChanged(s: Editable?) {
+                        val input = s.toString()
+                        if (input.length > 6 && input[6] != '-') {
+                            val formattedText = StringBuilder(input).apply {
+                                insert(6, "-")
+                            }.toString()
+                            binding.etWithdrawResidentBack.getEditText().removeTextChangedListener(this)
+                            binding.etWithdrawResidentBack.getEditText().setText(formattedText)
+                            binding.etWithdrawResidentBack.getEditText().setSelection(formattedText.length)
+                            binding.etWithdrawResidentBack.getEditText().addTextChangedListener(this)
+                        }
                         if(viewModel.accountResident.value != binding.etWithdrawResidentBack.getEditText().text.toString()) {
                             binding.etWithdrawResidentBack.setErrorWithoutMsg()
                             isAllValid.postValue(false)
@@ -166,7 +187,8 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                             binding.etWithdrawResidentBack.setSuccessWithoutMsg()
 
                             if (!binding.etWithdrawResidentBack.hasError && viewModel.bank.value != null && viewModel.name.value != null
-                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResidentBack.value != null
+                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResident.value!!.length <14
+                                && viewModel.accountResidentBack.value != null && viewModel.accountResidentBack.value!!.length <14
                                 && viewModel.mainAddress.value != null && viewModel.detailAddress.value != null)
                                 isAllValid.postValue(true)
                         }
@@ -205,7 +227,8 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                         } else {
                             binding.etWithdrawDetailAddress.setSuccess("주소 입력 완료")
                             if (!binding.etWithdrawResidentBack.hasError && viewModel.bank.value != null && viewModel.name.value != null
-                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResidentBack.value != null
+                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResident.value!!.length <14
+                                && viewModel.accountResidentBack.value != null && viewModel.accountResidentBack.value!!.length <14
                                 && viewModel.mainAddress.value != null && viewModel.detailAddress.value != null)
                                 isAllValid.postValue(true)
                         }
@@ -364,79 +387,6 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                 finish()
             }
         }
-    }
-
-    fun isValidResidentNumber(residentNumber: String): Boolean {
-        val regex = Regex("""^\d{6}-\d{7}$""")
-
-        if (!regex.matches(residentNumber)) {
-            return false
-        }
-
-        val cleanedResidentNumber = residentNumber.replace("-", "")
-
-        // 총 길이 확인
-        if (cleanedResidentNumber.length != 13) {
-            return false
-        }
-
-        val birthDate = cleanedResidentNumber.substring(0, 6)
-        val personalCode = cleanedResidentNumber.substring(6, 13)
-
-        // 생년월일 유효성 검사
-        if (!isValidDate(birthDate)) {
-            return false
-        }
-
-        // 성별 유효성 검사
-        val genderDigit = cleanedResidentNumber[6].toString().toInt()
-        if (genderDigit !in listOf(1, 2, 3, 4)) {
-            return false
-        }
-
-        // 검증 숫자 확인
-        val checkDigit = cleanedResidentNumber[12].toString().toInt()
-        if (!isValidCheckDigit(cleanedResidentNumber.substring(0, 12), checkDigit)) {
-            return false
-        }
-
-        return true
-    }
-
-    fun isValidDate(birthDate: String): Boolean {
-        val year = birthDate.substring(0, 2).toInt()
-        val month = birthDate.substring(2, 4).toInt()
-        val day = birthDate.substring(4, 6).toInt()
-
-        // 간단한 윤년 검사 (1900년부터 2099년까지만 고려)
-        val isLeapYear = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
-
-        if (month < 1 || month > 12 || day < 1 || day > 31) {
-            return false
-        }
-
-        if (month == 4 || month == 6 || month == 9 || month == 11) {
-            return day <= 30
-        } else if (month == 2) {
-            return if (isLeapYear) day <= 29 else day <= 28
-        }
-
-        return true
-    }
-
-    // 검증 숫자 확인
-    fun isValidCheckDigit(baseNumber: String, checkDigit: Int): Boolean {
-        val weights = intArrayOf(2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5)
-        var sum = 0
-
-        for (i in 0 until baseNumber.length) {
-            sum += baseNumber[i].toString().toInt() * weights[i]
-        }
-
-        val remainder = sum % 11
-        val result = if (remainder == 0) 1 else 11 - remainder
-
-        return result == checkDigit
     }
 
     override fun onPositive() {
