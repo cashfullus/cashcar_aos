@@ -129,6 +129,8 @@ interface Api {
     @POST("user/marketing") //1=True, 0=False
     suspend fun postMarketingAlarm(@Query("is_on") is_on: Int, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
 
+    @GET("home/splash")
+    suspend fun getBanner() : Response<String>
 
 }
 

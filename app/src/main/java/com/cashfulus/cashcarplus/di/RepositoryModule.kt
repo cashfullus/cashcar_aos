@@ -18,6 +18,7 @@ val repositoryModule = module {
     single<CashcarTipRepository> { CashcarTipRepositoryImpl(remoteCashcarTipSource = get()) }
     single<DonationRepository> { DonationRepositoryImpl(remoteDonationSource = get()) }
     single<PointRepository> { PointRepositoryImpl(remotePointSource = get()) }
+    single<BannerRepository> { BannerRepositoryImpl(remoteBannerSource = get()) }
 
     /// Repository 내에서 Callback을 사용하는 경우.
     /* single<CertificationRepository> {

@@ -27,7 +27,7 @@ import com.cashfulus.cashcarplus.ui.user.UserInfoViewModel
 import com.cashfulus.cashcarplus.ui.withdraw.WithdrawViewModel
 
 val viewModelModule = module {
-    viewModel { SplashViewModel(repository = get(), versionRepo = get()) }
+    viewModel { SplashViewModel(repository = get(), versionRepo = get(), bannerRepo = get()) }
     viewModel { HomeViewModel(missionRepository = get()) }
     viewModel { InquiryViewModel(repository = get()) }
     viewModel { NoticeListViewModel(repository = get()) }

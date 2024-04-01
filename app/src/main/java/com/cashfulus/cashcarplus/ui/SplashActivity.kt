@@ -4,6 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
+import androidx.viewpager.widget.ViewPager
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
@@ -13,13 +15,16 @@ import com.cashfulus.cashcarplus.data.service.API_CONNECT_ERROR_CODE
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
 import com.cashfulus.cashcarplus.data.service.VERSION_ERROR_CODE
 import com.cashfulus.cashcarplus.databinding.ActivitySplashBinding
+import com.cashfulus.cashcarplus.ui.adapter.SplashBannerAdapter
 import com.cashfulus.cashcarplus.ui.howtouse.HowToUseActivity
 import com.cashfulus.cashcarplus.ui.login.LoginActivity
 import com.cashfulus.cashcarplus.util.UserManager
 import com.kakao.ad.common.json.AppLaunch
 import com.kakao.ad.tracker.send
+import kotlinx.android.synthetic.main.activity_splash.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.util.*
 
 class SplashActivity : BaseActivity() {
     //private lateinit var auth: FirebaseAuth
@@ -27,6 +32,11 @@ class SplashActivity : BaseActivity() {
     // Loading Dialog 및 MVVM 관련 객체들
     private val binding by binding<ActivitySplashBinding>(R.layout.activity_splash)
     private val viewModel: SplashViewModel by viewModel { parametersOf(this@SplashActivity) }
+
+    private lateinit var viewPager: ViewPager
+    private var currentPage = 0
+    private var timer: Timer? = null
+    private val DELAY_MS: Long = 1000 // 딜레이
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +46,8 @@ class SplashActivity : BaseActivity() {
         // Restore instance state
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState)
+
+        viewPager = binding.vpBanners
 
         binding.apply {
             lifecycleOwner = this@SplashActivity
@@ -93,6 +105,7 @@ class SplashActivity : BaseActivity() {
                 viewModel.versionCheckWithEmail(userId, jwtToken)
             }
         }
+        viewModel.getBannerImage()
 
         viewModel.isLogined.observe(this@SplashActivity, {
             if (it) {
@@ -103,6 +116,13 @@ class SplashActivity : BaseActivity() {
                 hd.postDelayed(splashHandler(Intent(this@SplashActivity, LoginActivity::class.java)), 2000)
             }
         })
+
+        viewModel.banners.observe(this@SplashActivity) {
+            val adapter = SplashBannerAdapter(this, it)
+            vpBanners.visibility = View.VISIBLE
+            viewPager.adapter = adapter
+            startAutoScroll()
+        }
 
         viewModel.error.observe(this@SplashActivity, {
             showToast(it.message)
@@ -155,12 +175,33 @@ class SplashActivity : BaseActivity() {
         })*/
     }
 
+    private fun startAutoScroll() {
+        val update = Runnable {
+            if (currentPage == Integer.MAX_VALUE) {
+                currentPage = 0
+            }
+            viewPager.setCurrentItem(currentPage++, true)
+        }
+
+        timer = Timer()
+        timer?.schedule(object : TimerTask() {
+            override fun run() {
+                runOnUiThread(update)
+            }
+        }, DELAY_MS, DELAY_MS)
+    }
+
     inner class splashHandler(val intent: Intent): Runnable {
         override fun run() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             this@SplashActivity.finish()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer?.cancel()
     }
 
     override fun onBackPressed() {

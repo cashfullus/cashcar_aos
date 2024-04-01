@@ -4,6 +4,7 @@ import android.content.pm.PackageManager
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.cashfulus.cashcarplus.base.App
+import com.cashfulus.cashcarplus.data.repository.BannerRepository
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.cashfulus.cashcarplus.data.repository.UserRepository
@@ -23,9 +24,10 @@ import kotlinx.coroutines.launch
  *  Email : SharedPreference -> versionCheck() -> getUserInfo(userId, token) -> updateToken() -> isLogined update
  */
 
-class SplashViewModel(private val repository: UserRepository, private val versionRepo: VersionRepository) : ViewModel() {
+class SplashViewModel(private val repository: UserRepository, private val versionRepo: VersionRepository, private val bannerRepo: BannerRepository) : ViewModel() {
     val error = SingleLiveEvent<ErrorResponse>()
     val isLogined = SingleLiveEvent<Boolean>()
+    val banners = SingleLiveEvent<ArrayList<BannerData>>()
 
     fun versionCheckWithAPI(email: String, type: String) {
         if(NetworkManager().checkNetworkState()) {
@@ -205,4 +207,24 @@ class SplashViewModel(private val repository: UserRepository, private val versio
             error.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, ""))
         }
     }
+
+    fun getBannerImage() {
+        if(NetworkManager().checkNetworkState()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val bannerImages = bannerRepo.bannerApi()
+                try {
+                    if(bannerImages.isSucceed) {
+                        banners.postValue(bannerImages.contents?.data)
+                    } else {
+                        error.postValue(bannerImages.error!!)
+                    }
+                } catch (e: PackageManager.NameNotFoundException) {
+                    e.printStackTrace()
+                }
+            }
+        } else {
+            error.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, ""))
+        }
+    }
+
 }

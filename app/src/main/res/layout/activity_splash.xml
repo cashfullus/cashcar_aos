@@ -40,17 +40,18 @@
             android:id="@+id/ivSplash"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="h, 3039:512"
             android:src="@drawable/textlogo"
-            app:layout_constraintStart_toStartOf="@+id/glSplashV1"
+            app:layout_constraintDimensionRatio="h, 3039:512"
             app:layout_constraintEnd_toEndOf="@+id/glSplashV2"
-            app:layout_constraintTop_toTopOf="@+id/glSplashH1"/>
+            app:layout_constraintStart_toStartOf="@+id/glSplashV1"
+            app:layout_constraintTop_toTopOf="@+id/glSplashH1"
+            tools:ignore="ImageContrastCheck" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="꽉 막힌 출퇴근길,\n내 차로 쉽게 용돈 벌자!"
-            android:fontFamily="notosanskr_400"
+            android:fontFamily="@font/notosanskr"
             android:textSize="18dp"
             android:lineSpacingExtra="2.5dp"
             android:letterSpacing="-0.06"
@@ -58,6 +59,14 @@
             app:layout_constraintStart_toStartOf="@+id/glSplashV1"
             app:layout_constraintTop_toBottomOf="@+id/ivSplash"
             android:layout_marginTop="18dp"/>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vpBanners"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#ffffff"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
