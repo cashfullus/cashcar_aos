@@ -110,10 +110,10 @@ class SplashActivity : BaseActivity() {
         viewModel.isLogined.observe(this@SplashActivity, {
             if (it) {
                 // 로그인 성공
-                hd.postDelayed(splashHandler(Intent(this@SplashActivity, MainActivity::class.java)), 2000)
+                hd.postDelayed(splashHandler(Intent(this@SplashActivity, MainActivity::class.java)), 3000)
             } else {
                 // 로그인 실패
-                hd.postDelayed(splashHandler(Intent(this@SplashActivity, LoginActivity::class.java)), 2000)
+                hd.postDelayed(splashHandler(Intent(this@SplashActivity, LoginActivity::class.java)), 3000)
             }
         })
 
@@ -136,7 +136,7 @@ class SplashActivity : BaseActivity() {
                 }
             }
             else
-                hd.postDelayed(splashHandler(Intent(this@SplashActivity, LoginActivity::class.java)), 2000)
+                hd.postDelayed(splashHandler(Intent(this@SplashActivity, LoginActivity::class.java)), 3000)
         })
 
         // Firebase 관련 설정
