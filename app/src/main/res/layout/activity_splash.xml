@@ -63,8 +63,7 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vpBanners"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="#ffffff"
+            android:layout_height="150dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
