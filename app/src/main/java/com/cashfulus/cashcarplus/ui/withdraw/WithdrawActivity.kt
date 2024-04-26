@@ -36,8 +36,23 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
     var isAccountFocused: Boolean = false
     var isResidentFocused: Boolean = false
     var isResidentBackFocused: Boolean = false
-    var isMainAddressValid = false
     var isDetailAddressFocused = false
+
+    // 조건 1
+    var isPointValid = false
+    // 조건 2
+    var isAccountValid = false
+    // 조건 3
+    var isResidentValid = false
+    // 조건 4
+    var isResidentBackValid = false
+    // 조건 5
+    var isMainAddressValid = false
+    // 조건 6
+    var isDetailAddressValid = false
+    // 조건 7
+    var isClauseChecked = false
+
     val isAllValid = MutableLiveData<Boolean>(false)
 
     var allPoint = 0
@@ -85,54 +100,64 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
         binding.etWithdrawPoint.getEditText().onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus && !isPointFocused) {
                 isPointFocused = true
-                binding.etWithdrawPoint.getEditText().addTextChangedListener(object: TextWatcher {
+                binding.etWithdrawPoint.getEditText().addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                     override fun afterTextChanged(s: Editable?) {
-                        // 포인트 입력 조건 : 10000포인트 이상, 1000 단위
-                        if(binding.etWithdrawPoint.getEditText().text.isNullOrBlank() || !binding.etWithdrawPoint.getEditText().text.isDigitsOnly() ||
-                                binding.etWithdrawPoint.getEditText().text.toString().toInt() < 10000 || binding.etWithdrawPoint.getEditText().text.toString().toInt() > allPoint || binding.etWithdrawPoint.getEditText().text.toString().toInt() % 1000 != 0) {
+                        val inputText = binding.etWithdrawPoint.getEditText().text.toString()
+                        val inputNumber = inputText.toIntOrNull()
+                        isPointValid = if (inputText.isBlank() || inputNumber == null || inputNumber < 10000 || inputNumber > allPoint || inputNumber % 1000 != 0) {
                             binding.etWithdrawPoint.setErrorWithoutMsg()
-                            isAllValid.postValue(false)
-                        }
-                        else {
+                            false
+                        } else {
                             binding.etWithdrawPoint.setSuccessWithoutMsg()
-
-                            if(!binding.etWithdrawAccount.hasError && viewModel.bank.value != null && viewModel.name.value != null && binding.cbWithdrawClause.isChecked)
-                                isAllValid.postValue(true)
+                            true
                         }
+                        checkAllConditions()
                     }
                 })
             }
         }
 
         binding.etWithdrawAccount.hasError = true
-        binding.etWithdrawAccount.getEditText().onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && !isAccountFocused) {
-                isAccountFocused = true
-                binding.etWithdrawAccount.getEditText().addTextChangedListener(object: TextWatcher {
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-                    override fun afterTextChanged(s: Editable?) {
-                        if(!binding.etWithdrawAccount.getEditText().text.toString().isValidAccount()) {
-                            binding.etWithdrawAccount.setErrorWithoutMsg()
-                            isAllValid.postValue(false)
-                        }
-                        else {
-                            binding.etWithdrawAccount.setSuccessWithoutMsg()
-
-                            if(!binding.etWithdrawPoint.hasError && viewModel.bank.value != null && viewModel.name.value != null && binding.cbWithdrawClause.isChecked)
-                                isAllValid.postValue(true)
-                        }
-                    }
-                })
+        binding.etWithdrawAccount.getEditText().addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                isAccountValid = if (!binding.etWithdrawAccount.getEditText().text.toString().isValidAccount()) {
+                    binding.etWithdrawAccount.setErrorWithoutMsg()
+                    false
+                } else {
+                    binding.etWithdrawAccount.setSuccessWithoutMsg()
+                    true
+                }
+                checkAllConditions()
             }
-        }
+        })
+//        binding.etWithdrawAccount.getEditText().onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+//            if (hasFocus && !isAccountFocused) {
+//                isAccountFocused = true
+//                binding.etWithdrawAccount.getEditText().addTextChangedListener(object : TextWatcher {
+//                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+//                    override fun afterTextChanged(s: Editable?) {
+//                        if (!binding.etWithdrawAccount.getEditText().text.toString().isValidAccount()) {
+//                            binding.etWithdrawAccount.setErrorWithoutMsg()
+//                            isAccountValid = false
+//                        } else {
+//                            binding.etWithdrawAccount.setSuccessWithoutMsg()
+//                            isAccountValid = true
+//                            checkAllConditions()
+//                        }
+//                    }
+//                })
+//            }
+//        }
 
         binding.etWithdrawResident.getEditText().onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus && !isResidentFocused) {
                 isResidentFocused = true
-                binding.etWithdrawResident.getEditText().addTextChangedListener(object: TextWatcher {
+                binding.etWithdrawResident.getEditText().addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                     override fun afterTextChanged(s: Editable?) {
@@ -146,18 +171,21 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                             binding.etWithdrawResident.getEditText().setSelection(formattedText.length)
                             binding.etWithdrawResident.getEditText().addTextChangedListener(this)
                         }
-                        if(binding.etWithdrawResident.getEditText().text.toString().length < 14) {
+                        isResidentValid = if (binding.etWithdrawResident.getEditText().text.toString().length < 14) {
                             binding.etWithdrawResident.setErrorWithoutMsg()
-                            isAllValid.postValue(false)
+                            false
                         } else {
                             binding.etWithdrawResident.setSuccessWithoutMsg()
-
-                            if (!binding.etWithdrawResident.hasError && viewModel.bank.value != null && viewModel.name.value != null
-                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResident.value!!.length <14
-                                && viewModel.accountResidentBack.value != null && viewModel.accountResidentBack.value!!.length <14
-                                && viewModel.mainAddress.value != null && viewModel.detailAddress.value != null)
-                                isAllValid.postValue(true)
+                            true
                         }
+                        isResidentBackValid = if (viewModel.accountResident.value != binding.etWithdrawResidentBack.getEditText().text.toString()) {
+                            binding.etWithdrawResidentBack.setErrorWithoutMsg()
+                            false
+                        } else {
+                            binding.etWithdrawResidentBack.setSuccessWithoutMsg()
+                            true
+                        }
+                        checkAllConditions()
                     }
                 })
             }
@@ -166,7 +194,7 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
         binding.etWithdrawResidentBack.getEditText().onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus && !isResidentBackFocused) {
                 isResidentBackFocused = true
-                binding.etWithdrawResidentBack.getEditText().addTextChangedListener(object: TextWatcher {
+                binding.etWithdrawResidentBack.getEditText().addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                     override fun afterTextChanged(s: Editable?) {
@@ -180,18 +208,14 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                             binding.etWithdrawResidentBack.getEditText().setSelection(formattedText.length)
                             binding.etWithdrawResidentBack.getEditText().addTextChangedListener(this)
                         }
-                        if(viewModel.accountResident.value != binding.etWithdrawResidentBack.getEditText().text.toString()) {
+                        isResidentBackValid = if (viewModel.accountResident.value != binding.etWithdrawResidentBack.getEditText().text.toString()) {
                             binding.etWithdrawResidentBack.setErrorWithoutMsg()
-                            isAllValid.postValue(false)
+                            false
                         } else {
                             binding.etWithdrawResidentBack.setSuccessWithoutMsg()
-
-                            if (!binding.etWithdrawResidentBack.hasError && viewModel.bank.value != null && viewModel.name.value != null
-                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResident.value!!.length <14
-                                && viewModel.accountResidentBack.value != null && viewModel.accountResidentBack.value!!.length <14
-                                && viewModel.mainAddress.value != null && viewModel.detailAddress.value != null)
-                                isAllValid.postValue(true)
+                            true
                         }
+                        checkAllConditions()
                     }
                 })
             }
@@ -203,9 +227,10 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
             ActivityResultContracts.StartActivityForResult()
         ) { activityResult ->
             if(activityResult.resultCode == RESULT_OK) {
-                isMainAddressValid = true
                 binding.tvAddressAddress1.text = activityResult.data!!.getStringExtra("address")
                 viewModel.mainAddress.postValue(activityResult.data!!.getStringExtra("address"))
+                isMainAddressValid = !binding.tvAddressAddress1.text.isEmpty()
+                checkAllConditions()
                 binding.etWithdrawDetailAddress.isEnabled = true
             }
         }
@@ -221,29 +246,22 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                     override fun afterTextChanged(s: Editable?) {
-                        if(binding.etWithdrawDetailAddress.getEditText().text.length < 2) {
+                        isDetailAddressValid = if(binding.etWithdrawDetailAddress.getEditText().text.length < 2) {
                             binding.etWithdrawDetailAddress.setError("상세 주소를 입력해주세요.")
-                            isAllValid.postValue(false)
+                            false
                         } else {
                             binding.etWithdrawDetailAddress.setSuccess("주소 입력 완료")
-                            if (!binding.etWithdrawResidentBack.hasError && viewModel.bank.value != null && viewModel.name.value != null
-                                && binding.cbWithdrawClause.isChecked && viewModel.accountResident.value != null && viewModel.accountResident.value!!.length <14
-                                && viewModel.accountResidentBack.value != null && viewModel.accountResidentBack.value!!.length <14
-                                && viewModel.mainAddress.value != null && viewModel.detailAddress.value != null)
-                                isAllValid.postValue(true)
+                            true
                         }
+                        checkAllConditions()
                     }
                 })
             }
         }
 
         binding.cbWithdrawClause.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked) {
-                if(!binding.etWithdrawPoint.hasError && !binding.etWithdrawAccount.hasError && viewModel.bank.value != null && viewModel.name.value != null)
-                    isAllValid.postValue(true)
-            } else {
-                isAllValid.postValue(false)
-            }
+            isClauseChecked = isChecked
+            checkAllConditions()
         }
 
         /** Spinner */
@@ -394,4 +412,13 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
     }
 
     override fun onNegative() {}
+
+    private fun checkAllConditions() {
+        if (isPointValid && isAccountValid && isResidentValid && isResidentBackValid && isMainAddressValid && isDetailAddressValid && isClauseChecked) {
+            isAllValid.postValue(true)
+        } else {
+            isAllValid.postValue(false)
+        }
+    }
+
 }
