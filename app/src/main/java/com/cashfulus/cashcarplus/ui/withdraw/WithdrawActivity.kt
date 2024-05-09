@@ -77,11 +77,15 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
 
         /** '전액' 버튼 클릭 시 */
         binding.btnWithdrawAllPoint.setOnClickListener {
-            binding.etWithdrawPoint.getEditText().setText(allPoint.toString())
-            binding.etWithdrawPoint.hasError = false
+            binding.etWithdrawPoint.requestFocus()
+            val formattedValue = if (allPoint >= 10000) {
+                ((allPoint / 1000) * 1000).toString()
+            } else {
+                ""
+            }
 
-            if(!binding.etWithdrawAccount.hasError && viewModel.bank.value != null && viewModel.name.value != null && binding.cbWithdrawClause.isChecked)
-                isAllValid.postValue(true)
+            binding.etWithdrawPoint.getEditText().setText(formattedValue)
+            binding.etWithdrawPoint.hasError = false
         }
 
         /** '개인정보 수집 및 이용 동의'로 이동 */
@@ -134,25 +138,6 @@ class WithdrawActivity : BaseActivity(), PopupDialogClickListener {
                 checkAllConditions()
             }
         })
-//        binding.etWithdrawAccount.getEditText().onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-//            if (hasFocus && !isAccountFocused) {
-//                isAccountFocused = true
-//                binding.etWithdrawAccount.getEditText().addTextChangedListener(object : TextWatcher {
-//                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-//                    override fun afterTextChanged(s: Editable?) {
-//                        if (!binding.etWithdrawAccount.getEditText().text.toString().isValidAccount()) {
-//                            binding.etWithdrawAccount.setErrorWithoutMsg()
-//                            isAccountValid = false
-//                        } else {
-//                            binding.etWithdrawAccount.setSuccessWithoutMsg()
-//                            isAccountValid = true
-//                            checkAllConditions()
-//                        }
-//                    }
-//                })
-//            }
-//        }
 
         binding.etWithdrawResident.getEditText().onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus && !isResidentFocused) {
