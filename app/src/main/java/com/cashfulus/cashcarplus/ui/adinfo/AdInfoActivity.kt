@@ -1,16 +1,9 @@
 package com.cashfulus.cashcarplus.ui.adinfo
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.TextPaint
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.util.Log
-import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -18,18 +11,20 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityAdInfoBinding
 import com.cashfulus.cashcarplus.ui.adapter.ImageSliderAdapter
+import com.cashfulus.cashcarplus.ui.dialog.CodeDialog
+import com.cashfulus.cashcarplus.ui.dialog.CodeDialogClickListener
+import com.cashfulus.cashcarplus.ui.dialog.SubmitDialog
+import com.cashfulus.cashcarplus.ui.dialog.SubmitDialogClickListener
 import com.cashfulus.cashcarplus.util.UserManager
 import com.kakao.sdk.link.LinkClient
 import com.kakao.sdk.template.model.*
-import kotlinx.android.synthetic.main.widget_upgraded_image_slider.view.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.properties.Delegates
 
-class AdInfoActivity : BaseActivity() {
+class AdInfoActivity : BaseActivity(), CodeDialogClickListener, SubmitDialogClickListener {
     private val DELAY_MS: Long = 500 //delay in milliseconds before task is to be executed
     private val PERIOD_MS: Long = 3000 // time in milliseconds between successive task executions.
     var pageNum by Delegates.notNull<Int>()
@@ -40,6 +35,15 @@ class AdInfoActivity : BaseActivity() {
     // Loading Dialog 및 MVVM 관련 객체들
     private val binding by binding<ActivityAdInfoBinding>(R.layout.activity_ad_info)
     private val viewModel: AdInfoViewModel by viewModel { parametersOf(this@AdInfoActivity) }
+
+    val codeDialog = CodeDialog()
+    var submitDialog : SubmitDialog? = null
+
+    var adId = 0
+    var image = ""
+    var title = ""
+    var point = 0
+    var useCode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +58,7 @@ class AdInfoActivity : BaseActivity() {
         }
 
         /** 정보 받아오기 */
-        if(intent.getIntExtra("id", -1) != -1) {
+        if (intent.getIntExtra("id", -1) != -1) {
             viewModel.loadData(intent.getIntExtra("id", -1))
         } else {
             showToast("오류가 발생했습니다. 다시 시도해 주세요.")
@@ -62,15 +66,17 @@ class AdInfoActivity : BaseActivity() {
         }
 
         /** 진행중인 미션이 있다면 버튼 비활성화 */
-        if(!UserManager.hasMission && intent.getBooleanExtra("canRegister", false)) {
-            binding.btnAdInfo.background = ContextCompat.getDrawable(this@AdInfoActivity, R.drawable.button_form_active)
+        if (!UserManager.hasMission && intent.getBooleanExtra("canRegister", false)) {
+            binding.btnAdInfo.background =
+                ContextCompat.getDrawable(this@AdInfoActivity, R.drawable.button_form_active)
             binding.btnAdInfo.setTextColor(getColor(R.color.grayscale_wt))
             binding.btnAdInfo.isEnabled = true
             binding.btnAdInfo.isFocusable = true
             binding.btnAdInfo.isClickable = true
             binding.btnAdInfo.text = "신청하기"
         } else {
-            binding.btnAdInfo.background = ContextCompat.getDrawable(this@AdInfoActivity, R.drawable.button_form_deactive)
+            binding.btnAdInfo.background =
+                ContextCompat.getDrawable(this@AdInfoActivity, R.drawable.button_form_deactive)
             binding.btnAdInfo.setTextColor(getColor(R.color.grayscale_400))
             binding.btnAdInfo.isEnabled = false
             binding.btnAdInfo.isFocusable = false
@@ -81,10 +87,11 @@ class AdInfoActivity : BaseActivity() {
         /** LiveData 관련 설정 */
         viewModel.response.observe(binding.lifecycleOwner!!) {
             val data = it
-            val adId = it.ad_id;
-            val image = it.thumbnail_image;
-            val title = it.title;
-            val point = it.total_point
+            adId = it.ad_id;
+            image = it.thumbnail_image;
+            title = it.title;
+            point = it.total_point
+            useCode = it.use_code
 
             // 최상단 슬라이드 이미지 설정
             val adapter = ImageSliderAdapter(this@AdInfoActivity, it.images)
@@ -144,7 +151,7 @@ class AdInfoActivity : BaseActivity() {
             binding.tvAdInfoRegion.text = it.area
 
 //            binding.tvAdInfoContents.text = it.description
-            binding.wbAdInfoContents.loadData(it.description,"text/html", "UTF-8")
+            binding.wbAdInfoContents.loadData(it.description, "text/html", "UTF-8")
 
             Glide.with(this@AdInfoActivity).load(it.side_image).into(binding.ivAdInfoDesign1)
             binding.tvAdInfoSize1.text =
@@ -155,12 +162,19 @@ class AdInfoActivity : BaseActivity() {
 
             /** 신청하기 버튼 */
             binding.btnAdInfo.setOnClickListener {
-                val intent = Intent(this@AdInfoActivity, AdRegisterActivity::class.java)
-                intent.putExtra("adId", adId)
-                intent.putExtra("image", image)
-                intent.putExtra("title", title)
-                intent.putExtra("point", point)
-                startActivity(intent)
+                if (useCode) {
+                    if(codeDialog.isAdded) {
+                        codeDialog.dismiss()
+                    }
+                    codeDialog.show(supportFragmentManager, "code")
+                } else {
+                    val intent = Intent(this@AdInfoActivity, AdRegisterActivity::class.java)
+                    intent.putExtra("adId", adId)
+                    intent.putExtra("image", image)
+                    intent.putExtra("title", title)
+                    intent.putExtra("point", point)
+                    startActivity(intent)
+                }
             }
 
             /** 최상단 우측 공유 버튼 */
@@ -220,13 +234,61 @@ class AdInfoActivity : BaseActivity() {
             }
         }
 
-        viewModel.error.observe(binding.lifecycleOwner!!, {
+        viewModel.response2.observe(binding.lifecycleOwner!!) {
+            codeDialog.dismiss()
+            when {
+                it.reject -> {
+                    submitDialog = SubmitDialog("reject")
+                    submitDialog?.show(supportFragmentManager, "submit")
+                    binding.btnAdInfo.isEnabled = false
+                    binding.btnAdInfo.text = "해당 광고를 신청할 수 없습니다"
+                    binding.btnAdInfo.setBackgroundResource(R.drawable.button_form_deactive)
+                    binding.btnAdInfo.setTextColor(ContextCompat.getColor(this, R.color.grayscale_600))
+                    return@observe
+                }
+                it.fail -> {
+                    submitDialog = SubmitDialog("fail")
+                    submitDialog?.show(supportFragmentManager, "submit")
+                    return@observe
+                }
+                it.code_fail -> {
+                    submitDialog = SubmitDialog("code_fail")
+                    submitDialog?.show(supportFragmentManager, "submit")
+                    return@observe
+                }
+                it.accept -> {
+                    val intent = Intent(this@AdInfoActivity, AdRegisterActivity::class.java)
+                    intent.putExtra("adId", adId)
+                    intent.putExtra("image", image)
+                    intent.putExtra("title", title)
+                    intent.putExtra("point", point)
+                    startActivity(intent)
+                }
+            }
+        }
+
+        viewModel.error.observe(binding.lifecycleOwner!!) {
             showToast(it.message)
-        })
+        }
+
+        viewModel.error2.observe(binding.lifecycleOwner!!) {
+            showToast(it.message)
+        }
 
         /** 툴바 설정 */
         binding.toolbarAdInfo.setLeftOnClick {
             finish()
         }
     }
+
+    override fun onCodeApplyClick(code: String) {
+        viewModel.codeApply(intent.getIntExtra("id", -1), code)
+    }
+
+    override fun onSubmitClick(reason: String) {
+        if(reason == "reject" || reason == "fail") {
+            finish()
+        }
+    }
+
 }

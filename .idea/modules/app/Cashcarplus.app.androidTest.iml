@@ -60,9 +60,9 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6143c23b039cde98c082f3c9ae52286e/jetified-v2-talk-2.5.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aea5a86a5a1ec802308a97ab97f2fc60/jetified-v2-auth-2.5.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a11f801a85564f83b446d2ff78376b7b/constraintlayout-2.0.4-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cbd58714515717b3dcbf4d72e397d00b/jetified-tedpermission-2.2.3-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c96d3f3d4ebfb501c03e7ab445e2f1ee/jetified-tedpermission-2.2.3-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/da744c25bdc060d68a23e97c594f67b4/jetified-Android-Image-Cropper-3.1.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0f2c181f446971dc532bb01a02672392/jetified-StickyScrollView-1.0.2-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0470b9a972e19bc8bb9c5af832a82ccf/jetified-StickyScrollView-1.0.2-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d1a76c25d22a8fa982503b478bdd75ea/appcompat-1.3.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/768b22fd22d5b494edf2c8b89d44482d/legacy-support-v4-1.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8e9f6af94fec0e5b6632445aceca0439/legacy-support-core-ui-1.0.0-api.jar</arg>
@@ -180,7 +180,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f70d93ff52fcda58cc0da3d6ffe1f35c/jetified-kotlinx-coroutines-android-1.4.1.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ff6bf2787e096333a66770387ea4e7db/jetified-kotlinx-coroutines-core-jvm-1.4.1.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5d26f28cd9915d220fcf34b067973736/jetified-kotlin-stdlib-jdk8-1.5.10.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5619d00a9b553b5a08752bf9115c244c/jetified-tracker-0.3.9-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2690eab8b6f4aa792d218c8b102a9919/jetified-tracker-0.3.9-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4159756170f05e562ce1193976690298/jetified-kotlin-stdlib-jdk7-1.5.10.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/107d29d25d85c19cffadab23e20612e7/jetified-kotlin-stdlib-1.6.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fa661da911033fde66015e6ff031989e/jetified-gson-2.8.8.jar</arg>

@@ -41,6 +41,7 @@ interface MissionRepository {
     suspend fun getAd(adId: Int, token: String, version: String): ApiResponse<AdInfoResponseData>
     suspend fun applyAd(mainAddress: String, detailAddress: String, callNumber: String, name: String, userId: Int, adId: Int, vehicleId: Int, token: String): ApiResponse<ApplyResponseData>
     suspend fun applyAdGet(userId: Int, adId: Int, token: String): ApiResponse<AdApplyInfoResponseData>
+    suspend fun applyAdCode(code:String, userId: Int, adId: Int, token: String): ApiResponse<AdCodeResponseData>
     suspend fun getMissions(userId: Int, token: String): ApiResponse<AdMissionResponse>
     suspend fun postMission(sideImg: Bitmap, backImg: Bitmap, gaugeImg: Bitmap, gaugeKm: String, missionId: Int, userId: Int, token: String): ApiResponse<AdMissionPost>
     suspend fun postMission(sideImg: Bitmap, backImg: Bitmap, missionId: Int, userId: Int, token: String): ApiResponse<AdMissionPost>
@@ -140,6 +141,16 @@ class MissionRepositoryImpl(private val remoteMissionSource: RemoteMissionSource
             ApiResponse(true, Gson().fromJson(apiResult.body()!!, AdApplyInfoResponseData::class.java), null)
         } else {
             ApiResponse(false, null, makeErrorResponseFromStatusCode(apiResult.code(), "/ad/apply"))
+        }
+    }
+
+    override suspend fun applyAdCode(code: String, userId: Int, adId: Int, token: String): ApiResponse<AdCodeResponseData> {
+        val apiResult: Response<String> = remoteMissionSource.applyAdCode(CodeRequest(adId, code), userId, "Bearer "+token)
+
+        return if (apiResult.code() == 201) {
+            ApiResponse(true, Gson().fromJson(apiResult.body()!!, AdCodeResponseData::class.java), null)
+        } else {
+            ApiResponse(false, null, makeErrorResponseFromStatusCode(apiResult.code(), "/ad/code"))
         }
     }
 

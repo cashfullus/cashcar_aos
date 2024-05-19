@@ -62,6 +62,8 @@ interface Api {
     suspend fun applyAdGet(@Query("user_id") user_id: Int, @Query("ad_id") ad_id: Int, @Header("Authorization") authorization: String): Response<String>
     @POST("ad/apply")
     suspend fun applyAd(@Body applyRequest: ApplyRequest, @Query("user_id") user_id: Int, @Query("ad_id") ad_id: Int, @Query("vehicle_id") vehicle_id: Int, @Header("Authorization") authorization: String): Response<String>
+    @POST("ad/code")
+    suspend fun applyAdCode(@Body codeRequest: CodeRequest, @Query("user_id") user_id: Int, @Header("Authorization") authorization: String): Response<String>
     @POST("user/is-read")
     suspend fun popupRead(@Query("reason_id") reason_id: Int): Response<String>
 

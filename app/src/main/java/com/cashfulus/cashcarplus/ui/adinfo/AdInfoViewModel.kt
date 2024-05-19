@@ -1,8 +1,6 @@
 package com.cashfulus.cashcarplus.ui.adinfo
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.cashfulus.cashcarplus.base.BaseViewModel
 import com.cashfulus.cashcarplus.data.repository.MissionRepository
 import com.cashfulus.cashcarplus.data.service.NO_INTERNET_ERROR_CODE
@@ -15,7 +13,9 @@ import kotlinx.coroutines.launch
 
 class AdInfoViewModel(private val missionRepository: MissionRepository): BaseViewModel() {
     val response = MutableLiveData<AdInfoResponse>()
+    val response2 = MutableLiveData<AdCodeResponse>()
     val error = SingleLiveEvent<ErrorResponse>()
+    val error2 = SingleLiveEvent<ErrorResponse>()
 
     fun loadData(adId: Int) {
         if(NetworkManager().checkNetworkState()) {
@@ -35,4 +35,24 @@ class AdInfoViewModel(private val missionRepository: MissionRepository): BaseVie
             error.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, ""))
         }
     }
+
+    fun codeApply(adId: Int, code: String) {
+        if(NetworkManager().checkNetworkState()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                showLoadingDialog()
+                val result = missionRepository.applyAdCode(code, UserManager.userId!!, adId, UserManager.jwtToken!!)
+
+                if(result.isSucceed) {
+                    hideLoadingDialog()
+                    response2.postValue(result.contents!!.data)
+                } else {
+                    hideLoadingDialog()
+                    error2.postValue(result.error!!)
+                }
+            }
+        } else {
+            error2.postValue(makeErrorResponseFromStatusCode(NO_INTERNET_ERROR_CODE, ""))
+        }
+    }
+
 }

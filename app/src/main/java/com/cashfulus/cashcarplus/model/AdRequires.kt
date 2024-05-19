@@ -153,7 +153,8 @@ data class AdInfoResponse(
         @SerializedName("side_width") val side_width: Int,
         @SerializedName("thumbnail_image") val thumbnail_image: String,
         @SerializedName("title") val title: String,
-        @SerializedName("total_point") val total_point: Int
+        @SerializedName("total_point") val total_point: Int,
+        @SerializedName("use_code") val use_code: Boolean,
 )
 data class ImageUrl(
         @SerializedName("image") val image: String
@@ -193,6 +194,16 @@ data class AdInformationShort(
     @SerializedName("thumbnail_image") val thumbnail_image: String,
     @SerializedName("title") val title: String,
     @SerializedName("total_point") val total_point: Int
+)
+data class AdCodeResponseData(
+    @SerializedName("data") val data: AdCodeResponse,
+    @SerializedName("status") val status: Boolean
+)
+data class AdCodeResponse(
+    @SerializedName("accept") val accept: Boolean,
+    @SerializedName("code_fail") val code_fail: Boolean,
+    @SerializedName("fail") val fail: Boolean,
+    @SerializedName("reject") val reject: Boolean
 )
 data class UserInformation(
     @SerializedName("call_number") val call_number: String,
@@ -255,4 +266,9 @@ data class AdMissionPost(
     @SerializedName("image_data") val imageData: Boolean,
     @SerializedName("mission_data") val missionData: Boolean,
     @SerializedName("mission_type") val missionType: Boolean,
+)
+
+data class CodeRequest(
+    @SerializedName("ad_id") val adId: Int,
+    @SerializedName("code") val code: String,
 )

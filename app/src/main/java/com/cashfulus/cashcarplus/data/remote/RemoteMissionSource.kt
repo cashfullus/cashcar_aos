@@ -2,6 +2,7 @@ package com.cashfulus.cashcarplus.data.remote
 
 import com.cashfulus.cashcarplus.data.service.Api
 import com.cashfulus.cashcarplus.model.ApplyRequest
+import com.cashfulus.cashcarplus.model.CodeRequest
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.MultipartBody.Part.Companion.createFormData
@@ -19,6 +20,7 @@ interface RemoteMissionSource {
     suspend fun deleteMyMission(ad_user_apply_id: Int, user_id: Int, authorization: String): Response<String>
     suspend fun applyAd(applyRequest: ApplyRequest, userId: Int, adId: Int, vehicle_id: Int, authorization: String): Response<String>
     suspend fun applyAdGet(userId: Int, adId: Int, authorization: String): Response<String>
+    suspend fun applyAdCode(codeRequest: CodeRequest, user_id: Int, authorization: String): Response<String>
     suspend fun getMissions(user_id: Int, authorization: String): Response<String>
     suspend fun postMission(side_image: File, back_image: File, instrument_panel_image: File, travelled_distance: String, mission_id: Int, user_id: Int, authorization: String): Response<String>
     suspend fun postMission(side_image: File, back_image: File, mission_id: Int, user_id: Int, authorization: String): Response<String>
@@ -36,6 +38,7 @@ class RemoteMissionSourceImpl(private val service: Api) : RemoteMissionSource {
     override suspend fun deleteMyMission(ad_user_apply_id: Int, user_id: Int, authorization: String) = service.deleteMyMission(ad_user_apply_id, user_id, authorization)
     override suspend fun applyAd(applyRequest: ApplyRequest, userId: Int, adId: Int, vehicle_id: Int, authorization: String) = service.applyAd(applyRequest, userId, adId, vehicle_id, authorization)
     override suspend fun applyAdGet(userId: Int, adId: Int, authorization: String) = service.applyAdGet(userId, adId, authorization)
+    override suspend fun applyAdCode(codeRequest: CodeRequest, user_id: Int, authorization: String) = service.applyAdCode(codeRequest, user_id, authorization)
     override suspend fun getMissions(user_id: Int, authorization: String) = service.getMissions(user_id, authorization)
     override suspend fun popupRead(reason_id: Int) = service.popupRead(reason_id)
 
