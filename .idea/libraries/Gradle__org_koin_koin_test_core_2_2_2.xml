@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: org.koin:koin-test-core:2.2.2">
+  <library name="Gradle: org.koin:koin-test-core:2.2.2" external-system-id="GRADLE">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.koin/koin-test-core/2.2.2/c4697cb3025ef479e91286dc3ff17b25fc01762f/koin-test-core-2.2.2.jar!/" />
     </CLASSES>

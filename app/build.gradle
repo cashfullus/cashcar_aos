@@ -7,21 +7,19 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
-
+    compileSdkVersion 34
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'META-INF/NOTICE.txt']
+        }
     }
+
 
     defaultConfig {
         applicationId "com.cashfulus.cashcarplus"
         minSdkVersion 24
-        targetSdkVersion 33
-        versionCode 31
+        targetSdkVersion 34
+        versionCode 32
         versionName "1.1.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -44,6 +42,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'com.cashfulus.cashcarplus'
 }
 
 dependencies {
@@ -81,10 +80,10 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
     // LifeCycle
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
-    kapt "androidx.lifecycle:lifecycle-compiler:2.3.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+    kapt "androidx.lifecycle:lifecycle-compiler:2.4.0"
 
     // Koin (의존성 주입 프레임워크)
     // 각각 위에서부터 코어, 유닛 테스트, Scope 생성-삭제 자동화, ViewModel, Fragment
