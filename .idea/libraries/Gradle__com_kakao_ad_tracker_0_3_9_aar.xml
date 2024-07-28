@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.kakao.ad:tracker:0.3.9@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-4/dd5e87f17f98647e1a267b1adb81a5fa/transformed/jetified-tracker-0.3.9/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-4/dd5e87f17f98647e1a267b1adb81a5fa/transformed/jetified-tracker-0.3.9/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-4/4d8b2d9ad5ad35d1563a9bbdb0d72ef0/transformed/jetified-tracker-0.3.9/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-4/4d8b2d9ad5ad35d1563a9bbdb0d72ef0/transformed/jetified-tracker-0.3.9/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
