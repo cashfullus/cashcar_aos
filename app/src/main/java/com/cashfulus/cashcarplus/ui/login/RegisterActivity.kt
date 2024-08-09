@@ -25,6 +25,8 @@ import com.cashfulus.cashcarplus.ui.dialog.ProfileImageDialogClickListener
 import com.cashfulus.cashcarplus.util.*
 import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.cashfulus.cashcarplus.base.App
 import com.gun0912.tedpermission.PermissionListener
@@ -52,9 +54,21 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
             // Use the cropped image URI.
-            val croppedImageUri = result.uriContent
-            val croppedImageFilePath = result.getUriFilePath(this) // optional usage
             // Process the cropped image URI as needed.
+
+            if(Build.VERSION.SDK_INT >= 29) {
+                val resultUri: Uri = result!!.uriContent!!
+                val resultPathString = result.getUriFilePath(App().context())
+                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+                Glide.with(this@RegisterActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivRegister)
+                viewModel.profileImgAnd11.postValue(resultPathString)
+            } else {
+                val resultUri: Uri = result!!.uriContent!!
+                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+                Glide.with(this@RegisterActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivRegister)
+                viewModel.profileImg.postValue(resultUri)
+            }
+
         } else {
             // An error occurred.
             val exception = result.error
@@ -268,6 +282,15 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
 //                .setAspectRatio(1, 1)
 //                .setRequestedSize(500, 500)
 //                .start(this)
+            cropImage.launch(
+                CropImageContractOptions(
+                    null,
+                    cropImageOptions = CropImageOptions(
+                        guidelines = CropImageView.Guidelines.ON,
+                        outputCompressFormat = Bitmap.CompressFormat.PNG
+                    )
+                )
+            )
 
         }
 

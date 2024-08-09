@@ -18,6 +18,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
@@ -51,6 +54,31 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
     var isBirthFocused = false
     // '신청하기' 버튼 활성화 여부
     val isAllValid = MutableLiveData<Boolean>(false)
+
+    private val cropImage = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            // Use the cropped image URI.
+            // Process the cropped image URI as needed.
+
+            if(Build.VERSION.SDK_INT >= 29) {
+                val resultUri: Uri = result!!.uriContent!!
+                val resultPathString = result.getUriFilePath(App().context())
+                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+                Glide.with(this@UserInfoActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivUserInfo)
+                viewModel.profileImgAnd11.postValue(resultPathString)
+            } else {
+                val resultUri: Uri = result!!.uriContent!!
+                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+                Glide.with(this@UserInfoActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivUserInfo)
+                viewModel.profileImg.postValue(resultUri)
+            }
+
+        } else {
+            // An error occurred.
+            val exception = result.error
+            // Handle the error.
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -251,6 +279,16 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
 //                    .setAspectRatio(1, 1)
 //                    .setRequestedSize(500, 500)
 //                    .start(this)
+
+            cropImage.launch(
+                CropImageContractOptions(
+                    null,
+                    cropImageOptions = CropImageOptions(
+                        guidelines = CropImageView.Guidelines.ON,
+                        outputCompressFormat = Bitmap.CompressFormat.PNG
+                    )
+                )
+            )
         }
 
         /** LiveData 처리 */
