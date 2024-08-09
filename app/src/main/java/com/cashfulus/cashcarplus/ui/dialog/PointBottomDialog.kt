@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import com.cashfulus.cashcarplus.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.bottom_sheet_point.*
 
 interface PointBottomDialogClickListener {
     fun onClick(category: String)
@@ -32,6 +34,12 @@ class PointBottomDialog() : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        var btnBottomSheetPointX = dialog!!.findViewById<ImageView>(R.id.btnBottomSheetPointX)
+        var btnBottomSheetPointAll = dialog!!.findViewById<TextView>(R.id.btnBottomSheetPointAll)
+        var btnBottomSheetPointSave = dialog!!.findViewById<TextView>(R.id.btnBottomSheetPointSave)
+        var btnBottomSheetPointWithdraw = dialog!!.findViewById<TextView>(R.id.btnBottomSheetPointWithdraw)
+        var btnBottomSheetPointDonate = dialog!!.findViewById<TextView>(R.id.btnBottomSheetPointDonate)
 
         btnBottomSheetPointX.setOnClickListener {
             dismiss()

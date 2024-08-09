@@ -3,13 +3,19 @@ package com.cashfulus.cashcarplus.ui.clause
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.LinearLayout
 import com.cashfulus.cashcarplus.R
-import kotlinx.android.synthetic.main.activity_clause_list.*
+import com.cashfulus.cashcarplus.view.UpgradedToolbar
 
 class ClauseListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_clause_list)
+
+        var toolbarClauseList = findViewById<UpgradedToolbar>(R.id.toolbarClauseList)
+        var llClauseList1 = findViewById<LinearLayout>(R.id.llClauseList1)
+        var llClauseList2 = findViewById<LinearLayout>(R.id.llClauseList2)
+        var llClauseList3 = findViewById<LinearLayout>(R.id.llClauseList3)
 
         toolbarClauseList.setLeftOnClick {
             finish()

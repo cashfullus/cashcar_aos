@@ -246,11 +246,11 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
 //                        .check()
 //            }
 
-            CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(1, 1)
-                    .setRequestedSize(500, 500)
-                    .start(this)
+//            CropImage.activity()
+//                    .setGuidelines(CropImageView.Guidelines.ON)
+//                    .setAspectRatio(1, 1)
+//                    .setRequestedSize(500, 500)
+//                    .start(this)
         }
 
         /** LiveData 처리 */
@@ -321,27 +321,27 @@ class UserInfoActivity : BaseActivity(), ProfileImageDialogClickListener, PopupD
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            val result = CropImage.getActivityResult(data)
-
-            if(Build.VERSION.SDK_INT >= 29) {
-                val resultUri: Uri = result!!.uriContent!!
-                val resultPathString = result!!.getUriFilePath(App().context())
-                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
-                Glide.with(this@UserInfoActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivUserInfo)
-                viewModel.profileImgAnd11.postValue(resultPathString)
-            } else {
-                val resultUri: Uri = result!!.uriContent!!
-                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
-                Glide.with(this@UserInfoActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivUserInfo)
-                viewModel.profileImg.postValue(resultUri)
-            }
-
-            if(!binding.etUserInfoNickname.hasError && !binding.etUserInfoName.hasError && !binding.etUserInfoPhone.hasError && !binding.etUserInfoBirth.hasError)
-                isAllValid.postValue(true)
-            else
-                isAllValid.postValue(false)
-        }
+//        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+//            val result = CropImage.getActivityResult(data)
+//
+//            if(Build.VERSION.SDK_INT >= 29) {
+//                val resultUri: Uri = result!!.uriContent!!
+//                val resultPathString = result!!.getUriFilePath(App().context())
+//                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+//                Glide.with(this@UserInfoActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivUserInfo)
+//                viewModel.profileImgAnd11.postValue(resultPathString)
+//            } else {
+//                val resultUri: Uri = result!!.uriContent!!
+//                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+//                Glide.with(this@UserInfoActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivUserInfo)
+//                viewModel.profileImg.postValue(resultUri)
+//            }
+//
+//            if(!binding.etUserInfoNickname.hasError && !binding.etUserInfoName.hasError && !binding.etUserInfoPhone.hasError && !binding.etUserInfoBirth.hasError)
+//                isAllValid.postValue(true)
+//            else
+//                isAllValid.postValue(false)
+//        }
     }
 
     /** 사진 촬영 후 profileImageDialog의 interface의 콜백 함수 부분 */

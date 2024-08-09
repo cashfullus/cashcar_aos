@@ -7,11 +7,12 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.ui.car.AddCarActivity
-import kotlinx.android.synthetic.main.dialog_welcome.*
 
 class WelcomeDialog() : DialogFragment() {
 
@@ -24,6 +25,9 @@ class WelcomeDialog() : DialogFragment() {
 
         //dialog!!.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        var btnDialogWelcomeX = dialog!!.findViewById<ImageView>(R.id.btnDialogWelcomeX)
+        var btnDialogWelcome = dialog!!.findViewById<Button>(R.id.btnDialogWelcome)
 
         btnDialogWelcomeX.setOnClickListener {
             dismiss()

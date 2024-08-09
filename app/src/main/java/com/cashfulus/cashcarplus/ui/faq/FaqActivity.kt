@@ -7,7 +7,6 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityFaqBinding
 import com.cashfulus.cashcarplus.ui.adapter.ExpandableFaqListAdapter
-import kotlinx.android.synthetic.main.activity_faq.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 

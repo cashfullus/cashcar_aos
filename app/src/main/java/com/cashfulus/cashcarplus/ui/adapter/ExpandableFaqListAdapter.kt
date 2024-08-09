@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import android.widget.ImageView
+import android.widget.TextView
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.model.FaqResponse
 import com.cashfulus.cashcarplus.model.NoticeData
-import kotlinx.android.synthetic.main.row_notice_child.view.*
-import kotlinx.android.synthetic.main.row_notice_parent.view.*
 
 class ExpandableFaqListAdapter(private val context: Context, private val dataList: ArrayList<FaqResponse>): BaseExpandableListAdapter() {
     override fun getGroupCount() = dataList.size
@@ -32,7 +32,8 @@ class ExpandableFaqListAdapter(private val context: Context, private val dataLis
     override fun getGroupView(parent: Int, isExpanded: Boolean, convertView: View?, parentview: ViewGroup): View {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val parentView = inflater.inflate(R.layout.row_notice_parent, parentview, false)
-        parentView.tvRowNoticeParentTitle.text = dataList[parent].title
+        var tvRowNoticeParentTitle =  parentView.findViewById<TextView>(R.id.tvRowNoticeParentTitle)
+        tvRowNoticeParentTitle.text = dataList[parent].title
         setArrow(parentView, isExpanded)
 
         return parentView
@@ -42,7 +43,8 @@ class ExpandableFaqListAdapter(private val context: Context, private val dataLis
     override fun getChildView(parent: Int, child: Int, isLastChild: Boolean, convertView: View?, parentview: ViewGroup): View {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val childView = inflater.inflate(R.layout.row_notice_child, parentview, false)
-        childView.tvRowNoticeChildContents.text = getChild(parent, child)
+        var tvRowNoticeChildContents =  childView.findViewById<TextView>(R.id.tvRowNoticeChildContents)
+        tvRowNoticeChildContents.text = dataList[parent].title
 
         return childView
     }
@@ -50,9 +52,10 @@ class ExpandableFaqListAdapter(private val context: Context, private val dataLis
     /* 닫힘, 열림 표시해주는 화살표 설정 */
     private fun setArrow(parentView: View, isExpanded: Boolean) {
         /* 0번째 부모는 자식이 없으므로 화살표 설정해주지 않음 */
+        var ivRowNotice =  parentView.findViewById<ImageView>(R.id.ivRowNotice)
         if (isExpanded)
-            parentView.ivRowNotice.setImageResource(R.drawable.ic_arrow_up)
+            ivRowNotice.setImageResource(R.drawable.ic_arrow_up)
         else
-            parentView.ivRowNotice.setImageResource(R.drawable.ic_arrow_below)
+            ivRowNotice.setImageResource(R.drawable.ic_arrow_below)
     }
 }

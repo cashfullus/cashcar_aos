@@ -13,7 +13,6 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import com.cashfulus.cashcarplus.R
-import kotlinx.android.synthetic.main.activity_address.*
 
 
 class AddressActivity : AppCompatActivity() {

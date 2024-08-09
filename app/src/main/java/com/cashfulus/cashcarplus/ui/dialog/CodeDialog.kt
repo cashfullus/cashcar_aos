@@ -9,10 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
-import kotlinx.android.synthetic.main.dialog_code.*
+import com.cashfulus.cashcarplus.view.UpgradedEdittext
 import java.lang.ClassCastException
 
 class CodeDialog : DialogFragment() {
@@ -37,8 +39,12 @@ class CodeDialog : DialogFragment() {
 
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        var btnDialogCode = dialog!!.findViewById<Button>(R.id.btnDialogCode)
+        var etCode = dialog!!.findViewById<UpgradedEdittext>(R.id.etCode)
+        var btnCodeDialogClose = dialog!!.findViewById<ImageView>(R.id.btnCodeDialogClose)
+
         btnDialogCode.setOnClickListener {
-            listener.onCodeApplyClick(dialog!!.etCode.getEditText().text.toString())
+            listener.onCodeApplyClick(etCode.getEditText().text.toString())
             dialog!!.dismiss()
         }
         btnCodeDialogClose.setOnClickListener {

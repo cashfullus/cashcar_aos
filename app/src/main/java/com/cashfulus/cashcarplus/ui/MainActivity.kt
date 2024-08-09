@@ -22,7 +22,7 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.util.UserManager
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.android.material.tabs.TabLayout
 
 class MainActivity : FragmentActivity() {
 
@@ -31,6 +31,9 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        var vpMain = findViewById<ViewPager2>(R.id.vpMain)
+        var tabMain = findViewById<TabLayout>(R.id.tabMain)
 
         vpMain.adapter = MainActivity@adapter
         vpMain.orientation = ViewPager2.ORIENTATION_HORIZONTAL

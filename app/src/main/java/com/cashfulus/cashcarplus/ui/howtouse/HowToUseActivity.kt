@@ -3,18 +3,28 @@ package com.cashfulus.cashcarplus.ui.howtouse
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.ui.MainActivity
 import com.cashfulus.cashcarplus.ui.login.LoginActivity
-import kotlinx.android.synthetic.main.activity_how_to_use.*
+import com.cashfulus.cashcarplus.view.UpgradedToolbar
+import com.google.android.material.tabs.TabLayout
 
 class HowToUseActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_how_to_use)
+
+        var vpHowToUse = findViewById<ViewPager2>(R.id.vpHowToUse)
+        var toolbarHowToUse = findViewById<UpgradedToolbar>(R.id.toolbarHowToUse)
+        var indicatorHowToUse = findViewById<TabLayout>(R.id.indicatorHowToUse)
+        var btnHowToUseSkip = findViewById<TextView>(R.id.btnHowToUseSkip)
+        var btnHowToUseNext = findViewById<TextView>(R.id.btnHowToUseNext)
+        var btnHowToUseStart = findViewById<Button>(R.id.btnHowToUseStart)
 
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         vpHowToUse.adapter = pagerAdapter

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.viewpager.widget.ViewPager
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.common.model.KakaoSdkError
@@ -21,7 +22,6 @@ import com.cashfulus.cashcarplus.ui.login.LoginActivity
 import com.cashfulus.cashcarplus.util.UserManager
 import com.kakao.ad.common.json.AppLaunch
 import com.kakao.ad.tracker.send
-import kotlinx.android.synthetic.main.activity_splash.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.util.*
@@ -119,7 +119,7 @@ class SplashActivity : BaseActivity() {
 
         viewModel.banners.observe(this@SplashActivity) {
             val adapter = SplashBannerAdapter(this, it)
-            vpBanners.visibility = View.VISIBLE
+            binding.vpBanners.visibility = View.VISIBLE
             viewPager.adapter = adapter
             startAutoScroll()
         }
@@ -173,6 +173,13 @@ class SplashActivity : BaseActivity() {
         viewModel.error.observe(this@SplashActivity, Observer {
             Toast.makeText(this@SplashActivity, it.message, Toast.LENGTH_LONG).show()
         })*/
+
+        // Back button handling
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        })
+
     }
 
     private fun startAutoScroll() {
@@ -202,9 +209,5 @@ class SplashActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         timer?.cancel()
-    }
-
-    override fun onBackPressed() {
-        // 뒤로가기 키 동작 방지
     }
 }

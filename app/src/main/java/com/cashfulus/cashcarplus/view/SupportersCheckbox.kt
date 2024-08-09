@@ -9,6 +9,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.setPadding
 import androidx.databinding.BindingAdapter
@@ -16,7 +17,6 @@ import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.cashfulus.cashcarplus.R
-import kotlinx.android.synthetic.main.widget_supporters_checkbox.view.*
 
 /** 광고 서포터즈 차량 체크박스의 상태. */
 const val ONLY_ONE_CAR = 0
@@ -60,7 +60,10 @@ class SupportersCheckbox : LinearLayout {
     }
 
     private fun setTypeArray(typedArray: TypedArray) {
+        var checkbox = findViewById<MaterialCheckBox>(R.id.checkbox)
+        var textview_checkbox = findViewById<TextView>(R.id.textview_checkbox)
         // 버튼의 현재 상태
+
         state = typedArray.getInt(R.styleable.SupportersCheckbox_checkState, ONLY_ONE_CAR)
         when(state) {
             ONLY_ONE_CAR -> {
@@ -121,6 +124,8 @@ class SupportersCheckbox : LinearLayout {
     }
 
     fun isEnabled(status: Boolean) {
+        var checkbox = findViewById<MaterialCheckBox>(R.id.checkbox)
+        var textview_checkbox = findViewById<TextView>(R.id.textview_checkbox)
         checkbox.isEnabled = status
         checkbox.isClickable = status
         checkbox.isFocusable = status
@@ -128,6 +133,8 @@ class SupportersCheckbox : LinearLayout {
     }
 
     fun setCurrentState(state: Int) {
+        var checkbox = findViewById<MaterialCheckBox>(R.id.checkbox)
+        var textview_checkbox = findViewById<TextView>(R.id.textview_checkbox)
         when(state) {
             ONLY_ONE_CAR -> {
                 checkbox.background = context.getDrawable(R.drawable.ic_checkbox_deactive_selected)
@@ -185,6 +192,7 @@ class SupportersCheckbox : LinearLayout {
     }
 
     fun getCheckbox(): CheckBox {
+        var checkbox = findViewById<MaterialCheckBox>(R.id.checkbox)
         return checkbox
     }
 

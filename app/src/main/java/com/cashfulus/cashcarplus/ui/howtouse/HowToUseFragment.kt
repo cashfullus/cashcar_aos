@@ -5,8 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.cashfulus.cashcarplus.R
-import kotlinx.android.synthetic.main.fragment_how_to_use.*
 
 const val IMAGE_HOW_TO_USE = "image"
 const val TITLE_HOW_TO_USE = "title"
@@ -18,6 +19,11 @@ class HowToUseFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        var ivHowToUse = view.findViewById<ImageView>(R.id.ivHowToUse)
+        var tvHowToUseTitle = view.findViewById<TextView>(R.id.tvHowToUseTitle)
+        var tvHowToUseContents = view.findViewById<TextView>(R.id.tvHowToUseContents)
+
         arguments?.takeIf { it.containsKey(IMAGE_HOW_TO_USE) && it.containsKey(TEXT_HOW_TO_USE) }?.apply {
             ivHowToUse.setImageResource(getInt(IMAGE_HOW_TO_USE))
             tvHowToUseTitle.text = getString(TITLE_HOW_TO_USE)

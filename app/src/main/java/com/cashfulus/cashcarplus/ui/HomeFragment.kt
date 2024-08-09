@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -41,7 +42,6 @@ import com.cashfulus.cashcarplus.ui.mission.MissionCertActivity
 import com.cashfulus.cashcarplus.util.UserManager
 import com.cashfulus.cashcarplus.view.*
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.dialog_popup.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.DecimalFormat
@@ -1069,7 +1069,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     }
                 }
             }
-            requireActivity().registerReceiver(receiver, IntentFilter("com.package.notification"))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                requireActivity().registerReceiver(receiver, IntentFilter("com.package.notification"), Context.RECEIVER_NOT_EXPORTED)
+            } else {
+                requireActivity().registerReceiver(receiver, IntentFilter("com.package.notification"))
+            }
             Log.d("CashcarMsg", "startRegisterReceiver()")
             mIsReceiverRegistered = true
         }
@@ -1117,7 +1121,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
     inner class MyAdapter(
         private val context: Context,
-        private val dataList: ArrayList<ArrayList<AdResponse>>
+        private val dataList: ArrayList<ArrayList<AdResponse>>,
     ) : RecyclerView.Adapter<MyAdapter.Holder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter.Holder {
             val view = LayoutInflater.from(context).inflate(R.layout.row_tmp, parent, false)
@@ -1160,12 +1164,12 @@ class CancelMissionPopupDialog(
     private val msg: String,
     private val okMsg: String,
     private val cancelMsg: String,
-    private val positiveFun: (() -> Unit)
+    private val positiveFun: (() -> Unit),
 ) : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.dialog_popup, container, false)
     }
@@ -1174,6 +1178,10 @@ class CancelMissionPopupDialog(
         super.onViewCreated(view, savedInstanceState)
 
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        var tvPopup = view.findViewById<TextView>(R.id.tvPopup)
+        var btnPopupOk = view.findViewById<TextView>(R.id.btnPopupOk)
+        var btnPopupCancel = view.findViewById<TextView>(R.id.btnPopupCancel)
 
         tvPopup.text = msg
         btnPopupOk.text = okMsg

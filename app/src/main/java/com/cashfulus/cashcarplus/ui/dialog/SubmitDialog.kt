@@ -6,11 +6,11 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
-import kotlinx.android.synthetic.main.dialog_code.*
-import kotlinx.android.synthetic.main.dialog_submit.*
 import java.lang.ClassCastException
 
 class SubmitDialog(var reason: String) : DialogFragment() {
@@ -38,6 +38,10 @@ class SubmitDialog(var reason: String) : DialogFragment() {
         if(reason == "reject") {
             dialog!!.setCancelable(false)
         }
+
+        var tvDialogSubmitTitle = dialog!!.findViewById<TextView>(R.id.tvDialogSubmitTitle)
+        var btnDialogSubmitX = dialog!!.findViewById<ImageView>(R.id.btnDialogSubmitX)
+        var tvDialogSubmit = dialog!!.findViewById<TextView>(R.id.tvDialogSubmit)
 
         tvDialogSubmitTitle.text =
             if(reason == "reject") {

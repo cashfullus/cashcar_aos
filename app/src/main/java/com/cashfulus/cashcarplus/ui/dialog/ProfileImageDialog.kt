@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +25,6 @@ import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.ui.image.ImageCropActivity
 import com.cashfulus.cashcarplus.util.resizeBitmap
 import com.cashfulus.cashcarplus.util.rotateBitmap
-import kotlinx.android.synthetic.main.dialog_profile_image.*
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -168,6 +168,9 @@ class ProfileImageDialog : DialogFragment() {
         /*setCanceledOnTouchOutside(true)
         //window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         requestWindowFeature(Window.FEATURE_NO_TITLE)*/
+
+        var tvDialogProfileCamera = view.findViewById<TextView>(R.id.tvDialogProfileCamera)
+        var tvDialogProfileGallery = view.findViewById<TextView>(R.id.tvDialogProfileGallery)
 
         tvDialogProfileCamera.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)

@@ -6,13 +6,15 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.cashfulus.cashcarplus.R
-import kotlinx.android.synthetic.main.widget_upgraded_toolbar.view.*
 
 class UpgradedToolbar: ConstraintLayout {
+
     constructor(context: Context) : super(context) {
         initLayout()
     }
@@ -48,6 +50,13 @@ class UpgradedToolbar: ConstraintLayout {
     private fun setTypeArray(typedArray: TypedArray) {
         // 왼쪽 버튼 이미지
         val leftDrawable = typedArray.getDrawable(R.styleable.UTB_leftButtonImg)
+
+        var btnAppbarBack = findViewById<FrameLayout>(R.id.btnAppbarBack)
+        var btnIvAppbarBack = findViewById<ImageView>(R.id.btnIvAppbarBack)
+        var tvAppbarTitle = findViewById<TextView>(R.id.tvAppbarTitle)
+        var btnAppbarFunction = findViewById<FrameLayout>(R.id.btnAppbarFunction)
+        var btnIvAppbarFunction = findViewById<ImageView>(R.id.btnIvAppbarFunction)
+
         if(leftDrawable == null)
             btnAppbarBack.visibility = View.GONE
         else {
@@ -89,10 +98,13 @@ class UpgradedToolbar: ConstraintLayout {
     }
 
     fun getRightButtonRes(): FrameLayout {
+        var btnAppbarFunction = findViewById<FrameLayout>(R.id.btnAppbarFunction)
         return btnAppbarFunction
     }
 
     fun setLeftButton(@DrawableRes img: Int) {
+        var btnAppbarBack = findViewById<FrameLayout>(R.id.btnAppbarBack)
+        var btnIvAppbarBack = findViewById<ImageView>(R.id.btnIvAppbarBack)
         if(img == 0) {
             btnIvAppbarBack.background = null
             btnAppbarBack.visibility = View.GONE
@@ -103,10 +115,13 @@ class UpgradedToolbar: ConstraintLayout {
     }
 
     fun setTitle(title: String) {
+        var tvAppbarTitle = findViewById<TextView>(R.id.tvAppbarTitle)
         tvAppbarTitle.text = title
     }
 
     fun setRightButton(@DrawableRes img: Int?) {
+        var btnAppbarFunction = findViewById<FrameLayout>(R.id.btnAppbarFunction)
+        var btnIvAppbarFunction = findViewById<ImageView>(R.id.btnIvAppbarFunction)
         if(img != null) {
             btnIvAppbarFunction.background = ContextCompat.getDrawable(context, img)
             btnAppbarFunction.visibility = VISIBLE
@@ -117,10 +132,12 @@ class UpgradedToolbar: ConstraintLayout {
     }
 
     fun setLeftOnClick(function: (View) -> Unit) {
+        var btnAppbarBack = findViewById<FrameLayout>(R.id.btnAppbarBack)
         btnAppbarBack.setOnClickListener(function)
     }
 
     fun setRightOnClick(function: (View) -> Unit) {
+        var btnAppbarFunction = findViewById<FrameLayout>(R.id.btnAppbarFunction)
         btnAppbarFunction.setOnClickListener(function)
     }
 }

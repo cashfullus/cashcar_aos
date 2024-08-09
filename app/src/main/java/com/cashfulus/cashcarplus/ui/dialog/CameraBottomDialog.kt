@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,6 @@ import com.cashfulus.cashcarplus.ui.image.CameraActivity
 import com.cashfulus.cashcarplus.util.resizeBitmap
 import com.cashfulus.cashcarplus.util.rotateBitmap
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.bottom_sheet_camera.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -91,6 +91,8 @@ class CameraBottomDialog(imgNum: Int) : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        var btnBottomSheetCamera = view.findViewById<LinearLayout>(R.id.btnBottomSheetCamera)
 
         btnBottomSheetCamera.setOnClickListener {
             val intent = Intent(requireActivity(), CameraActivity::class.java) // Intent(MediaStore.ACTION_IMAGE_CAPTURE)

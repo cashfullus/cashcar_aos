@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
@@ -18,7 +19,7 @@ import com.bumptech.glide.Glide
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.model.DonationListResponse
 import com.cashfulus.cashcarplus.model.ImageUrl
-import kotlinx.android.synthetic.main.dialog_donation.*
+import com.google.android.material.tabs.TabLayout
 
 class DonationDialog(private val data: DonationListResponse): DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -29,6 +30,13 @@ class DonationDialog(private val data: DonationListResponse): DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        var ivDonationDialogLogo = dialog!!.findViewById<ImageView>(R.id.ivDonationDialogLogo)
+        var tvDonationDialogName = dialog!!.findViewById<TextView>(R.id.tvDonationDialogName)
+        var tvDonationDialogContents = dialog!!.findViewById<TextView>(R.id.tvDonationDialogContents)
+        var vpDonationDialog = dialog!!.findViewById<ViewPager>(R.id.vpDonationDialog)
+        var tlDonationDialog = dialog!!.findViewById<TabLayout>(R.id.tlDonationDialog)
+        var btnDonationDialogClose = dialog!!.findViewById<ImageView>(R.id.btnDonationDialogClose)
 
         context?.let { Glide.with(it).load(data.logo).into(ivDonationDialogLogo) }
         tvDonationDialogName.text = data.name

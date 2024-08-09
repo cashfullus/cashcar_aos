@@ -8,13 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
-import kotlinx.android.synthetic.main.dialog_spinner.*
 
 interface SpinnerDialogClickListener {
     fun onSelected(str: String)
@@ -39,6 +39,8 @@ class SpinnerDialog(private val list: Array<String>) : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        var rvSpinner = view.findViewById<RecyclerView>(R.id.rvSpinner)
 
         rvSpinner.adapter = SpinnerRecyclerAdapter()
         rvSpinner.layoutManager = LinearLayoutManager(context)

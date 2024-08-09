@@ -8,10 +8,12 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
-import kotlinx.android.synthetic.main.dialog_mission.*
 import java.lang.ClassCastException
 
 class MissionDialog(private val title: String, private val message: String, private val btnText: String) : DialogFragment() {
@@ -36,6 +38,11 @@ class MissionDialog(private val title: String, private val message: String, priv
         super.onViewCreated(view, savedInstanceState)
 
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        var tvDialogMissionTitle = dialog!!.findViewById<TextView>(R.id.tvDialogMissionTitle)
+        var tvDialogMissionContents = dialog!!.findViewById<TextView>(R.id.tvDialogMissionContents)
+        var btnDialogMission = dialog!!.findViewById<Button>(R.id.btnDialogMission)
+        var btnDialogMissionX = dialog!!.findViewById<ImageView>(R.id.btnDialogMissionX)
 
         tvDialogMissionTitle.text = title
         tvDialogMissionContents.text = message

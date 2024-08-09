@@ -8,12 +8,13 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
-import kotlinx.android.synthetic.main.dialog_mission.*
-import kotlinx.android.synthetic.main.dialog_withdraw.*
 import java.lang.ClassCastException
 
 class WithdrawingDialog(private val isDonate: Boolean, private val isOngoing: Boolean) : DialogFragment() {
@@ -25,6 +26,14 @@ class WithdrawingDialog(private val isDonate: Boolean, private val isOngoing: Bo
         super.onViewCreated(view, savedInstanceState)
 
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        var btnDialogWithdraw = dialog!!.findViewById<Button>(R.id.btnDialogWithdraw)
+        var tvDialogWithdrawTitle = dialog!!.findViewById<TextView>(R.id.tvDialogWithdrawTitle)
+        var tvDialogWithdrawImg1 = dialog!!.findViewById<TextView>(R.id.tvDialogWithdrawImg1)
+        var tvDialogWithdrawImg2 = dialog!!.findViewById<TextView>(R.id.tvDialogWithdrawImg2)
+        var tvDialogWithdrawImg3 = dialog!!.findViewById<TextView>(R.id.tvDialogWithdrawImg3)
+        var ivDialogWithdrawImg1 = dialog!!.findViewById<ImageView>(R.id.ivDialogWithdrawImg1)
+        var ivDialogWithdrawImg2 = dialog!!.findViewById<ImageView>(R.id.ivDialogWithdrawImg2)
 
         btnDialogWithdraw.setOnClickListener {
             dismiss()

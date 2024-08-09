@@ -9,11 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.App
 import com.cashfulus.cashcarplus.base.BaseActivity
-import kotlinx.android.synthetic.main.dialog_popup.*
 import java.lang.ClassCastException
 
 interface PopupDialogClickListener {
@@ -42,6 +42,10 @@ class PopupDialog(private val msg: String, private val okMsg: String?, private v
         super.onViewCreated(view, savedInstanceState)
 
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        var tvPopup = dialog!!.findViewById<TextView>(R.id.tvPopup)
+        var btnPopupCancel = dialog!!.findViewById<TextView>(R.id.btnPopupCancel)
+        var btnPopupOk = dialog!!.findViewById<TextView>(R.id.btnPopupOk)
 
         tvPopup.text = msg
         btnPopupCancel.text = cancelMsg

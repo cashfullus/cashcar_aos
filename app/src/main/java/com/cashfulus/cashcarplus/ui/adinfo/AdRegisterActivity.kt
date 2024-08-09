@@ -21,7 +21,6 @@ import com.cashfulus.cashcarplus.ui.car.AddCarActivity
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialog
 import com.cashfulus.cashcarplus.ui.dialog.PopupDialogClickListener
 import com.cashfulus.cashcarplus.util.*
-import kotlinx.android.synthetic.main.widget_upgraded_edittext.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.DecimalFormat

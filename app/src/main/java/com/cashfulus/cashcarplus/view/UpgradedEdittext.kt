@@ -11,11 +11,10 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.*
 import com.cashfulus.cashcarplus.R
-import kotlinx.android.synthetic.main.widget_upgraded_edittext.view.*
-
 
 class UpgradedEdittext : ConstraintLayout {
     var hasError: Boolean = false
@@ -57,6 +56,10 @@ class UpgradedEdittext : ConstraintLayout {
         // 에러메세지 & 성공 메세지
         val strError = typedArray.getString(R.styleable.UET_errorMessage)
         val strSuccess = typedArray.getString(R.styleable.UET_successMessage)
+
+        var edittext = findViewById<EditText>(R.id.edittext)
+        var textview_message = findViewById<TextView>(R.id.textview_message)
+
         if((strError == null && strSuccess == null) || !edittext.isEnabled) {
             textview_message.visibility = View.GONE
             textview_message.setText("")
@@ -113,10 +116,13 @@ class UpgradedEdittext : ConstraintLayout {
     }
 
     fun setFilters(filterArrays: Array<InputFilter>) {
+        var edittext = findViewById<EditText>(R.id.edittext)
         edittext.filters = filterArrays
     }
 
     fun setError(strError: String) {
+        var edittext = findViewById<EditText>(R.id.edittext)
+        var textview_message = findViewById<TextView>(R.id.textview_message)
         if(edittext.isEnabled) {
             textview_message.visibility = View.VISIBLE
             textview_message.setTextColor(context.getColor(R.color.system_no))
@@ -127,6 +133,7 @@ class UpgradedEdittext : ConstraintLayout {
         }
     }
     fun setErrorWithoutMsg() {
+        var edittext = findViewById<EditText>(R.id.edittext)
         if(edittext.isEnabled) {
             edittext.background = context.getDrawable(R.drawable.input_form_error)
             hasError = true
@@ -134,6 +141,8 @@ class UpgradedEdittext : ConstraintLayout {
     }
 
     fun setSuccess(strSuccess: String) {
+        var edittext = findViewById<EditText>(R.id.edittext)
+        var textview_message = findViewById<TextView>(R.id.textview_message)
         if(edittext.isEnabled) {
             textview_message.visibility = View.VISIBLE
             textview_message.setTextColor(context.getColor(R.color.system_success))
@@ -144,6 +153,7 @@ class UpgradedEdittext : ConstraintLayout {
         }
     }
     fun setSuccessWithoutMsg() {
+        var edittext = findViewById<EditText>(R.id.edittext)
         if(edittext.isEnabled) {
             edittext.background = context.getDrawable(R.drawable.input_form_success)
             hasError = false
@@ -151,6 +161,8 @@ class UpgradedEdittext : ConstraintLayout {
     }
 
     fun setNoError() {
+        var edittext = findViewById<EditText>(R.id.edittext)
+        var textview_message = findViewById<TextView>(R.id.textview_message)
         textview_message.visibility = View.GONE
         textview_message.setText("")
         edittext.background = context.getDrawable(R.drawable.input_form_selector)
@@ -159,14 +171,18 @@ class UpgradedEdittext : ConstraintLayout {
     }
 
     fun setFocus() {
+        var edittext = findViewById<EditText>(R.id.edittext)
         edittext.requestFocus()
     }
 
     fun getEditText(): EditText {
+        var edittext = findViewById<EditText>(R.id.edittext)
         return edittext
     }
 
     override fun setEnabled(flag: Boolean) {
+        var edittext = findViewById<EditText>(R.id.edittext)
+        var textview_message = findViewById<TextView>(R.id.textview_message)
         edittext.isEnabled = flag
         edittext.isFocusable = flag
         edittext.isClickable = flag

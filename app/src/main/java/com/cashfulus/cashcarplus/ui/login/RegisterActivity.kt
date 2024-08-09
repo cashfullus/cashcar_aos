@@ -24,11 +24,11 @@ import com.cashfulus.cashcarplus.ui.adapter.SpinnerWithHintAdapter
 import com.cashfulus.cashcarplus.ui.dialog.ProfileImageDialogClickListener
 import com.cashfulus.cashcarplus.util.*
 import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.cashfulus.cashcarplus.base.App
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import kotlinx.android.synthetic.main.activity_register.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -48,6 +48,19 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
     var isBirthFocused = false
     // Button Validation
     private val isAllValid = MutableLiveData<Boolean>(false)
+
+    private val cropImage = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            // Use the cropped image URI.
+            val croppedImageUri = result.uriContent
+            val croppedImageFilePath = result.getUriFilePath(this) // optional usage
+            // Process the cropped image URI as needed.
+        } else {
+            // An error occurred.
+            val exception = result.error
+            // Handle the error.
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -250,11 +263,12 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
 //                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE) //, Manifest.permission.READ_PHONE_STATE
 //                .check()
 
-            CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .setAspectRatio(1, 1)
-                .setRequestedSize(500, 500)
-                .start(this)
+//            CropImage.activity()
+//                .setGuidelines(CropImageView.Guidelines.ON)
+//                .setAspectRatio(1, 1)
+//                .setRequestedSize(500, 500)
+//                .start(this)
+
         }
 
         /** LiveData 처리 */
@@ -299,27 +313,27 @@ class RegisterActivity: BaseActivity(), ProfileImageDialogClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            val result = CropImage.getActivityResult(data)
-
-            if(Build.VERSION.SDK_INT >= 29) {
-                val resultUri: Uri = result!!.uriContent!!
-                val resultPathString = result!!.getUriFilePath(App().context())
-                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
-                Glide.with(this@RegisterActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivRegister)
-                viewModel.profileImgAnd11.postValue(resultPathString)
-            } else {
-                val resultUri: Uri = result!!.uriContent!!
-                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
-                Glide.with(this@RegisterActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivRegister)
-                viewModel.profileImg.postValue(resultUri)
-            }
-
-            if(!binding.etRegisterName.hasError && !binding.etRegisterPhone.hasError && !binding.etRegisterEmail.hasError)
-                isAllValid.postValue(true)
-            else
-                isAllValid.postValue(false)
-        }
+//        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+//            val result = CropImage.getActivityResult(data)
+//
+//            if(Build.VERSION.SDK_INT >= 29) {
+//                val resultUri: Uri = result!!.uriContent!!
+//                val resultPathString = result!!.getUriFilePath(App().context())
+//                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+//                Glide.with(this@RegisterActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivRegister)
+//                viewModel.profileImgAnd11.postValue(resultPathString)
+//            } else {
+//                val resultUri: Uri = result!!.uriContent!!
+//                /** ImageView에 표시되는 이미지를 500*500으로 resizing (단, 이 코드만으론 API에 파라미터로 들어가는 프로필 이미지의 사이즈는 바뀌지 않음) */
+//                Glide.with(this@RegisterActivity).load(resultUri).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(binding.ivRegister)
+//                viewModel.profileImg.postValue(resultUri)
+//            }
+//
+//            if(!binding.etRegisterName.hasError && !binding.etRegisterPhone.hasError && !binding.etRegisterEmail.hasError)
+//                isAllValid.postValue(true)
+//            else
+//                isAllValid.postValue(false)
+//        }
     }
 
     /** 사진 촬영 후 profileImageDialog의 interface의 콜백 함수 부분 */

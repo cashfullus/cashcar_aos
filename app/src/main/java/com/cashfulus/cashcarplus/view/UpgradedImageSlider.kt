@@ -6,10 +6,11 @@ import android.os.Handler
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.viewpager.widget.ViewPager
 import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.model.ImageUrl
 import com.cashfulus.cashcarplus.ui.adapter.ImageSliderAdapter
-import kotlinx.android.synthetic.main.widget_upgraded_image_slider.view.*
+import com.google.android.material.tabs.TabLayout
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
@@ -68,6 +69,8 @@ class UpgradedImageSlider : ConstraintLayout {
 
     /** image List 셋팅 */
     fun setImages(images: List<ImageUrl>) {
+        var vpImageSlider = findViewById<ViewPager>(R.id.vpImageSlider)
+        var tlImageSlider = findViewById<TabLayout>(R.id.tlImageSlider)
         val adapter = ImageSliderAdapter(context, images)
         pageNum = images.size
         vpImageSlider.adapter = adapter
@@ -76,6 +79,7 @@ class UpgradedImageSlider : ConstraintLayout {
 
     /** Auto Scroll */
     fun startAutoScroll(milliseconds: Long) {
+        var vpImageSlider = findViewById<ViewPager>(R.id.vpImageSlider)
         val handler = Handler()
         val Update = Runnable {
             if (currentPage == pageNum) {

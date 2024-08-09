@@ -2,7 +2,10 @@ package com.cashfulus.cashcarplus.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.CheckBox
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
@@ -11,7 +14,6 @@ import com.cashfulus.cashcarplus.R
 import com.cashfulus.cashcarplus.base.BaseActivity
 import com.cashfulus.cashcarplus.databinding.ActivityClauseBinding
 import com.cashfulus.cashcarplus.util.UserManager
-import kotlinx.android.synthetic.main.activity_clause.*
 
 const val CLAUSE_AGREED = 0
 const val CLAUSE_CANCELED = -1
@@ -25,6 +27,19 @@ class ClauseActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var cbClauseAll = findViewById<CheckBox>(R.id.cbClauseAll)
+        var cbClauseService = findViewById<CheckBox>(R.id.cbClauseService)
+        var cbClausePolicy = findViewById<CheckBox>(R.id.cbClausePolicy)
+        var cbClauseGPS = findViewById<CheckBox>(R.id.cbClauseGPS)
+        var cbClauseAdvertisement = findViewById<CheckBox>(R.id.cbClauseAdvertisement)
+        var cbClauseMarketing = findViewById<CheckBox>(R.id.cbClauseMarketing)
+        var tvClauseAll = findViewById<TextView>(R.id.tvClauseAll)
+        var llCluaseService = findViewById<LinearLayout>(R.id.llCluaseService)
+        var llCluasePolicy = findViewById<LinearLayout>(R.id.llCluasePolicy)
+        var llCluaseGPS = findViewById<LinearLayout>(R.id.llCluaseGPS)
+        var llCluaseMarketing = findViewById<LinearLayout>(R.id.llCluaseMarketing)
+        var btnClauseStart = findViewById<Button>(R.id.btnClauseStart)
 
         // Restore instance state
         if (savedInstanceState != null)
