@@ -1,5 +1,6 @@
 <component name="libraryTable">
-  <library name="Gradle: org.koin:koin-test:2.2.2" external-system-id="GRADLE">
+  <library name="Gradle: org.koin:koin-test:2.2.2" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.koin" artifactId="koin-test" version="2.2.2" />
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.koin/koin-test/2.2.2/77d2b8de6adaf896a6d8852a90b720a507444a4f/koin-test-2.2.2.jar!/" />
     </CLASSES>

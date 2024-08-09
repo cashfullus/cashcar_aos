@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: org.koin:koin-androidx-fragment:2.2.2@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-4/64e6805cd20ab0ebed1f558be84a3dc1/transformed/jetified-koin-androidx-fragment-2.2.2/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-4/64e6805cd20ab0ebed1f558be84a3dc1/transformed/jetified-koin-androidx-fragment-2.2.2/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-4/96b8444b761071a483417e7a4aa0d830/transformed/jetified-koin-androidx-fragment-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-4/96b8444b761071a483417e7a4aa0d830/transformed/jetified-koin-androidx-fragment-2.2.2/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.koin/koin-androidx-fragment/2.2.2/76e316e7d1027a7733e14ead287d070a3cf81c4f/koin-androidx-fragment-2.2.2-javadoc.jar!/" />
