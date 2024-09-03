@@ -28,19 +28,6 @@ class ClauseActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var cbClauseAll = findViewById<CheckBox>(R.id.cbClauseAll)
-        var cbClauseService = findViewById<CheckBox>(R.id.cbClauseService)
-        var cbClausePolicy = findViewById<CheckBox>(R.id.cbClausePolicy)
-        var cbClauseGPS = findViewById<CheckBox>(R.id.cbClauseGPS)
-        var cbClauseAdvertisement = findViewById<CheckBox>(R.id.cbClauseAdvertisement)
-        var cbClauseMarketing = findViewById<CheckBox>(R.id.cbClauseMarketing)
-        var tvClauseAll = findViewById<TextView>(R.id.tvClauseAll)
-        var llCluaseService = findViewById<LinearLayout>(R.id.llCluaseService)
-        var llCluasePolicy = findViewById<LinearLayout>(R.id.llCluasePolicy)
-        var llCluaseGPS = findViewById<LinearLayout>(R.id.llCluaseGPS)
-        var llCluaseMarketing = findViewById<LinearLayout>(R.id.llCluaseMarketing)
-        var btnClauseStart = findViewById<Button>(R.id.btnClauseStart)
-
         // Restore instance state
         if (savedInstanceState != null)
             onRestoreInstanceState(savedInstanceState)
@@ -67,11 +54,11 @@ class ClauseActivity : BaseActivity() {
         clauseAgreed.add(false)
         // clauseAgreed와 체크 상태를 연동하기 위한 ArrayList
         val clauseView = ArrayList<CheckBox>()
-        clauseView.add(cbClauseService)
-        clauseView.add(cbClausePolicy)
-        clauseView.add(cbClauseGPS)
-        clauseView.add(cbClauseAdvertisement)
-        clauseView.add(cbClauseMarketing)
+        clauseView.add(binding.cbClauseService)
+        clauseView.add(binding.cbClausePolicy)
+        clauseView.add(binding.cbClauseGPS)
+        clauseView.add(binding.cbClauseAdvertisement)
+        clauseView.add(binding.cbClauseMarketing)
 
         val requestActivity: ActivityResultLauncher<Intent> = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -91,7 +78,7 @@ class ClauseActivity : BaseActivity() {
         }
 
         /** 전체 동의 */
-        cbClauseAll.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.cbClauseAll.setOnCheckedChangeListener { buttonView, isChecked ->
             clauseAgreed[0] = isChecked
             clauseView[0].isChecked = isChecked
             clauseAgreed[1] = isChecked
@@ -106,8 +93,8 @@ class ClauseActivity : BaseActivity() {
             isAllValid.postValue(isChecked)
         }
 
-        tvClauseAll.setOnClickListener {
-            cbClauseAll.isChecked = !cbClauseAll.isChecked
+        binding.tvClauseAll.setOnClickListener {
+            binding.cbClauseAll.isChecked = !binding.cbClauseAll.isChecked
         }
 
         /** 각 체크박스에 대한 이벤트 */
@@ -115,7 +102,7 @@ class ClauseActivity : BaseActivity() {
             clauseAgreed[0] = isChecked
 
             if(clauseAgreed[0] && clauseAgreed[1] && clauseAgreed[2] && clauseAgreed[3] && clauseAgreed[4]) {
-                cbClauseAll.setChecked(true)
+                binding.cbClauseAll.setChecked(true)
                 isAllValid.postValue(true)
             } else if(clauseAgreed[0] && clauseAgreed[1] && clauseAgreed[2])
                 isAllValid.postValue(true)
@@ -126,7 +113,7 @@ class ClauseActivity : BaseActivity() {
             clauseAgreed[1] = isChecked
 
             if(clauseAgreed[0] && clauseAgreed[1] && clauseAgreed[2] && clauseAgreed[3] && clauseAgreed[4]) {
-                cbClauseAll.setChecked(true)
+                binding.cbClauseAll.setChecked(true)
                 isAllValid.postValue(true)
             } else if(clauseAgreed[0] && clauseAgreed[1] && clauseAgreed[2])
                 isAllValid.postValue(true)
@@ -137,7 +124,7 @@ class ClauseActivity : BaseActivity() {
             clauseAgreed[2] = isChecked
 
             if(clauseAgreed[0] && clauseAgreed[1] && clauseAgreed[2] && clauseAgreed[3] && clauseAgreed[4]) {
-                cbClauseAll.setChecked(true)
+                binding.cbClauseAll.setChecked(true)
                 isAllValid.postValue(true)
             } else if(clauseAgreed[0] && clauseAgreed[1] && clauseAgreed[2])
                 isAllValid.postValue(true)
@@ -148,7 +135,7 @@ class ClauseActivity : BaseActivity() {
             clauseAgreed[3] = isChecked
 
             if(clauseAgreed[0] && clauseAgreed[1] && clauseAgreed[2] && clauseAgreed[3] && clauseAgreed[4]) {
-                cbClauseAll.setChecked(true)
+                binding.cbClauseAll.setChecked(true)
                 isAllValid.postValue(true)
             } else if(clauseAgreed[0] && clauseAgreed[1] && clauseAgreed[2])
                 isAllValid.postValue(true)
@@ -159,7 +146,7 @@ class ClauseActivity : BaseActivity() {
             clauseAgreed[4] = isChecked
 
             if(clauseAgreed[0] && clauseAgreed[1] && clauseAgreed[2] && clauseAgreed[3] && clauseAgreed[4]) {
-                cbClauseAll.setChecked(true)
+                binding.cbClauseAll.setChecked(true)
                 isAllValid.postValue(true)
             } else if(clauseAgreed[0] && clauseAgreed[1] && clauseAgreed[2])
                 isAllValid.postValue(true)
@@ -168,9 +155,9 @@ class ClauseActivity : BaseActivity() {
         }
 
         /** 약관 세부 페이지로 이동 */
-        llCluaseService.setOnClickListener {
-            cbClauseService.isClickable = true
-            cbClauseService.isFocusable = true
+        binding.llCluaseService.setOnClickListener {
+            binding.cbClauseService.isClickable = true
+            binding.cbClauseService.isFocusable = true
 
             val intent = Intent(this@ClauseActivity, CluaseWebviewActivity::class.java)
             intent.putExtra("number", 0)
@@ -179,9 +166,9 @@ class ClauseActivity : BaseActivity() {
             requestActivity.launch(intent)
         }
 
-        llCluasePolicy.setOnClickListener {
-            cbClausePolicy.isClickable = true
-            cbClausePolicy.isFocusable = true
+        binding.llCluasePolicy.setOnClickListener {
+            binding.cbClausePolicy.isClickable = true
+            binding.cbClausePolicy.isFocusable = true
 
             val intent = Intent(this@ClauseActivity, CluaseWebviewActivity::class.java)
             intent.putExtra("number", 1)
@@ -190,9 +177,9 @@ class ClauseActivity : BaseActivity() {
             requestActivity.launch(intent)
         }
 
-        llCluaseGPS.setOnClickListener {
-            cbClauseGPS.isClickable = true
-            cbClauseGPS.isFocusable = true
+        binding.llCluaseGPS.setOnClickListener {
+            binding.cbClauseGPS.isClickable = true
+            binding.cbClauseGPS.isFocusable = true
 
             val intent = Intent(this@ClauseActivity, CluaseWebviewActivity::class.java)
             intent.putExtra("number", 2)
@@ -201,12 +188,12 @@ class ClauseActivity : BaseActivity() {
             requestActivity.launch(intent)
         }
 
-        cbClauseAdvertisement.isClickable = true
-        cbClauseAdvertisement.isFocusable = true
+        binding.cbClauseAdvertisement.isClickable = true
+        binding.cbClauseAdvertisement.isFocusable = true
 
-        llCluaseMarketing.setOnClickListener {
-            cbClauseMarketing.isClickable = true
-            cbClauseMarketing.isFocusable = true
+        binding.llCluaseMarketing.setOnClickListener {
+            binding.cbClauseMarketing.isClickable = true
+            binding.cbClauseMarketing.isFocusable = true
 
             val intent = Intent(this@ClauseActivity, CluaseWebviewActivity::class.java)
             intent.putExtra("number", 4)
@@ -230,7 +217,7 @@ class ClauseActivity : BaseActivity() {
             }
         })
         /** '동의하기' 버튼 */
-        btnClauseStart.setOnClickListener {
+        binding.btnClauseStart.setOnClickListener {
             when(activity) {
                 "normal" -> {
                     val intentRegister = Intent(this@ClauseActivity, RegisterBasicActivity::class.java)
